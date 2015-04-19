@@ -1,5 +1,5 @@
 ;; Set fesh install to 1 for a fresh install
-(setq fresh-install t)
+(setq fresh-install nil)
 
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/general.el")
