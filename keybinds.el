@@ -2,7 +2,13 @@
 ;; Global Navigation Commands
 ;;;;
 
-(global-set-key (kbd "<f11>") 'fullscreen)
+(defun toggle-fullscreen ()
+  (interactive)
+  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
+                                           nil
+                                           'fullboth)))
+
+(global-set-key (kbd "<f11>") 'toggle-fullscreen)
 (global-set-key (kbd "<A-return>") 'newline)
 (global-set-key (kbd "A-a") 'smex)
 (global-set-key (kbd "A-s") 'save-buffer)
@@ -97,9 +103,3 @@
 (global-set-key (kbd "M-h") 'split-window-vertically)
 (global-set-key (kbd "M-o") 'find-file-other-window)
 
-(defun py-open-doc ()
-  (interactive)
-  (elpy-doc)
-  (switch-to-buffer "*Python Doc*"))
-
-(define-key python-mode-map (kbd "A-d") 'py-open-doc)
