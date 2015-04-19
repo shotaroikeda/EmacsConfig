@@ -47,10 +47,10 @@
 (require 'company)
 (global-set-key (kbd "M-j") 'nil)
 (global-set-key (kbd "M-j") 'company-manual-begin)
-(define-key company-active-map (kbd "M-j") 'company-select-next)
-(define-key company-active-map (kbd "M-k") 'company-select-previous)
-(define-key company-search-map (kbd "M-j") 'company-search-repeat-forward)
-(define-key company-search-map (kbd "M-k") 'company-search-repeat-backward)
+(define-key company-active-map (kbd "A-j") 'company-select-next)
+(define-key company-active-map (kbd "A-k") 'company-select-previous)
+(define-key company-search-map (kbd "A-j") 'company-search-repeat-forward)
+(define-key company-search-map (kbd "A-k") 'company-search-repeat-backward)
 (define-key company-active-map (kbd "/") 'company-search-candidates)
 										; Use escape to quit stuff
 (defun minibuffer-keyboard-quit ()
@@ -95,3 +95,11 @@
 
 (global-set-key (kbd "M-v") 'split-window-horizontally)
 (global-set-key (kbd "M-h") 'split-window-vertically)
+(global-set-key (kbd "M-o") 'find-file-other-window)
+
+(defun py-open-doc ()
+  (interactive)
+  (elpy-doc)
+  (switch-to-buffer "*Python Doc*"))
+
+(define-key python-mode-map (kbd "A-d") 'py-open-doc)

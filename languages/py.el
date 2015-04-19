@@ -14,7 +14,3 @@
   )
 
 (define-key python-mode-map (kbd "A-r") 'py-load-switch)
-
-
-
-
