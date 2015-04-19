@@ -101,5 +101,7 @@
 
 (global-set-key (kbd "M-v") 'split-window-horizontally)
 (global-set-key (kbd "M-h") 'split-window-vertically)
+
+
 (global-set-key (kbd "M-o") 'find-file-other-window)
 
