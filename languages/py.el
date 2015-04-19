@@ -7,9 +7,13 @@
 
 (add-hook 'python-mode-hook 'my/python-mode-hook)
 
+(defun py-load-switch ()
+  (interactive)
+  (python-shell-send-buffer)
+  (elpy-shell-switch-to-shell)
+  )
 
-
-
+(define-key python-mode-map (kbd "A-r") 'py-load-switch)
 
 
 

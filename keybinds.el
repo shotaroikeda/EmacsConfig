@@ -3,7 +3,6 @@
 ;;;;
 
 (global-set-key (kbd "<f11>") 'fullscreen)
-
 (global-set-key (kbd "<A-return>") 'newline)
 (global-set-key (kbd "A-a") 'smex)
 (global-set-key (kbd "A-s") 'save-buffer)
@@ -57,9 +56,9 @@
 (defun minibuffer-keyboard-quit ()
   (interactive)
   (if (and delete-selection-mode transient-mark-mode mark-active)
-      (setq deactivate-mark  t)
-    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-    (abort-recursive-edit)))
+	  (setq deactivate-mark  t)
+	(when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+	(abort-recursive-edit)))
 
 (define-key company-search-map [escape] 'company-search-abort)
 (define-key company-active-map [escape] 'company-abort)
@@ -75,7 +74,7 @@
 
 
 (define-key evil-motion-state-map (kbd "RET") nil)
-(define-key evil-motion-state-map (kbd " ") nil)  
+(define-key evil-motion-state-map (kbd " ") nil)
 
 (require 'doc-view)
 
@@ -88,3 +87,11 @@
 (define-key doc-view-mode-map (kbd "k") 'doc-view-previous-line-or-previous-page)
 (define-key doc-view-mode-map (kbd "h") 'image-backward-hscroll)
 (define-key doc-view-mode-map (kbd "l") 'image-forward-hscroll)
+
+;;; Shotaro's binds
+(global-set-key (kbd "C-q") 'delete-window)
+(evil-leader/set-key-for-mode 'emacs-lisp-mode "e" 'eval-buffer)
+(evil-leader/set-key "t" 'transpose-windows)
+
+(global-set-key (kbd "M-v") 'split-window-horizontally)
+(global-set-key (kbd "M-h") 'split-window-vertically)

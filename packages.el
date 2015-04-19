@@ -1,40 +1,42 @@
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+			 '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (package-initialize)
 
 (defvar my-packages '(evil
-                      evil-leader
+					  evil-leader
 
-                      better-defaults
-                      company
-                      rainbow-delimiters
-                      find-file-in-project
+					  better-defaults
+					  company
+					  rainbow-delimiters
+					  find-file-in-project
 					  projectile
-                      magit
-                      yasnippet
+					  magit
+					  yasnippet
 
-                      auctex
-                      
-                      smex
-                      ido-ubiquitous
+					  auctex
 
-                      paredit
-                      clojure-mode
-                      cider
+					  smex
+					  ido-ubiquitous
+
+					  paredit
+					  smartparens
+
+					  clojure-mode
+					  cider
 
 					  irony
 					  company-irony
 					  flycheck-irony
-					  
+
 					  elpy
 					  pyenv-mode
 					  anaconda-mode
 					  company-anaconda
 
 					  ample-theme
-                      monokai-theme))
+					  monokai-theme))
 
 (package-initialize)
 
@@ -44,4 +46,4 @@
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
-    (package-install p)))
+	(package-install p)))
