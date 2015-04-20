@@ -63,7 +63,7 @@
 (show-smartparens-global-mode 1)
 
 ;; Globally enable whitespace-mode
-(global-whitespace-mode)
+;;(global-whitespace-mode)
 
 ;; Highlight Current Line configuration
 (global-hl-line-mode 1)
