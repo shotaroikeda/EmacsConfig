@@ -68,3 +68,6 @@
 ;; Highlight Current Line configuration
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#552661")
+
+;; Prevent Magit Warning From Appearing
+(setq magit-last-seen-setup-instructions "1.4.0")
