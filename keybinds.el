@@ -107,7 +107,7 @@
 
 (defun stage-and-commit ()
   (interactive)
-  (magit-stage-item)
+  (magit-stage-all)
   (magit-commit))
 
 (global-set-key (kbd "M-g") 'stage-and-commit)
