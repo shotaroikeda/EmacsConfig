@@ -99,5 +99,5 @@
 
 (require 'magit)
 ;; Magit Binds
-(global-set-key (kbd "M-g") 'stage-and-commit)
-(global-set-key (kbd "M-p") 'magit-push)
+(global-set-key (kbd "M-G") 'stage-and-commit)
+(global-set-key (kbd "M-P") 'magit-push)
