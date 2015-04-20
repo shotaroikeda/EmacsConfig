@@ -7,9 +7,11 @@
 (defvar my-packages '(evil
 					  evil-leader
 
+					  bash-completion
 					  better-defaults
 					  company
 					  rainbow-delimiters
+
 					  find-file-in-project
 					  projectile
 					  magit

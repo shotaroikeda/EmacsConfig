@@ -6,6 +6,8 @@
 
 (require 'evil)
 (require 'ido)
+(require 'bash-completion)
+(bash-completion-setup)
 
 (enable-paredit-mode)
 (paredit-mode t)
