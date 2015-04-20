@@ -101,3 +101,4 @@
 ;; Magit Binds
 (global-set-key (kbd "M-G") 'stage-and-commit)
 (global-set-key (kbd "M-P") 'magit-push)
+(global-set-key (kbd "M-W") 'magit-status)
