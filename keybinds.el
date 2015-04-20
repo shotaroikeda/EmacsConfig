@@ -2,11 +2,6 @@
 ;; Global Navigation Commands
 ;;;;
 
-(defun toggle-fullscreen ()
-  (interactive)
-  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
-                                           nil
-                                           'fullboth)))
 
 (global-set-key (kbd "<f11>") 'toggle-fullscreen)
 (global-set-key (kbd "<A-return>") 'newline)
@@ -102,11 +97,7 @@
 (global-set-key (kbd "M-h") 'split-window-vertically)
 (global-set-key (kbd "M-o") 'find-file-other-window)
 
+(require 'magit)
 ;; Magit Binds
-(defun stage-and-commit ()
-  (interactive)
-  (magit-stage-all)
-  (magit-commit))
-
 (global-set-key (kbd "M-g") 'stage-and-commit)
 (global-set-key (kbd "M-p") 'magit-push)
