@@ -94,20 +94,19 @@
 (define-key doc-view-mode-map (kbd "h") 'image-backward-hscroll)
 (define-key doc-view-mode-map (kbd "l") 'image-forward-hscroll)
 
-;;; Shotaro's binds
+;;; Window Functions
 (global-set-key (kbd "C-q") 'delete-window)
 (evil-leader/set-key-for-mode 'emacs-lisp-mode "e" 'eval-buffer)
 (evil-leader/set-key "t" 'transpose-windows)
-
 (global-set-key (kbd "M-v") 'split-window-horizontally)
 (global-set-key (kbd "M-h") 'split-window-vertically)
-
-
 (global-set-key (kbd "M-o") 'find-file-other-window)
 
+;; Magit Binds
 (defun stage-and-commit ()
   (interactive)
   (magit-stage-all)
   (magit-commit))
 
 (global-set-key (kbd "M-g") 'stage-and-commit)
+(global-set-key (kbd "M-p") 'magit-push)
