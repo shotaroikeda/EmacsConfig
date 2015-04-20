@@ -17,7 +17,8 @@
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
 						 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-						 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0)))
+						 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0)
+						 ))
 
 (defun revert-all-buffers ()
   "Refreshes all open buffers from their respective files."
@@ -55,3 +56,17 @@
         (unless (member library libraries-loaded)
           (load library nil t)
           (push library libraries-loaded))))))
+
+;; Screen Manipulation
+(defun toggle-fullscreen ()
+  (interactive)
+  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
+                                           nil
+                                           'fullboth)))
+;; Magit Functions
+(require 'magit)
+(defun stage-and-commit ()
+  "Requires Magit. Stages all current files in the project then commits them"
+  (interactive)
+  (magit-stage-all)
+  (magit-commit))
