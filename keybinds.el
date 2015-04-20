@@ -105,3 +105,9 @@
 
 (global-set-key (kbd "M-o") 'find-file-other-window)
 
+(defun stage-and-commit ()
+  (interactive)
+  (magit-stage-item)
+  (magit-commit))
+
+(global-set-key (kbd "M-g") 'stage-and-commit)
