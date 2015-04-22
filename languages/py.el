@@ -15,9 +15,16 @@
 
 (define-key python-mode-map (kbd "A-r") 'py-load-switch)
 
-(defun py-open-doc ()
+(defun py-open-doc-and-go ()
   (interactive)
   (elpy-doc)
-  (switch-to-buffer "*Python Doc*"))
+  (other-window 1))
 
-(define-key python-mode-map (kbd "A-d") 'py-open-doc)
+(defun py-open-doc-fast ()
+  (interactive)
+  (elpy-doc))
+
+(define-key python-mode-map (kbd "A-d") 'py-open-doc-fast)
+(define-key python-mode-map (kbd "A-D") 'py-open-doc-and-go)
+;;(define-key python-mode-map (kbd "A-D") '(kill-buffer "*Python Doc*"))
+
