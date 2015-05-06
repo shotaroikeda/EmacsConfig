@@ -6,4 +6,4 @@
 
 ;;Getting native feel of os
 (global-set-key (kbd "A-c") 'evil-yank)
-(global-set-key (kbd "A-p") 'evil-paste-after)
+(global-set-key (kbd "A-v") 'evil-paste-after)
