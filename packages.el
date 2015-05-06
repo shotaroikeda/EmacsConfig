@@ -52,3 +52,7 @@
 (dolist (p my-packages)
   (when (not (package-installed-p p))
 	(package-install p)))
+
+;; To finish setting up, you need to install a couple of things
+;; flake8/pyflake and jedi
+;; install it from pip (pip install jedi)
