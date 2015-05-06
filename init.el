@@ -9,6 +9,5 @@
 
 (when (equal system-type 'darwin)
   (load "~/.emacs.d/macosx.el")
-  (require exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
