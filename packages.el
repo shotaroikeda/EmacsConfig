@@ -21,6 +21,8 @@
 
 					  ;;to fix osx path issues
 					  exec-path-from-shell
+					  ;;fix for scrolling problems
+					  smooth-scrolling
 
 					  smex
 					  ido-ubiquitous
