@@ -1,4 +1,6 @@
 auto-save/
+auto-save-list/
+ido.last
 elpa/
 backups/
 smex-items

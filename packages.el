@@ -19,6 +19,9 @@
 
 					  auctex
 
+					  ;;to fix osx path issues
+					  exec-path-from-shell
+
 					  smex
 					  ido-ubiquitous
 

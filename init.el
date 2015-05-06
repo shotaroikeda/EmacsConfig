@@ -6,3 +6,9 @@
 (load "~/.emacs.d/custom-funcs.el")
 (load "~/.emacs.d/keybinds.el")
 (load-directory "~/.emacs.d/languages")
+
+(when (equal system-type 'darwin)
+  (load "~/.emacs.d/macosx.el")
+  (require exec-path-from-shell)
+  (exec-path-from-shell-initialize))
+
