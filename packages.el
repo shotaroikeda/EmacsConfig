@@ -53,6 +53,8 @@
   (when (not (package-installed-p p))
 	(package-install p)))
 
+;; You will also have to add the installation directory to $PATH
+;; on OSX 10.10 it's in /etc/path
 ;; To finish setting up, you need to install a couple of things
 ;; flake8/pyflake and jedi
 ;; install it from pip (pip install jedi)
