@@ -5,3 +5,5 @@ elpa/
 backups/
 smex-items
 places
+
+.DS_Store
