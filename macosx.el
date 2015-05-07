@@ -26,3 +26,6 @@
 	  scroll-preserve-screen-position 1
 	  mouse-wheel-progressive-speed nil)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+
+(exec-path-from-shell-copy-env "PYTHONPATH")
+(exec-path-from-shell-copy-env "PATH")

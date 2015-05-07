@@ -8,6 +8,5 @@
 (load-directory "~/.emacs.d/languages")
 
 (when (equal system-type 'darwin)
-  (load "~/.emacs.d/macosx.el")
-  (exec-path-from-shell-initialize))
+  (load "~/.emacs.d/macosx.el"))
 
