@@ -95,7 +95,7 @@
 (evil-leader/set-key "t" 'transpose-windows)
 (global-set-key (kbd "M-v") 'split-window-horizontally)
 (global-set-key (kbd "M-h") 'split-window-vertically)
-(global-set-key (kbd "M-o") 'find-file-other-window)
+(global-set-key (kbd "M-o") 'ido-find-file-other-window)
 
 (require 'magit)
 ;; Magit Binds
