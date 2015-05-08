@@ -79,9 +79,10 @@
 (setq sublimity-scroll-weight 1
 	  sublimity-scroll-drift-length 0)
 
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-;; (setq scroll-preserve-screen-position t)
+;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 
-(setq scroll-step 1)
-(setq scroll-conservatively 10000)
-(setq auto-window-vscroll nil)
+
+;; (setq scroll-step 1)
+;; (setq scroll-conservatively 10000)
+;; (setq auto-window-vscroll nil)
+
