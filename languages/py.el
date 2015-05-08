@@ -28,3 +28,6 @@
 (define-key python-mode-map (kbd "A-D") 'py-open-doc-and-go)
 ;;(define-key python-mode-map (kbd "A-D") '(kill-buffer "*Python Doc*"))
 
+;; Some smarparens things
+(sp-local-pair 'python-mode "\\\'" "\\\'")
+
