@@ -80,4 +80,5 @@
 	  sublimity-scroll-drift-length 0)
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+(setq scroll-preserve-screen-position 1)
 ;;(setq auto-window-vscroll nil)
