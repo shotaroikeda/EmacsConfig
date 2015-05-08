@@ -97,7 +97,12 @@
 (global-set-key (kbd "M-h") 'split-window-vertically)
 
 (require 'ido)
-(global-set-key (kbd "M-o") 'ido-find-file-other-window)
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode-map keymap.")
+(define-key my-keys-minor-mode-map (kbd "M-o") 'ido-find-file-other-window)
+(define-minor-mode my-keys-minor-mode
+  "A minor mode so that my keys override other major modes"
+  t "my-keys" 'my-keys-minor-mode-map)
+(my-keys-minor-mode 1)
 
 (require 'magit)
 ;; Magit Binds
@@ -105,7 +110,5 @@
 (global-set-key (kbd "M-P") 'magit-push)
 (global-set-key (kbd "M-W") 'magit-status)
 
-(global-set-key (kbd "C-u") nil)
-(global-set-key (kbd "C-n") nil)
 (global-set-key (kbd "C-d") 'evil-scroll-down)
 (global-set-key (kbd "C-u") 'evil-scroll-up)
