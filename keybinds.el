@@ -95,6 +95,8 @@
 (evil-leader/set-key "t" 'transpose-windows)
 (global-set-key (kbd "M-v") 'split-window-horizontally)
 (global-set-key (kbd "M-h") 'split-window-vertically)
+
+(require 'ido)
 (global-set-key (kbd "M-o") 'ido-find-file-other-window)
 
 (require 'magit)
@@ -102,3 +104,8 @@
 (global-set-key (kbd "M-G") 'stage-and-commit)
 (global-set-key (kbd "M-P") 'magit-push)
 (global-set-key (kbd "M-W") 'magit-status)
+
+(global-set-key (kbd "C-u") nil)
+(global-set-key (kbd "C-n") nil)
+(global-set-key (kbd "C-d") 'evil-scroll-down)
+(global-set-key (kbd "C-u") 'evil-scroll-up)

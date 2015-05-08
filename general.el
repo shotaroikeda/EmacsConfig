@@ -71,3 +71,13 @@
 
 ;; Prevent Magit Warning From Appearing
 (setq magit-last-seen-setup-instructions "1.4.0")
+
+;; Sublimity Settings
+(require 'sublimity)
+(require 'sublimity-scroll)
+(sublimity-mode 1)
+(setq sublimity-scroll-weight 1
+	  sublimity-scroll-drift-length 0)
+
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+;;(setq auto-window-vscroll nil)
