@@ -31,3 +31,38 @@
 ;; trigger completion at interesting places, such as after scope operator
 ;;     std::|
 (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+
+;; Compiles and runs the C script that was created.
+(defun compile-and-run-prim-c ()
+  (interactive)
+  (setq this-file-name (buffer-name)
+		make-command (eval (concat "make -k " (file-name-sans-extension buffer-file-name)))
+		run-command (eval (file-name-sans-extension buffer-file-name)))
+  (if (get-buffer "*C-Output*") nil
+	(get-buffer-create "*C-Output*"))
+  (switch-to-buffer-other-window "*C-Output*")
+  (erase-buffer)
+  ;; Pretty print the output
+  (insert "############################### ")
+  (insert this-file-name)
+  (insert " ###############################\n")
+  (insert "Running " make-command "...\n")
+  (insert "##############################################################\n\n")
+  (insert (shell-command-to-string make-command))
+  (insert "\n\n##############################################################\n\n")
+  (insert "Running " run-command)
+  (insert "\n\nOutput:\n")
+  (insert "##############################################################\n\n")
+  (insert (shell-command-to-string run-command))
+  (insert "\n\n##############################################################\n")
+  (insert "Finished running " run-command "\n\n"))
+
+;; Have a minor mode to avoid conflict between Python, C, C++
+(define-minor-mode c-interactive-minor-mode
+  "A minor mode to allow really fast compiling, without conflicting with other modes"
+  ;; initial toggle
+  nil
+  ;; keymap
+  '(
+	(,(kbd "A-r") . compile-and-run-prim-c))
+  )
