@@ -35,3 +35,5 @@ $ sudo port install py-ipython py-jedi py-pyflakes
 
 Setting up terminal:
 <a href="http://superuser.com/questions/239994/how-to-have-full-directory-path-always-shown-in-mac-terminal-like-linux-termina">Set up the shell to look like linux's</a> then <a href="http://stackoverflow.com/questions/958194/how-to-make-emacs-shell-execute-init-file-automatically">make it execute automatically.
+
+<p> Or you can add it to $PATH by modifying /etc/paths

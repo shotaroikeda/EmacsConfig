@@ -57,14 +57,5 @@
   (insert "\n\n##############################################################\n")
   (insert "Finished running " run-command "\n\n"))
 
-;; Have a minor mode to avoid conflict between Python, C, C++
-(define-minor-mode c-interactive-minor-mode
-  "A minor mode to allow really fast compiling, without conflicting with other modes"
-  ;; initial toggle
-  nil
-  ;; keymap
-  '(
-	(,(kbd "A-r") . compile-and-run-prim-c))
-  )
-
-(add-hook 'c-mode-hook 'c-interactive-minor-mode)
+;; Have a mode-map to avoid conflicts
+(define-key c-mode-map (kbd "A-r") 'compile-and-run-prim-c)
