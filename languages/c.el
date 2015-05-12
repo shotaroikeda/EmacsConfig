@@ -66,3 +66,5 @@
   '(
 	(,(kbd "A-r") . compile-and-run-prim-c))
   )
+
+(add-hook 'c-mode-hook 'c-interactive-minor-mode)
