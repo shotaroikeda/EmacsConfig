@@ -1,4 +1,6 @@
 ;; C/C++ tweaks
+(require 'cc-mode)
+(require 'cl)
 
 (setq-default c-basic-offset 4
               tab-width 4
@@ -59,3 +61,34 @@
 
 ;; Have a mode-map to avoid conflicts
 (define-key c-mode-map (kbd "A-r") 'compile-and-run-prim-c)
+
+;; Compiles and runs the C++ script that was created
+(defun compile-and-run-cpp ()
+  (interactive)
+  (setq this-file-name (buffer-name)
+		make-command (eval (concat "clang++ " (buffer-file-name) " -o " (file-name-sans-extension buffer-file-name) ".out"))
+		run-command (eval (concat (file-name-sans-extension buffer-file-name) ".out")))
+  (if (get-buffer "*C++-Output*") nil
+	(get-buffer-create "*C++-Output*"))
+  (switch-to-buffer-other-window "*C-Output*")
+  (erase-buffer)
+  ;; Pretty print the output
+  (insert "############################### ")
+  (insert this-file-name)
+  (insert " ###############################\n")
+  (insert "Running " make-command "...\n")
+  (insert "##############################################################\n\n")
+  (setq error-msg (eval(shell-command-to-string make-command)))
+  (if (string= error-msg "") 
+	(insert "Clang did not return any errors.\nCompiling is successful!")
+	(insert error-msg))
+  (insert "\n\n##############################################################\n\n")
+  (insert "Running " run-command)
+  (insert "\n\nOutput:\n")
+  (insert "##############################################################\n\n")
+  (insert (shell-command-to-string run-command))
+  (insert "\n\n##############################################################\n")
+  (insert "Finished running " run-command "\n\n"))
+
+;; Have a mode-map to avoid conflicts
+(define-key c++-mode-map (kbd "A-r") 'compile-and-run-cpp)
