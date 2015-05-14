@@ -70,7 +70,7 @@
 		run-command (eval (concat (file-name-sans-extension buffer-file-name) ".out")))
   (if (get-buffer "*C++-Output*") nil
 	(get-buffer-create "*C++-Output*"))
-  (switch-to-buffer-other-window "*C-Output*")
+  (switch-to-buffer-other-window "*C++-Output*")
   (erase-buffer)
   ;; Pretty print the output
   (insert "############################### ")
