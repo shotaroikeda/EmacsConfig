@@ -29,6 +29,6 @@
 ;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 ;;(setq auto-window-vscroll nil)
 
-(require 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
 (exec-path-from-shell-copy-env "PYTHONPATH")
 (exec-path-from-shell-copy-env "PATH")
