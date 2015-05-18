@@ -4,13 +4,12 @@
 ;; Debugging mode
 (setq debug-on-error nil)
 
-(when (equal system-type 'darwin)
-  (load "~/.emacs.d/macosx.el"))
-
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/general.el")
 (load "~/.emacs.d/custom-funcs.el")
 (load-directory "~/.emacs.d/languages")
 (load "~/.emacs.d/keybinds.el")
 
+(when (equal system-type 'darwin)
+  (load "~/.emacs.d/macosx.el"))
 
