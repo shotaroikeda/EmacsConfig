@@ -6,8 +6,19 @@
               tab-width 4
               indent-tabs-mode t)
 
+;; Make sure that brackets get inserted with proper indentation
+(sp-local-pair 'c++-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+(sp-local-pair 'c-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+ 
+(defun my-create-newline-and-enter-sexp (&rest _ignored)
+  "Open a new brace or bracket expression, with relevant newlines and indent. "
+  (newline)
+  (indent-according-to-mode)
+  (forward-line -1)
+  (indent-according-to-mode))
+
 (setq c-default-style "linux"
-      c-basic-offset 4)
+      c-basic-offset 8)
 
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
@@ -43,6 +54,9 @@
   (if (get-buffer "*C-Output*") nil
 	(get-buffer-create "*C-Output*"))
   (switch-to-buffer-other-window "*C-Output*")
+  (setq buffer-read-only nil)
+  ;;switch to fundamental mode to allow buffer text insertion
+  (fundamental-mode)
   (erase-buffer)
   ;; Pretty print the output
   (insert "############################### ")
@@ -57,7 +71,10 @@
   (insert "##############################################################\n\n")
   (insert (shell-command-to-string run-command))
   (insert "\n\n##############################################################\n")
-  (insert "Finished running " run-command "\n\n"))
+  (insert "Finished running " run-command "\n\n")
+  (insert "Press q to quit or A-O to switch buffers\n")
+  ;; switch to help mode to make the buffer have help mode keybinds
+  (help-mode))
 
 ;; Have a mode-map to avoid conflicts
 (define-key c-mode-map (kbd "A-r") 'compile-and-run-prim-c)
@@ -71,6 +88,9 @@
   (if (get-buffer "*C++-Output*") nil
 	(get-buffer-create "*C++-Output*"))
   (switch-to-buffer-other-window "*C++-Output*")
+  (setq buffer-read-only nil)
+  ;; switch to fundamental mode to allow buffer text insertion
+  (fundamental-mode)
   (erase-buffer)
   ;; Pretty print the output
   (insert "############################### ")
@@ -88,7 +108,11 @@
   (insert "##############################################################\n\n")
   (insert (shell-command-to-string run-command))
   (insert "\n\n##############################################################\n")
-  (insert "Finished running " run-command "\n\n"))
+  (insert "Finished running " run-command "\n\n")
+  (insert "Press q to close or A-O to switch buffers\n")
+  ;; switch to help mode to make the buffer have help mode keybinds
+  (help-mode))
 
 ;; Have a mode-map to avoid conflicts
 (define-key c++-mode-map (kbd "A-r") 'compile-and-run-cpp)
+
