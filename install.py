@@ -149,6 +149,13 @@ def configure_macports(homedir):
     new_profile.write("\nexport PATH=\"/opt/local/bin:/opt/local/sbin:$PATH\"\n")
     new_profile.write("\n# Please do not modify this file unless you know what you are doing.\n")
     new_profile.close()
+    # Waiting for the file to be saved and closed before proceeding
+    print " [EmacsConfig]Waiting for file to be saved..."
+    while not new_profile.closed():
+        None
+    while not os.path.exists(homedir+"/.bash_profile"):
+        None
+
     sp.check_call(["chmod", "a+x", homedir+"/.bash_profile"])
     sp.check_call(["source", homedir+"/.bash_profile"])
 
