@@ -130,10 +130,18 @@ def configure_macports():
     print "[EmacsConfig] Finished backup."
 
     print "[EmacsConfig] Creating new ~/.bash_profile"
-    sp.call([">>", "~/.bash_profile"])
-    sp.call(["chmod", "a+x", "~/.bash_profile"])
+    new_profile = open("~/.bash_profile", "w")
     print "[EmacsConfig] Adding existing contents to .bash_profile"
-
+    old_profile = open("~/.bash_profile-backupfrom-emacsconfig", "r")
+    new_profile.write(old_profile.read())
+    old_profile.close()
+    print "[EmacsConfig] Finished copying configurations."
+    print "[EmacsConfig] Adding new configurations."
+    new_profile.write("\n# path for macports is added below")
+    new_profile.write("\nexport PATH=\"/opt/local/bin:/opt/local/sbin:$PATH\"\n")
+    new_profile.write("\n# Please do not modify this file unless you know what you are doing.\n")
+    new_profile.close()
+    sp.call(["chmod", "a+x", "~/.bash_profile"])
 
 
 def linuxinstall():
