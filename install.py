@@ -106,7 +106,7 @@ def download_macports():
 
 def install_macports(dir_to_macport):
     print "[MacPorts] Installing MacPorts..."
-    sp.call(["/usr/sbin/installer", dir_to_macport,
+    sp.call(["/usr/sbin/installer", "-pkg", dir_to_macport,
              "--target", "/opt/local"])
     print "[MacPorts] Finished installing!"
 
