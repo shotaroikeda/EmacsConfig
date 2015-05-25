@@ -32,7 +32,7 @@ def macosinstall(skip=False):
     # hide input in /dev/null
     DEVNULL = open(os.devnull, "w")
 
-    sp.check_call(["mkdir", "install_files"], stdout=DEVNULL, stderr=sp.STDOUT)
+    sp.call(["mkdir", "install_files"], stdout=DEVNULL, stderr=sp.STDOUT)
     # put all of the downloaded files in install
     home_dir = '/'.join(os.getcwd().split('/')[0:3])
     gitconfigdir = os.getcwd()
@@ -57,7 +57,7 @@ def macosinstall(skip=False):
     # check for brew
     if not skip:
         try:
-            r_code = sp.check_call(["brew", "list"], stdout=DEVNULL, stderr=sp.STDOUT)
+            r_code = sp.call(["brew", "list"], stdout=DEVNULL, stderr=sp.STDOUT)
             package_manager = "homebrew"
             print " [EmacsConfig] Detected homebrew"
         except OSError:
@@ -65,7 +65,7 @@ def macosinstall(skip=False):
 
     if not skip:
         try:
-            r_code = sp.check_call(["port", "installed"], stdout=DEVNULL, stderr=sp.STDOUT)
+            r_code = sp.call(["port", "installed"], stdout=DEVNULL, stderr=sp.STDOUT)
             package_manager = "macports"
             print " [EmacsConfig] Detected macports"
         except OSError:
@@ -130,7 +130,7 @@ def configure_macports(homedir):
 
     # Backup current .bash_profile
     print " [EmacsConfig] Backing up current .bash_profile..."
-    sp.check_call(["mv", homedir+"/.bash_profile", homedir+"/.bash_profile-backupfrom-emacsconfig"])
+    sp.call(["mv", homedir+"/.bash_profile", homedir+"/.bash_profile-backupfrom-emacsconfig"])
     print " [EmacsConfig] Finished backup."
 
     print " [EmacsConfig] Creating new ~/.bash_profile"
@@ -157,7 +157,7 @@ def configure_macports(homedir):
     try:
         sp.check_call(["port", "installed"], stdout=DEVNULL, stderr=sp.STDOUT)
         print " [EmacsConfig] MacPorts is working properly!"
-    except OSError:
+    except sp.CalledProcessError:
         print " [EmacsConfig] MacPorts is still not configured. Please install manually."
         print " [EmacsConfig] Cleaning up install directory...."
         sp.check_call(["rm", "-rf", "/opt"], stdout=DEVNULL, stderr=sp.STDOUT)
