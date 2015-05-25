@@ -98,7 +98,7 @@ def macosinstall(skip=False):
     try:
         sp.check_call(["pip", "freeze"], stdout=DEVNULL, stderr=sp.STDOUT)
         print " [EmacsConfig] pip is installed correctly."
-    except sp.CalledProcessError:
+    except OSError:
         print " [EmacsConfig] Installing pip."
         sp.call(["easy_install", "pip"])
         print " [EmacsConfig] pip is installed."
