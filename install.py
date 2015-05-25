@@ -9,7 +9,8 @@ class PermissionDeniedError(Exception):
 def macosinstall(skip=False):
     # Have to check for sudo permissions first
     if not skip:
-        r_code = sp.call(["touch", "/etc/sample.txt"]) # see if you can write to this directory first
+        r_code = sp.
+        check_call(["touch", "/etc/sample.txt"]) # see if you can write to this directory first
 
         if r_code == 1:
             print " [EmacsConfig] You must run this script as sudo. Please run: "
@@ -17,18 +18,18 @@ def macosinstall(skip=False):
             raise PermissionDeniedError(" [EmacsConfig] Run install script as sudo.")
 
         else:
-            sp.call(["rm", "/etc/sample.txt"])
+            sp.check_call(["rm", "/etc/sample.txt"])
 
     # No Error: ran as sudo
 
     # Agree to xcode installation first!
     print " [xcodebuild] Asking user to agree with license (just in case)"
-    sp.call(["xcodebuild", "-license"])
+    sp.check_call(["xcodebuild", "-license"])
     print " [xcodebuild] Please install xcode if there was an error, otherwise things are ok."
     # hide input in /dev/null
     DEVNULL = open(os.devnull, "w")
 
-    sp.call(["mkdir", "install_files"], stdout=DEVNULL, stderr=sp.STDOUT)
+    sp.check_call(["mkdir", "install_files"], stdout=DEVNULL, stderr=sp.STDOUT)
     # put all of the downloaded files in install
     home_dir = '/'.join(os.getcwd().split('/')[0:3])
     gitconfigdir = os.getcwd()
@@ -53,7 +54,7 @@ def macosinstall(skip=False):
     # check for brew
     if not skip:
         try:
-            r_code = sp.call(["brew", "list"], stdout=DEVNULL, stderr=sp.STDOUT)
+            r_code = sp.check_call(["brew", "list"], stdout=DEVNULL, stderr=sp.STDOUT)
             package_manager = "homebrew"
             print " [EmacsConfig] Detected homebrew"
         except OSError:
@@ -61,7 +62,7 @@ def macosinstall(skip=False):
 
     if not skip:
         try:
-            r_code = sp.call(["port", "installed"], stdout=DEVNULL, stderr=sp.STDOUT)
+            r_code = sp.check_call(["port", "installed"], stdout=DEVNULL, stderr=sp.STDOUT)
             package_manager = "macports"
             print " [EmacsConfig] Detected macports"
         except OSError:
@@ -111,11 +112,11 @@ def install_macports(dir_to_macport):
     # Create /opt/local
     # if not os.path.exists("/opt/local/"):
     #     if not os.path.exists("/opt/"):
-    #         sp.call(["mkdir", "/opt/"])
-    #     sp.call(["mkdir", "/opt/local/"])
+    #         sp.check_call(["mkdir", "/opt/"])
+    #     sp.check_call(["mkdir", "/opt/local/"])
 
     print "[MacPorts] Installing MacPorts..."
-    sp.call(["/usr/sbin/installer", "-pkg", dir_to_macport,
+    sp.check_call(["/usr/sbin/installer", "-pkg", dir_to_macport,
              "-target", "/"])
     print " [MacPorts] Finished installing!"
 
@@ -126,7 +127,7 @@ def configure_macports(homedir):
 
     # Backup current .bash_profile
     print " [EmacsConfig] Backing up current .bash_profile..."
-    sp.call(["mv", homedir+"/.bash_profile", homedir+"/.bash_profile-backupfrom-emacsconfig"])
+    sp.check_call(["mv", homedir+"/.bash_profile", homedir+"/.bash_profile-backupfrom-emacsconfig"])
     print " [EmacsConfig] Finished backup."
 
     print " [EmacsConfig] Creating new ~/.bash_profile"
@@ -145,20 +146,20 @@ def configure_macports(homedir):
     new_profile.write("\nexport PATH=\"/opt/local/bin:/opt/local/sbin:$PATH\"\n")
     new_profile.write("\n# Please do not modify this file unless you know what you are doing.\n")
     new_profile.close()
-    sp.call(["chmod", "a+x", homedir+"/.bash_profile"])
-    sp.call(["source", homedir+"/.bash_profile"])
+    sp.check_call(["chmod", "a+x", homedir+"/.bash_profile"])
+    sp.check_call(["source", homedir+"/.bash_profile"])
 
     print " [EmacsConfig] Checking if MacPorts is installed and running..."
     DEVNULL = open(os.devnull, "w")
     try:
-        sp.call(["port", "installed"], stdout=DEVNULL, stderr=sp.STDOUT)
+        sp.check_call(["port", "installed"], stdout=DEVNULL, stderr=sp.STDOUT)
         print " [EmacsConfig] MacPorts is working properly!"
     except OSError:
         print " [EmacsConfig] MacPorts is still not configured. Please install manually."
         print " [EmacsConfig] Cleaning up install directory...."
-        sp.call(["rm", "-rf", "/opt"], stdout=DEVNULL, stderr=sp.STDOUT)
-        sp.call(["rm", homedir+"/.bash_profile"], stdout=DEVNULL, stderr=sp.STDOUT)
-        sp.call(["mv", homedir+"/.bash_profile-backupfrom-emacsconfig", homedir+"/.bash_profile"],
+        sp.check_call(["rm", "-rf", "/opt"], stdout=DEVNULL, stderr=sp.STDOUT)
+        sp.check_call(["rm", homedir+"/.bash_profile"], stdout=DEVNULL, stderr=sp.STDOUT)
+        sp.check_call(["mv", homedir+"/.bash_profile-backupfrom-emacsconfig", homedir+"/.bash_profile"],
                 stdout=DEVNULL, stderr=sp.STDOUT)
 
     DEVNULL.close()
