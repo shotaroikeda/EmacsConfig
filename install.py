@@ -130,7 +130,7 @@ def configure_macports():
     print "[EmacsConfig] Finished backup."
 
     print "[EmacsConfig] Creating new ~/.bash_profile"
-    sp.call(["touch", "~/.bash_profile"])
+    sp.call([">>", "~/.bash_profile"])
     sp.call(["chmod", "a+x", "~/.bash_profile"])
     print "[EmacsConfig] Adding existing contents to .bash_profile"
 
