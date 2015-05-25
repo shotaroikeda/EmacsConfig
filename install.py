@@ -23,8 +23,12 @@ def macosinstall(skip=False):
 
     # Agree to xcode installation first!
     print " [xcodebuild] Asking user to agree with license (just in case)"
-    sp.check_call(["xcodebuild", "-license"])
-    print " [xcodebuild] Please install xcode if there was an error, otherwise things are ok."
+    try:
+        sp.check_call(["xcodebuild", "-license"])
+    except sp.CalledProcessError:
+        print " [xcodebuild] Please install xcode if there was an error, otherwise things are ok."
+        print " [xcodebuild] Will force install MacPorts."
+        print " [xcodebuild] To avoid future issues, please install XCode from the App Store."
     # hide input in /dev/null
     DEVNULL = open(os.devnull, "w")
 
