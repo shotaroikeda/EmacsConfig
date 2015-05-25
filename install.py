@@ -73,7 +73,7 @@ def macosinstall(skip=False):
             print "[EmacsConfig] homebrew is not supported at the moment."
             print "[EmacsConfig] Script will download macports instead."
         install_macports(download_macports())
-        configure_macports()
+        configure_macports(home_dir)
 
     # close the devnull file
     DEVNULL.close()
