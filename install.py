@@ -79,12 +79,28 @@ def macosinstall(skip=False):
         install_macports(download_macports())
         configure_macports(home_dir)
 
+    # Configure pip
+    print " [EmacsConfig] Checking for pip."
+    try:
+        sp.check_call(["pip", "freeze", stdout=DEVNULL, stderr=sp.STDOUT])
+        print " [EmacsConfig] pip is installed correctly."
+    except sp.CalledProcessError:
+        print " [EmacsConfig] Installing pip."
+        sp.call(["easy_install", "pip"])
+        print " [EmacsConfig] pip is installed."
+
+    # Install pip jedi
+    sp.call(["pip", "install", "jedi"])
+    # Install pip flake8
+    sp.call(["pip", "install", "flake8"])
+    # Install pip pyflakes
+    sp.call(["pip", "install", "pyflakes"])
+    # Install ipython
+    sp.call(["pip", "install", "ipython"])
     # close the devnull file
     DEVNULL.close()
 
 def download_macports():
-    # Make sure to remove this file before pusing the final build!
-
     url = "https://distfiles.macports.org/MacPorts/MacPorts-2.3.3-10.10-Yosemite.pkg"
 
     file_name = url.split('/')[-1]
@@ -126,7 +142,6 @@ def install_macports(dir_to_macport):
 
 def configure_macports(homedir):
     # Configuring path variables to be able to use macports
-    # Might as well configure all the $PATHs...
 
     # Backup current .bash_profile
     print " [EmacsConfig] Backing up current .bash_profile..."

@@ -1,34 +1,40 @@
+(require 'packages)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+(package-initalize)
+
+(defvar macos-required '(exec-path-from-shell))
+
+(package-initialize)
+
+(if fresh-install
+    (package-refresh-contents)
+  nil)
+
+(dolist (p macos-required)
+  (when (not (package-installed-p p))
+    (package-install p)))
+
+;; TLDR; you need to install:
+;; jedi
+;; flake8
+;; ghostscript
+
+;; You will also have to add the installation directory to $PATH
+;; on OSX 10.10 it's in /etc/path
+;; To finish setting up, you need to install a couple of things
+;; flake8/pyflake and jedi
+;; install it from pip (pip install jedi)
+
+;; to view pdfs you need a pdf renderer. ghostscript works fine
+
 ;;OS Specific binds
 (setq mac-option-modifier 'meta)
 (setq mac-right-option-modifier 'control)
 (setq mac-control-modifier 'control)
 (setq mac-command-modifier 'alt)
 
-;;Getting native feel of os
-(global-set-key (kbd "A-c") 'evil-yank)
-(global-set-key (kbd "A-v") 'evil-paste-after)
-
-;; Scrolling settings
-;; scroll one line at a time (less "jumpy" than defaults)
-
-;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-;;
-;; ;; don't accelerate scrolling
-;;
-;;(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-;;
-;;(setq scroll-step 1)
-;; keyboard scroll one line at a time
-
-;; (setq scroll-margin 1)
-;; scroll-step 1
-;; scroll-conservatively 10000
-;; scroll-preserve-screen-position 1
-;; mouse-wheel-progressive-speed nil
-
-;;(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-;;(setq auto-window-vscroll nil)
-
-;;(exec-path-from-shell-initialize)
+;; env variables
 (exec-path-from-shell-copy-env "PYTHONPATH")
 (exec-path-from-shell-copy-env "PATH")

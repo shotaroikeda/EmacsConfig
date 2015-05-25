@@ -19,11 +19,6 @@
 
 					  auctex
 
-					  ;;to fix osx path issues
-					  exec-path-from-shell
-					  ;;fix for scrolling problems
-					  ;;sublimity
-
 					  smex
 					  ido-ubiquitous
 
