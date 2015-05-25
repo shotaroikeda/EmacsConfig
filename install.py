@@ -22,7 +22,9 @@ def macosinstall(skip=False):
     # No Error: ran as sudo
 
     # Agree to xcode installation first!
+    print "[xcodebuild] Asking user to agree with license (just in case)"
     sp.call(["xcodebuild", "-license"])
+    print "[xcodebuild] Please install xcode if there was an error, otherwise things are ok."
     # hide input in /dev/null
     DEVNULL = open(os.devnull, "w")
 
@@ -105,6 +107,12 @@ def download_macports():
 
 
 def install_macports(dir_to_macport):
+    # Create /opt/local
+    if not os.path.exists("/opt/local/"):
+        if not os.path.exists("/opt/"):
+            sp.call(["mkdir", "/opt/"])
+        sp.call(["mkdir", "/opt/local/"])
+
     print "[MacPorts] Installing MacPorts..."
     sp.call(["/usr/sbin/installer", "-pkg", dir_to_macport,
              "-target", "/opt/local"])
