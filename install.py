@@ -108,14 +108,14 @@ def download_macports():
 
 def install_macports(dir_to_macport):
     # Create /opt/local
-    if not os.path.exists("/opt/local/"):
-        if not os.path.exists("/opt/"):
-            sp.call(["mkdir", "/opt/"])
-        sp.call(["mkdir", "/opt/local/"])
+    # if not os.path.exists("/opt/local/"):
+    #     if not os.path.exists("/opt/"):
+    #         sp.call(["mkdir", "/opt/"])
+    #     sp.call(["mkdir", "/opt/local/"])
 
     print "[MacPorts] Installing MacPorts..."
     sp.call(["/usr/sbin/installer", "-pkg", dir_to_macport,
-             "-target", "/opt/local"])
+             "-target", "/"])
     print "[MacPorts] Finished installing!"
 
 
