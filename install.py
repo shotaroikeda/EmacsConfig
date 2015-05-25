@@ -157,7 +157,7 @@ def configure_macports(homedir):
         None
 
     sp.check_call(["chmod", "a+x", homedir+"/.bash_profile"])
-    sp.check_call(["source", homedir+"/.bash_profile"])
+    sp.check_call(["/bin/bash", "-i", "-c", "source", homedir+"/.bash_profile"])
 
     print " [EmacsConfig] Checking if MacPorts is installed and running..."
     DEVNULL = open(os.devnull, "w")
