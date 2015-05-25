@@ -9,8 +9,7 @@ class PermissionDeniedError(Exception):
 def macosinstall(skip=False):
     # Have to check for sudo permissions first
     if not skip:
-        r_code = sp.
-        check_call(["touch", "/etc/sample.txt"]) # see if you can write to this directory first
+        r_code = sp.check_call(["touch", "/etc/sample.txt"]) # see if you can write to this directory first
 
         if r_code == 1:
             print " [EmacsConfig] You must run this script as sudo. Please run: "
