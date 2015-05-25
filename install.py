@@ -150,8 +150,8 @@ def configure_macports(homedir):
     new_profile.write("\n# Please do not modify this file unless you know what you are doing.\n")
     new_profile.close()
     # Waiting for the file to be saved and closed before proceeding
-    print " [EmacsConfig]Waiting for file to be saved..."
-    while not new_profile.closed():
+    print " [EmacsConfig] Waiting for file to be saved..."
+    while not new_profile.closed:
         None
     while not os.path.exists(homedir+"/.bash_profile"):
         None
@@ -178,10 +178,10 @@ def configure_macports(homedir):
 def linuxinstall():
     pass
 
-def makefile(homedir):
+def makefile(homedir="/Users/shotaro"):
     f = open(homedir+"/file.txt", "a+")
     f.write("hello world\n")
-    f.close()
+    return f
 
 def run():
     thisos = sys.platform
