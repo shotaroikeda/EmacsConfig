@@ -12,9 +12,9 @@ def macosinstall(skip=False):
         r_code = sp.call(["touch", "/etc/sample.txt"]) # see if you can write to this directory first
 
         if r_code == 1:
-            print "You must run this script as sudo. Please run: "
-            print "sudo python install.py"
-            raise PermissionDeniedError("Run install script as sudo.")
+            print "[EmacsConfig] You must run this script as sudo. Please run: "
+            print "[EmacsConfig] sudo python install.py"
+            raise PermissionDeniedError("[EmacsConfig] Run install script as sudo.")
 
         else:
             sp.call(["rm", "/etc/sample.txt"])
@@ -40,9 +40,9 @@ def macosinstall(skip=False):
         change = lines.index("(setq fresh-install nil)\n")
         lines[change] = '(setq fresh-install t)\n'
     except ValueError:
-        print "Could not set fresh-install to t."
-        print "If you ran this script once already, just ignore it."
-        print "Otherwise you might be in some trouble."
+        print "[EmacsConfig] Could not set fresh-install to t."
+        print "[EmacsConfig] If you ran this script once already, just ignore it."
+        print "[EmacsConfig] Otherwise you might be in some trouble."
         f.close()
         f = open('init.el', 'w')
         f.writelines(lines)
@@ -55,24 +55,25 @@ def macosinstall(skip=False):
         try:
             r_code = sp.call(["brew", "list"], stdout=DEVNULL, stderr=sp.STDOUT)
             package_manager = "homebrew"
-            print "Detected homebrew"
+            print "[EmacsConfig] Detected homebrew"
         except OSError:
-            print "homebrew is not installed"
+            print "[EmacsConfig] homebrew is not installed"
 
     if not skip:
         try:
             r_code = sp.call(["port", "installed"], stdout=DEVNULL, stderr=sp.STDOUT)
             package_manager = "macports"
-            print "Detected macports"
+            print "[EmacsConfig] Detected macports"
         except OSError:
-            print "macports is not installed"
+            print "[EmacsConfig] macports is not installed"
 
     # Download macports if it does not exist. Brew support to come later
     if not package_manager == "macports":
         if package_manager == "homebrew":
-            print "homebrew is not supported at the moment."
-            print "Script will download macports instead."
+            print "[EmacsConfig] homebrew is not supported at the moment."
+            print "[EmacsConfig] Script will download macports instead."
         install_macports(download_macports())
+        configure_macports()
 
     # close the devnull file
     DEVNULL.close()
@@ -87,7 +88,7 @@ def download_macports():
     f = open("install_files/"+file_name, 'wb')
     meta = u.info()
     file_size = int(meta.getheaders("Content-Length")[0])
-    print "Downloading: %s Bytes: %s" % (file_name, file_size)
+    print "[EmacsConfig] Downloading: %s Bytes: %s" % (file_name, file_size)
     
     file_size_dl = 0
     block_sz = 8192
@@ -117,6 +118,22 @@ def install_macports(dir_to_macport):
     sp.call(["/usr/sbin/installer", "-pkg", dir_to_macport,
              "-target", "/"])
     print "[MacPorts] Finished installing!"
+
+
+def configure_macports():
+    # Configuring path variables to be able to use macports
+    # Might as well configure all the $PATHs...
+
+    # Backup current .bash_profile
+    print "[EmacsConfig] Backing up current .bash_profile..."
+    sp.call(["mv", "~/.bash_profile", "~/.bash_profile-backupfrom-emacsconfig"])
+    print "[EmacsConfig] Finished backup."
+
+    print "[EmacsConfig] Creating new ~/.bash_profile"
+    sp.call(["touch", "~/.bash_profile"])
+    sp.call(["chmod", "a+x", "~/.bash_profile"])
+    print "[EmacsConfig] Adding existing contents to .bash_profile"
+
 
 
 def linuxinstall():
