@@ -126,7 +126,7 @@ def configure_macports(homedir):
 
     # Backup current .bash_profile
     print " [EmacsConfig] Backing up current .bash_profile..."
-    sp.call(["mv", "~/.bash_profile", "~/.bash_profile-backupfrom-emacsconfig"])
+    sp.call(["mv", homedir+"/.bash_profile", homedir+"/.bash_profile-backupfrom-emacsconfig"])
     print " [EmacsConfig] Finished backup."
 
     print " [EmacsConfig] Creating new ~/.bash_profile"
@@ -146,7 +146,7 @@ def configure_macports(homedir):
     new_profile.write("\n# Please do not modify this file unless you know what you are doing.\n")
     new_profile.close()
     sp.call(["chmod", "a+x", homedir+"/.bash_profile"])
-    sp.call(["source", homedir+"~/.bash_profile"])
+    sp.call(["source", homedir+"/.bash_profile"])
 
     print " [EmacsConfig] Checking if MacPorts is installed and running..."
     DEVNULL = open(os.devnull, "w")
