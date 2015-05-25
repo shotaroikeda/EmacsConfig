@@ -12,9 +12,9 @@ def macosinstall(skip=False):
         r_code = sp.call(["touch", "/etc/sample.txt"]) # see if you can write to this directory first
 
         if r_code == 1:
-            print "[EmacsConfig] You must run this script as sudo. Please run: "
-            print "[EmacsConfig] sudo python install.py"
-            raise PermissionDeniedError("[EmacsConfig] Run install script as sudo.")
+            print " [EmacsConfig] You must run this script as sudo. Please run: "
+            print " [EmacsConfig] sudo python install.py"
+            raise PermissionDeniedError(" [EmacsConfig] Run install script as sudo.")
 
         else:
             sp.call(["rm", "/etc/sample.txt"])
@@ -22,9 +22,9 @@ def macosinstall(skip=False):
     # No Error: ran as sudo
 
     # Agree to xcode installation first!
-    print "[xcodebuild] Asking user to agree with license (just in case)"
+    print " [xcodebuild] Asking user to agree with license (just in case)"
     sp.call(["xcodebuild", "-license"])
-    print "[xcodebuild] Please install xcode if there was an error, otherwise things are ok."
+    print " [xcodebuild] Please install xcode if there was an error, otherwise things are ok."
     # hide input in /dev/null
     DEVNULL = open(os.devnull, "w")
 
@@ -40,9 +40,9 @@ def macosinstall(skip=False):
         change = lines.index("(setq fresh-install nil)\n")
         lines[change] = '(setq fresh-install t)\n'
     except ValueError:
-        print "[EmacsConfig] Could not set fresh-install to t."
-        print "[EmacsConfig] If you ran this script once already, just ignore it."
-        print "[EmacsConfig] Otherwise you might be in some trouble."
+        print " [EmacsConfig] Could not set fresh-install to t."
+        print " [EmacsConfig] If you ran this script once already, just ignore it."
+        print " [EmacsConfig] Otherwise you might be in some trouble."
         f.close()
         f = open('init.el', 'w')
         f.writelines(lines)
@@ -55,23 +55,23 @@ def macosinstall(skip=False):
         try:
             r_code = sp.call(["brew", "list"], stdout=DEVNULL, stderr=sp.STDOUT)
             package_manager = "homebrew"
-            print "[EmacsConfig] Detected homebrew"
+            print " [EmacsConfig] Detected homebrew"
         except OSError:
-            print "[EmacsConfig] homebrew is not installed"
+            print " [EmacsConfig] homebrew is not installed"
 
     if not skip:
         try:
             r_code = sp.call(["port", "installed"], stdout=DEVNULL, stderr=sp.STDOUT)
             package_manager = "macports"
-            print "[EmacsConfig] Detected macports"
+            print " [EmacsConfig] Detected macports"
         except OSError:
-            print "[EmacsConfig] macports is not installed"
+            print " [EmacsConfig] macports is not installed"
 
     # Download macports if it does not exist. Brew support to come later
     if not package_manager == "macports":
         if package_manager == "homebrew":
-            print "[EmacsConfig] homebrew is not supported at the moment."
-            print "[EmacsConfig] Script will download macports instead."
+            print " [EmacsConfig] homebrew is not supported at the moment."
+            print " [EmacsConfig] Script will download macports instead."
         install_macports(download_macports())
         configure_macports(home_dir)
 
@@ -88,7 +88,7 @@ def download_macports():
     f = open("install_files/"+file_name, 'wb')
     meta = u.info()
     file_size = int(meta.getheaders("Content-Length")[0])
-    print "[EmacsConfig] Downloading: %s Bytes: %s" % (file_name, file_size)
+    print " [EmacsConfig] Downloading: %s Bytes: %s" % (file_name, file_size)
     
     file_size_dl = 0
     block_sz = 8192
@@ -117,7 +117,7 @@ def install_macports(dir_to_macport):
     print "[MacPorts] Installing MacPorts..."
     sp.call(["/usr/sbin/installer", "-pkg", dir_to_macport,
              "-target", "/"])
-    print "[MacPorts] Finished installing!"
+    print " [MacPorts] Finished installing!"
 
 
 def configure_macports(homedir):
@@ -125,20 +125,22 @@ def configure_macports(homedir):
     # Might as well configure all the $PATHs...
 
     # Backup current .bash_profile
-    print "[EmacsConfig] Backing up current .bash_profile..."
+    print " [EmacsConfig] Backing up current .bash_profile..."
     sp.call(["mv", "~/.bash_profile", "~/.bash_profile-backupfrom-emacsconfig"])
-    print "[EmacsConfig] Finished backup."
+    print " [EmacsConfig] Finished backup."
 
-    print "[EmacsConfig] Creating new ~/.bash_profile"
+    print " [EmacsConfig] Creating new ~/.bash_profile"
     new_profile = open(homedir+"/.bash_profile", "a+")
-    print "[EmacsConfig] Adding existing contents to .bash_profile"
-
-    with open(homedir+"/.bash_profile-backupfrom-emacsconfig", "r") as old_profile:
+    print " [EmacsConfig] Adding existing contents to .bash_profile"
+    try:
+        old_profile = open(homedir+"/.bash_profile-backupfrom-emacsconfig", "r")
         new_profile.write(old_profile.read())
         old_profile.close()
+    except IOError:
+        print " [EmacsConfig] There was no previous configuration found."
 
-    print "[EmacsConfig] Finished copying configurations."
-    print "[EmacsConfig] Adding new configurations."
+    print " [EmacsConfig] Finished copying configurations."
+    print " [EmacsConfig] Adding new configurations."
     new_profile.write("\n# path for macports is added below")
     new_profile.write("\nexport PATH=\"/opt/local/bin:/opt/local/sbin:$PATH\"\n")
     new_profile.write("\n# Please do not modify this file unless you know what you are doing.\n")
