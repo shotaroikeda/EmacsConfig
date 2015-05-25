@@ -156,6 +156,7 @@ def configure_macports(homedir):
         sp.check_call(["/bin/bash", "-i", "-c", "source", homedir+"/.bash_profile"])
     except sp.CalledProcessError:
         print " [EmacsConfig] There was an error setting the new bash_profile."
+        print " [EmacsConfig] This is a normal procedure, will ignore errors for now."
         print " [EmacsConfig] If there is an error later, try rerunning the script."
 
     print " [EmacsConfig] Checking if MacPorts is installed and running..."
