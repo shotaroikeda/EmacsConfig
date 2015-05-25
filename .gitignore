@@ -8,3 +8,4 @@ places
 irony/
 
 .DS_Store
+.#*
