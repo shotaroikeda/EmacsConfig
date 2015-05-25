@@ -120,7 +120,7 @@ def install_macports(dir_to_macport):
     print "[MacPorts] Finished installing!"
 
 
-def configure_macports():
+def configure_macports(homedir):
     # Configuring path variables to be able to use macports
     # Might as well configure all the $PATHs...
 
@@ -130,11 +130,13 @@ def configure_macports():
     print "[EmacsConfig] Finished backup."
 
     print "[EmacsConfig] Creating new ~/.bash_profile"
-    new_profile = open("~/.bash_profile", "a+")
+    new_profile = open(homedir+"/.bash_profile", "a+")
     print "[EmacsConfig] Adding existing contents to .bash_profile"
-    old_profile = open("~/.bash_profile-backupfrom-emacsconfig", "r")
-    new_profile.write(old_profile.read())
-    old_profile.close()
+
+    with open(homedir+"/.bash_profile-backupfrom-emacsconfig", "r") as old_profile:
+        new_profile.write(old_profile.read())
+        old_profile.close()
+
     print "[EmacsConfig] Finished copying configurations."
     print "[EmacsConfig] Adding new configurations."
     new_profile.write("\n# path for macports is added below")
@@ -148,8 +150,8 @@ def configure_macports():
 def linuxinstall():
     pass
 
-def makefile():
-    f = open("file.txt", "a+")
+def makefile(homedir):
+    f = open(homedir+"/file.txt", "a+")
     f.write("hello world\n")
     f.close()
 
