@@ -130,7 +130,7 @@ def configure_macports():
     print "[EmacsConfig] Finished backup."
 
     print "[EmacsConfig] Creating new ~/.bash_profile"
-    new_profile = open("~/.bash_profile", "w")
+    new_profile = open("~/.bash_profile", "w+")
     print "[EmacsConfig] Adding existing contents to .bash_profile"
     old_profile = open("~/.bash_profile-backupfrom-emacsconfig", "r")
     new_profile.write(old_profile.read())
