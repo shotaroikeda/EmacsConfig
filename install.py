@@ -142,6 +142,7 @@ def configure_macports():
     new_profile.write("\n# Please do not modify this file unless you know what you are doing.\n")
     new_profile.close()
     sp.call(["chmod", "a+x", "~/.bash_profile"])
+    sp.call(["source", "~/.bash_profile"])
 
 
 def linuxinstall():
