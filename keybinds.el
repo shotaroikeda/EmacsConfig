@@ -10,6 +10,7 @@
 (global-set-key (kbd "A-n") 'previous-buffer)
 (global-set-key (kbd "A-m") 'next-buffer)
 (global-set-key (kbd "A-b") 'ido-switch-buffer)
+(global-set-key (kbd "A-B") 'ido-switch-buffer-other-window)
 (global-set-key (kbd "A-o") 'find-file)
 (global-set-key (kbd "A-K") 'kill-this-buffer)
 (global-set-key (kbd "A-O") 'other-window)
@@ -101,7 +102,7 @@
 (define-key my-keys-minor-mode-map (kbd "M-o") 'ido-find-file-other-window)
 (define-minor-mode my-keys-minor-mode
   "A minor mode so that my keys override other major modes"
-  t "my-keys" 'my-keys-minor-mode-map)
+  t "" 'my-keys-minor-mode-map)
 (my-keys-minor-mode 1)
 
 (require 'magit)

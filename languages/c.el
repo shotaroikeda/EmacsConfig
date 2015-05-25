@@ -2,8 +2,8 @@
 (require 'cc-mode)
 (require 'cl)
 
-(setq-default c-basic-offset 4
-              tab-width 4
+(setq-default c-basic-offset 8
+              tab-width 8
               indent-tabs-mode t)
 
 ;; Make sure that brackets get inserted with proper indentation
