@@ -16,6 +16,34 @@ $ sudo apt-get install jedi pyflakes ipython
 ```
 
 # MAC OS X Installation
+<p> I wrote a script to install it.
+<p> However there are dependencies you still need to take care of.
+
+<p>*MINIMAL REQUIREMENTS* for the lazy<br>
+<p>1. XCode developer tools
+<p>2. XCode
+
+<p><b>RECOMMENDED REQUIREMENTS</b> for those who don't want to break their computers...<br>
+<p>1. *MINIMAL REQUIREMENTS*
+<p>2. pip
+<p>3. macports
+<p>Brew is not supported at this time.
+
+<p>You can always fall back to Previous MAC OS X Installation guide, for reference and for manual installation
+
+<p>To install:
+```
+$ cd /path/to/this/git/EmacsConfig
+```
+<p> Then:
+```
+$ sudo python install.py
+```
+
+<p>This needs to have sudo permissions. Otherwise installation will not work.
+
+
+# Previous MAC OS X Installation Guide
 <p> MAC OS is a lot more involved:
 ```
 $ sudo easy_install pip
