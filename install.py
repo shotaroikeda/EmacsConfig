@@ -8,7 +8,6 @@ class PermissionDeniedError(Exception):
 
 def macosinstall(skip=False):
     # Have to check for sudo permissions first
-    # Uncomment this code before commiting
     if not skip:
         r_code = sp.call(["touch", "/etc/sample.txt"]) # see if you can write to this directory first
 
@@ -71,8 +70,7 @@ def macosinstall(skip=False):
         if package_manager == "homebrew":
             print "homebrew is not supported at the moment."
             print "Script will download macports instead."
-        download_macports()
-        install_macports()
+        install_macports(download_macports())
 
     # close the devnull file
     DEVNULL.close()
@@ -103,9 +101,14 @@ def download_macports():
         print status,
         
     f.close()
+    return "install_files/"+file_name
 
-def install_macports():
-    pass
+
+def install_macports(dir_to_macport):
+    print "[MacPorts] Installing MacPorts..."
+    sp.call(["/usr/sbin/installer", dir_to_macport,
+             "--target", "/opt/local"])
+    print "[MacPorts] Finished installing!"
 
 
 def linuxinstall():
