@@ -1,8 +1,8 @@
-(require 'packages)
+(require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-(package-initalize)
+(package-initialize)
 
 (defvar macos-required '(exec-path-from-shell))
 
