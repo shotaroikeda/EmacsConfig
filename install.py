@@ -3,8 +3,10 @@ import sys
 import subprocess as sp
 import urllib2
 
+
 class PermissionDeniedError(Exception):
     pass
+
 
 def macosinstall(skip=False):
     # Have to check for sudo permissions first
@@ -79,26 +81,92 @@ def macosinstall(skip=False):
         install_macports(download_macports())
         configure_macports(home_dir)
 
+    print " [MacPorts] Updating MacPorts..."
+    sp.call(["port", "selfupdate"])
+    print " [MacPorts] Finished updating MacPorts"
+
+    print " [MacPorts] Installing C language dependencies..."
+    sp.call(["port", "install", "clang-3.7"])
+    print " [MacPorts] Finished installing C language dependencies."
+
+    print " [MacPorts] Updating all dependencies..."
+    sp.call(["port", "upgrade", "outdated"])
+    print " [MacPorts] Finished updating all components!"
+
     # Configure pip
     print " [EmacsConfig] Checking for pip."
     try:
-        sp.check_call(["pip", "freeze", stdout=DEVNULL, stderr=sp.STDOUT])
+        sp.check_call(["pip", "freeze"], stdout=DEVNULL, stderr=sp.STDOUT)
         print " [EmacsConfig] pip is installed correctly."
     except sp.CalledProcessError:
         print " [EmacsConfig] Installing pip."
         sp.call(["easy_install", "pip"])
         print " [EmacsConfig] pip is installed."
 
-    # Install pip jedi
-    sp.call(["pip", "install", "jedi"])
-    # Install pip flake8
-    sp.call(["pip", "install", "flake8"])
-    # Install pip pyflakes
-    sp.call(["pip", "install", "pyflakes"])
-    # Install ipython
-    sp.call(["pip", "install", "ipython"])
+    print " [EmacsConfig] This will use pip to install the packages."
+    print " [EmacsConfig] You can also change these to the MacPorts installation."
+
+    pip_install()
+
+    print " [EmacsConfig] Checking for PATH environment variable."
+    check_path(home_dir)
+
+    print " [EmacsConfig] Installing EMACS"
+    sp.call(["port", "install", "emacs-app"])
+    print " [EmacsConfig] Finished Installing Emacs."
+
+    print " [EmacsConfig] Making a copy of configuration to ~/.emacs.d"
+    print " [EmacsConfig] Please check here to update emacs later."
+
+    sp.call(["cp", gitconfigdir, home_dir+"/.emacs.d"])
+    sp.call(["chmod", "777", "-R", home_dir+"/.emacs.d"])
+
+    print " [EmacsConfig] Finished installing! Please delete your EmacsConfig folder."
+    print " [EmacsConfig] Use the ~/.emacs.d folder from now on. Thank you."
+
+    print " [EmacsConfig] Cleaning up then exiting..."
+    sp.call(["rm", "-rf", "/Install_files"])
     # close the devnull file
     DEVNULL.close()
+
+
+def check_path(homedir):
+    print " [EmacsConfig] Checking for PATH"
+    path = sys.path
+    # Check for important $PATHs
+    # pip install directory:
+    if not '/usr/local/bin' in path:
+        path.append('/usr/local/bin')
+    if not homedir+'/Library/Python/2.7/lib/python/site-packages' in path:
+        path.append(homedir+'/Library/Python/2.7/lib/python/site-packages')
+    if not '/Library/Python/2.7/site-packages' in path:
+        path.append(homedir+'/Library/Python/2.7/site-packages')
+    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin' in path:
+        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin')
+    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac' in path:
+        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac')
+    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages' in path:
+        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages')
+    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python' in path:
+        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
+    if not '/Library/Python/2.7/site-packages/IPython/extensions' in path:
+        path.append('/Library/Python/2.7/site-packages/IPython/extensions')
+    if not '/Users/shotaro/.ipython':
+        path.append('/Users/shotaro/.ipython')
+    if not '/Users/shotaro/.emacs.d' in path:
+        path.append('/Users/shotaro/.emacs.d')
+
+    print " [EmacsConfig] Backing up your current PATH..."
+    sp.call(["mv", "/etc/paths", "/etc/paths-backup-emacsconf"])
+    print " [EmacsConfig] Finished back up."
+    print " [EmacsConfig] Writing new PATH."
+    new_path = open("/etc/paths", "w+")
+    new_path.writelines(path)
+    print " [EmacsConfig] Finished Creating new PATH."
+    print " [EmacsConfig] Setting Permissions..."
+    sp.call(["chmod", "644", "/etc/paths"])
+    print " [EmacsConfig] Finished!"
+
 
 def download_macports():
     url = "https://distfiles.macports.org/MacPorts/MacPorts-2.3.3-10.10-Yosemite.pkg"
@@ -128,15 +196,9 @@ def download_macports():
 
 
 def install_macports(dir_to_macport):
-    # Create /opt/local
-    # if not os.path.exists("/opt/local/"):
-    #     if not os.path.exists("/opt/"):
-    #         sp.check_call(["mkdir", "/opt/"])
-    #     sp.check_call(["mkdir", "/opt/local/"])
-
     print "[MacPorts] Installing MacPorts..."
     sp.check_call(["/usr/sbin/installer", "-pkg", dir_to_macport,
-             "-target", "/"])
+                   "-target", "/"])
     print " [MacPorts] Finished installing!"
 
 
@@ -193,10 +255,25 @@ def configure_macports(homedir):
 def linuxinstall():
     pass
 
+
+def pip_install():
+    print " [pip] Installing Python dependencies."
+    # Install pip jedi
+    sp.call(["pip", "install", "jedi"])
+    # Install pip flake8
+    sp.call(["pip", "install", "flake8"])
+    # Install pip pyflakes
+    sp.call(["pip", "install", "pyflakes"])
+    # Install ipython
+    sp.call(["pip", "install", "ipython"])
+    print " [pip] Finished installing Python dependencies!"
+
+
 def makefile(homedir="/Users/shotaro"):
     f = open(homedir+"/file.txt", "a+")
     f.write("hello world\n")
     return f
+
 
 def run():
     thisos = sys.platform
