@@ -115,6 +115,9 @@ def macosinstall(skip=False):
     sp.call(["port", "install", "emacs-app"])
     print " [EmacsConfig] Finished Installing Emacs."
 
+    print " [EmacsConfig] Cleaning up then finalizing..."
+    sp.call(["rm", "-rf", "/Install_files"])
+
     print " [EmacsConfig] Making a copy of configuration to ~/.emacs.d"
     print " [EmacsConfig] Please check here to update emacs later."
 
@@ -124,8 +127,6 @@ def macosinstall(skip=False):
     print " [EmacsConfig] Finished installing! Please delete your EmacsConfig folder."
     print " [EmacsConfig] Use the ~/.emacs.d folder from now on. Thank you."
 
-    print " [EmacsConfig] Cleaning up then exiting..."
-    sp.call(["rm", "-rf", "/Install_files"])
     # close the devnull file
     DEVNULL.close()
 
