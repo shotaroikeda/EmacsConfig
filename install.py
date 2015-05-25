@@ -9,19 +9,21 @@ class PermissionDeniedError(Exception):
 def macosinstall(skip=False):
     # Have to check for sudo permissions first
     # Uncomment this code before commiting
-    # if not skip:
-    #     r_code = sp.call(["touch", "/etc/sample.txt"]) # see if you can write to this directory first
+    if not skip:
+        r_code = sp.call(["touch", "/etc/sample.txt"]) # see if you can write to this directory first
 
-    #     if r_code == 1:
-    #         print "You must run this script as sudo. Please run: "
-    #         print "sudo python install.py"
-    #         raise PermissionDeniedError("Run install script as sudo.")
+        if r_code == 1:
+            print "You must run this script as sudo. Please run: "
+            print "sudo python install.py"
+            raise PermissionDeniedError("Run install script as sudo.")
 
-    #     else:
-    #         sp.call(["rm", "/etc/sample.txt"])
+        else:
+            sp.call(["rm", "/etc/sample.txt"])
 
     # No Error: ran as sudo
 
+    # Agree to xcode installation first!
+    sp.call(["xcodebuild", "-license"])
     # hide input in /dev/null
     DEVNULL = open(os.devnull, "w")
 
@@ -65,7 +67,13 @@ def macosinstall(skip=False):
             print "macports is not installed"
 
     # Download macports if it does not exist. Brew support to come later
-    download_macports()
+    if not package_manager == "macports":
+        if package_manager == "homebrew":
+            print "homebrew is not supported at the moment."
+            print "Script will download macports instead."
+        download_macports()
+        install_macports()
+
     # close the devnull file
     DEVNULL.close()
 
@@ -96,6 +104,8 @@ def download_macports():
         
     f.close()
 
+def install_macports():
+    pass
 
 
 def linuxinstall():
