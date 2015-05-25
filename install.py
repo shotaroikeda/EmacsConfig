@@ -49,12 +49,13 @@ def macosinstall(skip=False):
         print " [EmacsConfig] Could not set fresh-install to t."
         print " [EmacsConfig] If you ran this script once already, just ignore it."
         print " [EmacsConfig] Otherwise you might be in some trouble."
-        f.close()
-        f = open('init.el', 'w')
-        f.writelines(lines)
-        f.close()
-        # Really slow code so, keep init.el to minimum
-        # Check if a package manager is already installed
+
+    f.close()
+    f = open('init.el', 'w')
+    f.writelines(lines)
+    f.close()
+    # Really slow code so, keep init.el to minimum
+    # Check if a package manager is already installed
     package_manager = None
     # check for brew
     if not skip:
