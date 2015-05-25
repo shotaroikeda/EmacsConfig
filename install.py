@@ -118,7 +118,7 @@ def macosinstall(skip=False):
     print " [EmacsConfig] Making a copy of configuration to ~/.emacs.d"
     print " [EmacsConfig] Please check here to update emacs later."
 
-    sp.call(["cp", "-R", gitconfigdir, home_dir+"/.emacs.d"])
+    sp.call(["ln", "-s", gitconfigdir, home_dir+"/.emacs.d"])
     sp.call(["chmod", "777", "-R", home_dir+"/.emacs.d"])
 
     print " [EmacsConfig] Finished installing! Please delete your EmacsConfig folder."
