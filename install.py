@@ -117,13 +117,13 @@ def macosinstall(skip=False):
     print " [EmacsConfig] Finished Installing Emacs."
 
     print " [EmacsConfig] Cleaning up then finalizing..."
-    sp.call(["rm", "-rf", "/Install_files"])
+    sp.call(["rm", "-rf", "/install_files"])
 
     print " [EmacsConfig] Making a copy of configuration to ~/.emacs.d"
     print " [EmacsConfig] Please check here to update emacs later."
 
     sp.call(["ln", "-s", gitconfigdir, home_dir+"/.emacs.d"])
-    sp.call(["chmod", "777", "-R", home_dir+"/.emacs.d"])
+    sp.call(["chmod", "777", "-R", gitconfigdir])
 
     print " [EmacsConfig] Finished installing! Please delete your EmacsConfig folder."
     print " [EmacsConfig] Use the ~/.emacs.d folder from now on. Thank you."
@@ -163,7 +163,7 @@ def check_path(homedir):
     print " [EmacsConfig] Finished back up."
     print " [EmacsConfig] Writing new PATH."
     new_path = open("/etc/paths", "w+")
-    new_path.writelines(path)
+    new_path.write("\n".join(path))
     print " [EmacsConfig] Finished Creating new PATH."
     print " [EmacsConfig] Setting Permissions..."
     sp.call(["chmod", "644", "/etc/paths"])
