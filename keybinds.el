@@ -54,13 +54,13 @@
 (define-key company-search-map (kbd "A-j") 'company-search-repeat-forward)
 (define-key company-search-map (kbd "A-k") 'company-search-repeat-backward)
 (define-key company-active-map (kbd "/") 'company-search-candidates)
-										; Use escape to quit stuff
+					; Use escape to quit stuff
 (defun minibuffer-keyboard-quit ()
   (interactive)
   (if (and delete-selection-mode transient-mark-mode mark-active)
-	  (setq deactivate-mark  t)
-	(when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-	(abort-recursive-edit)))
+      (setq deactivate-mark  t)
+    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+    (abort-recursive-edit)))
 
 (define-key company-search-map [escape] 'company-search-abort)
 (define-key company-active-map [escape] 'company-abort)
@@ -89,6 +89,7 @@
 (define-key doc-view-mode-map (kbd "k") 'doc-view-previous-line-or-previous-page)
 (define-key doc-view-mode-map (kbd "h") 'image-backward-hscroll)
 (define-key doc-view-mode-map (kbd "l") 'image-forward-hscroll)
+(define-key doc-view-mode-map (kbd "g") 'doc-view-goto-page)
 
 ;;; Window Functions
 (global-set-key (kbd "C-q") 'delete-window)
