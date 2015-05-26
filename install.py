@@ -137,12 +137,20 @@ def macosinstall(skip=False):
 
 
 def ipython_mac_profile(homedir):
-    sp.call(["ipython", "profile", "create"])
+    try:
+        sp.check_call(["/bin/bash", "-i", "-c", "ipython", "profile", "create"])
+    except sp.CalledProcessError:
+        print " [EmacsConfig] There was an error setting the ipython profile."
+        print " [EmacsConfig] You may need to configure iPython another time."
+        print " [EmacsConfig] Rerunning the script may help."
+        print " [EmacsConfig] The script may exit with an error, but Emacs will still work."
+        print " [EmacsConfig] Just launch Emacs under Application/MacPorts/Emacs"
     l1 = 'c.InteractiveShellApp.exec_lines = [\n'
     l2 = '\t\'import sys,os; sys.path.append(os.getcwd()); sys.path.append(\'/Library/Python/2.7/site-packages\')\'\n'
     l3 = '\t]\n'
     ipython_config = open(homedir+"/.ipython/profile_default/ipython_config.py", "a")
     ipython_config.writelines([l1, l2, l3])
+    ipython_config.close()
 
 
 def check_path(homedir):
