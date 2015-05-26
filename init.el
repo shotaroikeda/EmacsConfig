@@ -1,4 +1,4 @@
-;; Set fesh install to 1 for a fresh install
+;; Set fresh install to 1 for a fresh install
 (setq fresh-install nil)
 
 ;; Debugging mode
