@@ -176,10 +176,10 @@ def check_path(homedir):
         path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python\n')
     if not '/Library/Python/2.7/site-packages/IPython/extensions\n' in path:
         path.append('/Library/Python/2.7/site-packages/IPython/extensions\n')
-    if not '/Users/shotaro/.ipython\n':
-        path.append('/Users/shotaro/.ipython\n')
-    if not '/Users/shotaro/.emacs.d\n' in path:
-        path.append('/Users/shotaro/.emacs.d\n')
+    if not homedir+'/.ipython\n' in path:
+        path.append(homedir+'/.ipython\n')
+    if not homedir+'/.emacs.d\n' in path:
+        path.append(homedir+'/.emacs.d\n')
 
     print " [EmacsConfig] Backing up your current PATH..."
     sp.call(["mv", "/etc/paths", "/etc/paths-backup-emacsconf"])
@@ -292,12 +292,6 @@ def pip_install():
     # Install ipython
     sp.call(["sudo", "pip", "install", "ipython"])
     print " [pip] Finished installing Python dependencies!"
-
-
-def makefile(homedir="/Users/shotaro"):
-    f = open(homedir+"/file.txt", "a+")
-    f.write("hello world\n")
-    return f
 
 
 def run():
