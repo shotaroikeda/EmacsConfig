@@ -117,7 +117,7 @@ def macosinstall(skip=False):
     print " [EmacsConfig] Finished Installing Emacs."
 
     print " [EmacsConfig] Cleaning up then finalizing..."
-    sp.call(["rm", "-rf", "/install_files"])
+    sp.call(["rm", "-rf", gitconfigdir+"install_files"])
 
     print " [EmacsConfig] Making a copy of configuration to ~/.emacs.d"
     print " [EmacsConfig] Please check here to update emacs later."
