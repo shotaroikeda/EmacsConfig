@@ -45,7 +45,7 @@
 
 (package-initialize)
 
-(when not (system-type 'darwin)
+(when not (equal system-type 'darwin)
       (if fresh-install
 	  (package-refresh-contents)
 	nil))
