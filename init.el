@@ -17,7 +17,3 @@
 ;; Loads other keybinds for mac os dependent of packages
 (when (equal system-type 'darwin)
   (load "~/.emacs.d/macosx_binds.el"))
-
-;; When fresh-install is enabled
-(if fresh-install
-    (load "~/.emacs.d/fresh.el"))
