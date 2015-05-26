@@ -1,54 +1,58 @@
 (require 'package)
-(add-to-list 'package-archives
-			 '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+(when not (equal system-type 'darwin)
+
+      (add-to-list 'package-archives
+		   '("melpa" . "http://melpa.milkbox.net/packages/") t))
 
 (package-initialize)
 
 (defvar my-packages '(evil
-					  evil-leader
+		      evil-leader
 
-					  bash-completion
-					  better-defaults
-					  company
-					  rainbow-delimiters
+		      bash-completion
+		      better-defaults
+		      company
+		      rainbow-delimiters
 
-					  find-file-in-project
-					  projectile
-					  magit
-					  yasnippet
+		      find-file-in-project
+		      projectile
+		      magit
+		      yasnippet
 
-					  auctex
+		      auctex
 
-					  smex
-					  ido-ubiquitous
+		      smex
+		      ido-ubiquitous
 
-					  paredit
-					  smartparens
+		      paredit
+		      smartparens
 
-					  clojure-mode
-					  cider
+		      clojure-mode
+		      cider
 
-					  irony
-					  company-irony
-					  flycheck-irony
+		      irony
+		      company-irony
+		      flycheck-irony
 
-					  elpy
-					  pyenv-mode
-					  anaconda-mode
-					  company-anaconda
+		      elpy
+		      pyenv-mode
+		      anaconda-mode
+		      company-anaconda
 
-					  ample-theme
-					  monokai-theme))
+		      ample-theme
+		      monokai-theme))
 
 (package-initialize)
 
-(if fresh-install
-	(package-refresh-contents)
-  nil)
+(when not (system-type 'darwin)
+      (if fresh-install
+	  (package-refresh-contents)
+	nil))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
-	(package-install p)))
+    (package-install p)))
 ;; TLDR; you need to install:
 ;; jedi
 ;; flake8
