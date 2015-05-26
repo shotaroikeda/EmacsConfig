@@ -276,13 +276,13 @@ def linuxinstall():
 def pip_install():
     print " [pip] Installing Python dependencies."
     # Install pip jedi
-    sp.call(["pip", "install", "jedi"])
+    sp.call(["sudo", "pip", "install", "jedi"])
     # Install pip flake8
-    sp.call(["pip", "install", "flake8"])
+    sp.call(["sudo", "pip", "install", "flake8"])
     # Install pip pyflakes
-    sp.call(["pip", "install", "pyflakes"])
+    sp.call(["sudo", "pip", "install", "pyflakes"])
     # Install ipython
-    sp.call(["pip", "install", "ipython"])
+    sp.call(["sudo", "pip", "install", "ipython"])
     print " [pip] Finished installing Python dependencies!"
 
 
