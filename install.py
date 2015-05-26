@@ -125,45 +125,60 @@ def macosinstall(skip=False):
     sp.call(["ln", "-s", gitconfigdir, home_dir+"/.emacs.d"])
     sp.call(["chmod", "777", "-R", gitconfigdir])
 
-    print " [EmacsConfig] Finished installing! Please delete your EmacsConfig folder."
+    print " [EmacsConfig] Updating iPython to recognize installed packages..."
+    ipython_mac_profile(home_dir)
+    print " [EmacsConfig] Done!"
+
+    print " [EmacsConfig] Finished installing! Please do not delete your EmacsConfig folder."
     print " [EmacsConfig] Use the ~/.emacs.d folder from now on. Thank you."
 
     # close the devnull file
     DEVNULL.close()
 
 
+def ipython_mac_profile(homedir):
+    sp.call(["ipython", "profile", "create"])
+    l1 = 'c.InteractiveShellApp.exec_lines = [\n'
+    l2 = '\t\'import sys,os; sys.path.append(os.getcwd()); sys.path.append(\'/Library/Python/2.7/site-packages\')\'\n'
+    l3 = '\t]\n'
+    ipython_config = open(homedir+"/.ipython/profile_default/ipython_config.py", "a")
+    ipython_config.writelines([l1, l2, l3])
+
+
 def check_path(homedir):
     print " [EmacsConfig] Checking for PATH"
-    path = sys.path
+    f = open("/etc/paths", "r")
+    path = f.readlines()
+    f.close()
     # Check for important $PATHs
     # pip install directory:
-    if not '/usr/local/bin' in path:
-        path.append('/usr/local/bin')
-    if not homedir+'/Library/Python/2.7/lib/python/site-packages' in path:
-        path.append(homedir+'/Library/Python/2.7/lib/python/site-packages')
-    if not '/Library/Python/2.7/site-packages' in path:
-        path.append(homedir+'/Library/Python/2.7/site-packages')
-    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin' in path:
-        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin')
-    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac' in path:
-        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac')
-    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages' in path:
-        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages')
-    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python' in path:
-        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
-    if not '/Library/Python/2.7/site-packages/IPython/extensions' in path:
-        path.append('/Library/Python/2.7/site-packages/IPython/extensions')
-    if not '/Users/shotaro/.ipython':
-        path.append('/Users/shotaro/.ipython')
-    if not '/Users/shotaro/.emacs.d' in path:
-        path.append('/Users/shotaro/.emacs.d')
+    if not '/usr/local/bin\n' in path:
+        path.append('/usr/local/bin\n')
+    if not homedir+'/Library/Python/2.7/lib/python/site-packages\n' in path:
+        path.append(homedir+'/Library/Python/2.7/lib/python/site-packages\n')
+    if not '/Library/Python/2.7/site-packages\n' in path:
+        path.append(homedir+'/Library/Python/2.7/site-packages\n')
+    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin\n' in path:
+        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin\n')
+    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac\n' in path:
+        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac\n')
+    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages\n' in path:
+        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages\n')
+    if not '/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python\n' in path:
+        path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python\n')
+    if not '/Library/Python/2.7/site-packages/IPython/extensions\n' in path:
+        path.append('/Library/Python/2.7/site-packages/IPython/extensions\n')
+    if not '/Users/shotaro/.ipython\n':
+        path.append('/Users/shotaro/.ipython\n')
+    if not '/Users/shotaro/.emacs.d\n' in path:
+        path.append('/Users/shotaro/.emacs.d\n')
 
     print " [EmacsConfig] Backing up your current PATH..."
     sp.call(["mv", "/etc/paths", "/etc/paths-backup-emacsconf"])
     print " [EmacsConfig] Finished back up."
     print " [EmacsConfig] Writing new PATH."
     new_path = open("/etc/paths", "w+")
-    new_path.write("\n".join(path))
+    new_path.writelines(path)
     print " [EmacsConfig] Finished Creating new PATH."
     print " [EmacsConfig] Setting Permissions..."
     sp.call(["chmod", "644", "/etc/paths"])
