@@ -1,6 +1,6 @@
 (require 'package)
 
-(when not (equal system-type 'darwin)
+(when (not (equal system-type 'darwin))
 
       (add-to-list 'package-archives
 		   '("melpa" . "http://melpa.milkbox.net/packages/") t))
@@ -45,7 +45,7 @@
 
 (package-initialize)
 
-(when not (equal system-type 'darwin)
+(when (not (equal system-type 'darwin)) 
       (if fresh-install
 	  (package-refresh-contents)
 	nil))
