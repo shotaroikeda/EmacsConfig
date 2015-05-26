@@ -114,3 +114,8 @@
 
 (global-set-key (kbd "C-d") 'evil-scroll-down)
 (global-set-key (kbd "C-u") 'evil-scroll-up)
+
+(require 'evil)
+;; customized evil functions
+(evil-ex-define-cmd "E[dit]" 'ido-find-file)
+(evil-ex-define-cmd "k[eybinds]" 'describe-bindings)
