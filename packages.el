@@ -40,6 +40,8 @@
 		      anaconda-mode
 		      company-anaconda
 
+		      web-mode
+
 		      ample-theme
 		      monokai-theme))
 
