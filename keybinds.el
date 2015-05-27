@@ -119,3 +119,4 @@
 ;; customized evil functions
 (evil-ex-define-cmd "E[dit]" 'ido-find-file)
 (evil-ex-define-cmd "k[eybinds]" 'describe-bindings)
+
