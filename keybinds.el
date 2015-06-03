@@ -119,4 +119,5 @@
 ;; customized evil functions
 (evil-ex-define-cmd "E[dit]" 'ido-find-file)
 (evil-ex-define-cmd "k[eybinds]" 'describe-bindings)
-
+;; open the cheatsheet
+(evil-ex-define-cmd "cheat[sheet]" 'cheat-sheet)

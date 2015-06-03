@@ -1,7 +1,7 @@
 (defun clear-shell ()
   (interactive)
   (let ((comint-buffer-maximum-size 0))
-	(comint-truncate-buffer)))
+    (comint-truncate-buffer)))
 
 (defun configure ()
   (interactive)
@@ -15,10 +15,10 @@
 (defun fullscreen (&optional f)
   (interactive)
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-						 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
+			 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-						 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0)
-						 ))
+			 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0)
+			 ))
 
 (defun revert-all-buffers ()
   "Refreshes all open buffers from their respective files."
@@ -33,18 +33,18 @@
   "Transpose the buffers shown in two windows."
   (interactive "p")
   (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
-	(while (/= arg 0)
-	  (let ((this-win (window-buffer))
-			(next-win (window-buffer (funcall selector))))
-		(set-window-buffer (selected-window) next-win)
-		(set-window-buffer (funcall selector) this-win)
-		(select-window (funcall selector)))
-	  (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
+    (while (/= arg 0)
+      (let ((this-win (window-buffer))
+	    (next-win (window-buffer (funcall selector))))
+	(set-window-buffer (selected-window) next-win)
+	(set-window-buffer (funcall selector) this-win)
+	(select-window (funcall selector)))
+      (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 
 (defun indent-buffer ()
   (interactive)
   (save-excursion
-	(indent-region (point-min) (point-max) nil)))
+    (indent-region (point-min) (point-max) nil)))
 
 (defun load-directory (dir)
   "`load' all elisp libraries in directory DIR which are not already loaded."
@@ -62,7 +62,7 @@
   (interactive)
   (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
                                            nil
-                                           'fullboth)))
+					 'fullboth)))
 ;; Magit Functions
 (require 'magit)
 (defun stage-and-commit ()
@@ -70,3 +70,7 @@
   (interactive)
   (magit-stage-all)
   (magit-commit))
+
+(defun cheat-sheet ()
+  (interactive)
+  (find-file-other-window "~/.emacs.d/keybinds.org"))
