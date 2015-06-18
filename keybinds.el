@@ -6,6 +6,7 @@
 (global-set-key (kbd "<f11>") 'toggle-fullscreen)
 (global-set-key (kbd "<A-return>") 'newline)
 (global-set-key (kbd "A-a") 'smex)
+(global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "A-s") 'save-buffer)
 (global-set-key (kbd "A-n") 'previous-buffer)
 (global-set-key (kbd "A-m") 'next-buffer)

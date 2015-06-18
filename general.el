@@ -15,7 +15,7 @@
 ;; Improve startip buffer
 (setq evil-move-cursor-back nil)
 (setq inhibit-startup-message t)
-(setq initial-buffer-choice "~/Development")
+;; (setq initial-buffer-choice "~/Development")
 (setq initial-scratch-message nil)
 
 ;; Change autosave location
