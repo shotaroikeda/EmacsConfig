@@ -113,6 +113,19 @@
 |-----+----------------------------------------------------|
 |     |                                                    |
 |     |                                                    |
+* File formatting keybinds
+** 
+| Key | Function                    | Usage                                                             |
+|-----+-----------------------------+-------------------------------------------------------------------|
+| ;-i | reformat-file               | removes all trailing whitespaces and corrects indentation.        |
+|     |                             | However, when using it with python, unexpected behavior may occur |
+|-----+-----------------------------+-------------------------------------------------------------------|
+|     | indent-buffer               | Corrects Indentation for current buffer                           |
+|-----+-----------------------------+-------------------------------------------------------------------|
+|     | delete-trailing-whitespaces | Removes all trailing whitespaces                                  |
+|-----+-----------------------------+-------------------------------------------------------------------|
+|     |                             |                                                                   |
+** 
 * C/C++-Mode Keybinds
   
 ** Compiling function
