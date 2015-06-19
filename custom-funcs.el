@@ -44,7 +44,9 @@
 (defun indent-buffer ()
   (interactive)
   (save-excursion
-    (indent-region (point-min) (point-max) nil)))
+    (indent-region (point-min) (point-max) nil)
+    (untabify (point-min) (point-max))
+    (delete-trailing-whitespace)))
 
 (defun load-directory (dir)
   "`load' all elisp libraries in directory DIR which are not already loaded."
