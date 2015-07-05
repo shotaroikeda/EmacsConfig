@@ -2,7 +2,6 @@
 ;; General Editing and Navigation Enhancements
 ;;;;
 
-										;(cd "/home/akshay")
 
 (require 'evil)
 (require 'ido)

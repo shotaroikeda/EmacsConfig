@@ -11,8 +11,8 @@
 (load "~/.emacs.d/packages.el")
 (load "~/.emacs.d/general.el")
 (load "~/.emacs.d/custom-funcs.el")
-(load-directory "~/.emacs.d/languages")
 (load "~/.emacs.d/keybinds.el")
+(load-directory "~/.emacs.d/languages")
 
 ;; Loads other keybinds for mac os dependent of packages
 (when (equal system-type 'darwin)
