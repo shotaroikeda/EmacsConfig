@@ -70,7 +70,7 @@
 (defun stage-and-commit ()
   "Requires Magit. Stages all current files in the project then commits them"
   (interactive)
-  (magit-stage-all)
+  (magit-stage-modified)
   (magit-commit))
 
 (defun cheat-sheet ()
