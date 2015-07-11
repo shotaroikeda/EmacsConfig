@@ -7,6 +7,10 @@
 ;; Show message even on test success for test cases
 (setq cider-test-show-report-on-success t)
 
+;; Some console like binds for the Clojure REPL
+(define-key cider-repl-mode-map (kbd "<up>") 'cider-repl-previous-input)
+(define-key cider-repl-mode-map (kbd "<down>") 'cider-repl-next-input)
+
 (defun clj-send-to-repl ()
   (interactive)
   (cider-eval-buffer)

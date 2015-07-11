@@ -55,7 +55,7 @@
 (define-key company-search-map (kbd "A-j") 'company-search-repeat-forward)
 (define-key company-search-map (kbd "A-k") 'company-search-repeat-backward)
 (define-key company-active-map (kbd "/") 'company-search-candidates)
-					; Use escape to quit stuff
+                                        ; Use escape to quit stuff
 (defun minibuffer-keyboard-quit ()
   (interactive)
   (if (and delete-selection-mode transient-mark-mode mark-active)
@@ -122,3 +122,9 @@
 (evil-ex-define-cmd "k[eybinds]" 'describe-bindings)
 ;; open the cheatsheet
 (evil-ex-define-cmd "cheat[sheet]" 'cheat-sheet)
+
+(require 'god-mode)
+(evil-define-key 'normal global-map "," 'evil-execute-in-god-state)
+(add-hook 'evil-god-state-entry-hook (lambda () (diminish 'god-local-mode)))
+(add-hook 'evil-god-state-exit-hook (lambda () (diminish-undo 'god-local-mode)))
+(evil-define-key 'god global-map [escape] 'evil-god-state-bail)

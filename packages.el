@@ -8,7 +8,10 @@
 (package-initialize)
 
 (defvar my-packages '(evil
+		      evil-god-state
 		      evil-leader
+
+		      god-mode
 
 		      bash-completion
 		      better-defaults
