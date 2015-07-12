@@ -166,3 +166,5 @@
 |     |                        |
 
 * Hint: Press Tab while having a section highlighted will let you view the text inside...
+
+* Hint: you can hit ",cc" instead of doing "C-c C-c" for commands like "C-x f" do ",c x" (space in between)
