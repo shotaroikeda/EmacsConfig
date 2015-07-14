@@ -146,7 +146,7 @@ def ipython_mac_profile(homedir):
         print " [EmacsConfig] The script may exit with an error, but Emacs will still work."
         print " [EmacsConfig] Just launch Emacs under Application/MacPorts/Emacs"
     l1 = 'c.InteractiveShellApp.exec_lines = [\n'
-    l2 = '\t\'import sys,os; sys.path.append(os.getcwd()); sys.path.append(\'/Library/Python/2.7/site-packages\')\'\n'
+    l2 = '\t\'import sys,os; sys.path.append(os.getcwd()); sys.path.append(\\\'/Library/Python/2.7/site-packages\\\')\'\n'
     l3 = '\t]\n'
     ipython_config = open(homedir+"/.ipython/profile_default/ipython_config.py", "a")
     ipython_config.writelines([l1, l2, l3])
