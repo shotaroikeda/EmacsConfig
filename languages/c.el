@@ -79,6 +79,9 @@
 ;; Have a mode-map to avoid conflicts
 (define-key c-mode-map (kbd "A-r") 'compile-and-run-prim-c)
 
+;; Insert Null
+(define-key c-mode-map (kbd "C-c C-i C-n") '(lambda () (interactive) (insert "NULL")))
+
 ;; Compiles and runs the C++ script that was created
 (defun compile-and-run-cpp ()
   (interactive)
@@ -115,4 +118,3 @@
 
 ;; Have a mode-map to avoid conflicts
 (define-key c++-mode-map (kbd "A-r") 'compile-and-run-cpp)
-
