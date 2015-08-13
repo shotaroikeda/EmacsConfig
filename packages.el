@@ -27,7 +27,7 @@
 		      auctex
 
 		      rudel
-		      
+
 		      smex
 		      ido-ubiquitous
 
