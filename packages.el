@@ -47,6 +47,8 @@
 		      company-anaconda
 
 		      web-mode
+		      markdown-mode
+		      markdown-mode+
 
 		      ample-theme
 		      monokai-theme))
