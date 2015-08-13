@@ -124,6 +124,7 @@
 (evil-ex-define-cmd "cheat[sheet]" 'cheat-sheet)
 
 (require 'god-mode)
+(require 'diminish)
 (evil-define-key 'normal global-map "," 'evil-execute-in-god-state)
 (add-hook 'evil-god-state-entry-hook (lambda () (diminish 'god-local-mode)))
 (add-hook 'evil-god-state-exit-hook (lambda () (diminish-undo 'god-local-mode)))
