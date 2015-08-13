@@ -12,6 +12,7 @@
 		      evil-leader
 
 		      god-mode
+		      diminish
 
 		      bash-completion
 		      better-defaults
@@ -25,6 +26,8 @@
 
 		      auctex
 
+		      rudel
+		      
 		      smex
 		      ido-ubiquitous
 
