@@ -15,3 +15,10 @@
       (smartparens-mode 0)))
 
 (add-hook 'web-mode-hook 'web-mode-html-conf)
+
+(defun web-mode-quick-fix ()
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2))
+
+(add-hook 'web-mode-hook 'web-mode-quick-fix)
+

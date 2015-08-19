@@ -2,6 +2,8 @@
 ;; General Editing and Navigation Enhancements
 ;;;;
 
+;; force spaces instead of tabs
+(setq-default indent-tabs-mode nil)
 
 (require 'evil)
 (require 'ido)
@@ -86,3 +88,7 @@
 (setq scroll-conservatively 10000)
 
 (setq auto-window-vscroll nil)
+
+;; popwin configuration
+(require 'popwin)
+(popwin-mode 1)
