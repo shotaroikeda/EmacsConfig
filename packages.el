@@ -50,6 +50,8 @@
 		      markdown-mode
 		      markdown-mode+
 
+		      popwin
+
 		      ample-theme
 		      monokai-theme))
 
