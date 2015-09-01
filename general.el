@@ -46,7 +46,7 @@
 (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
 (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
 (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
-										; Make horizontal movement cross lines
+                                        ; Make horizontal movement cross lines
 (setq-default evil-cross-lines t)
 
 (add-to-list 'auto-mode-alist '("\\.s\\'" . mips-mode))
@@ -78,7 +78,7 @@
 ;; (require 'sublimity-scroll)
 ;; (sublimity-mode 1)
 ;; (setq sublimity-scroll-weight 1
-;; 	  sublimity-scroll-drift-length 0)
+;;        sublimity-scroll-drift-length 0)
 
 (setq mouse-wheel-progressive-speed nil)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
@@ -92,3 +92,6 @@
 ;; popwin configuration
 (require 'popwin)
 (popwin-mode 1)
+
+;; clojure
+(push "*cider-error*" popwin:special-display-config)
