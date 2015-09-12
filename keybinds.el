@@ -26,6 +26,7 @@
 (require 'paredit)
 
 (define-key paredit-mode-map (kbd "M-s") nil)
+(global-set-key (kbd "A-E") 'paredit-forward-barf-sexp)
 (global-set-key (kbd "M-s") 'shell)
 (global-set-key (kbd "M-u") 'universal-argument)
 (define-key evil-normal-state-map (kbd "A-<down>") 'evil-window-down)
@@ -129,3 +130,7 @@
 (add-hook 'evil-god-state-entry-hook (lambda () (diminish 'god-local-mode)))
 (add-hook 'evil-god-state-exit-hook (lambda () (diminish-undo 'god-local-mode)))
 (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
+
+;; Commenting keybinds
+(evil-leader/set-key "ctr" 'comment-region)
+(evil-leader/set-key "ctb" 'comment-box)
