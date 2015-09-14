@@ -18,6 +18,7 @@
 		      better-defaults
 		      company
 		      rainbow-delimiters
+		      multiple-cursors
 
 		      find-file-in-project
 		      projectile
