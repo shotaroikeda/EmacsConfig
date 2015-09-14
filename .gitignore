@@ -10,3 +10,5 @@ irony/
 .DS_Store
 .#*
 url/
+
+.mc-lists.el
