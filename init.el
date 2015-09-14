@@ -2,7 +2,7 @@
 (setq gc-cons-threshold 100000000)
 
 ;; Set fresh install to 1 for a fresh install
-(setq fresh-install nil)
+(setq fresh-install t)
 
 ;; Debugging mode
 (setq debug-on-error nil)
@@ -16,7 +16,7 @@
   (load "~/.emacs.d/packages.el")
   (load "~/.emacs.d/general.el")
   (load "~/.emacs.d/custom-funcs.el")
-  ("load ~/.emacs.d/keybinds.el")
+  (load "~/.emacs.d/keybinds.el")
   (load-directory "~/.emacs.d/languages")
 
   ;; Loads other keybinds for mac os dependent of packages
