@@ -54,7 +54,9 @@
 		      popwin
 
 		      ample-theme
-		      monokai-theme))
+		      monokai-theme
+		      zenburn-theme
+		      ))
 
 (package-initialize)
 
