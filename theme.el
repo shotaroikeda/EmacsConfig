@@ -1,5 +1,4 @@
-;; Set correct colorspaces
-
+(setq ns-use-native-fullscreen t)
 (load-theme 'monokai t)
 
 (setq curr-bg-color (face-attribute 'default :background))
@@ -30,7 +29,9 @@
 (setq-default right-margin-width 0)
 (setq linum-format 'dynamic)
 
+;; TODO: Find a way to get srgb colors without making powerline look terrible
 (setq ns-use-srgb-colorspace nil)
+
 ;; Powerline custom configuration
 (add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
 (require 'powerline)
@@ -48,5 +49,5 @@
 (set-face-attribute 'mode-line nil
                     :background "#FD971F")
 
-(setq ns-use-srgb-colorspace t)
-
+;; (set-face-attribute 'default nil :font "Meslo for Powerline")
+;; (set-frame-font "Meslo for Powerline" nil t)
