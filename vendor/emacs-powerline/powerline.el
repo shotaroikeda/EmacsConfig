@@ -11,6 +11,8 @@
 
 ;; Modified by: Jonathan Chu
 
+;; https://github.com/milkypostman/powerline
+
 ;;; Code:
 
 (require 'cl)
