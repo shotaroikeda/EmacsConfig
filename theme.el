@@ -1,3 +1,5 @@
+(load-theme 'zenburn t)
+
 (setq curr-bg-color (face-attribute 'default :background))
 
 (custom-set-variables
@@ -36,3 +38,11 @@
 (setq-default left-margin-width 0)         
 (setq-default right-margin-width 0)
 (setq linum-format 'dynamic)
+
+;; (require 'cl)
+;; (powerline-default-theme)
+;; (set-face-attribute 'mode-line nil
+;;                     :foreground "Black"
+;;                     :background "DarkOrange"
+;;                     :box nil)
+

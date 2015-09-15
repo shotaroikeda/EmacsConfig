@@ -12,7 +12,6 @@
 
 (enable-paredit-mode)
 (paredit-mode t)
-(load-theme 'monokai t)
 ;; Improve startip buffer
 (setq evil-move-cursor-back nil)
 (setq inhibit-startup-message t)

@@ -52,6 +52,7 @@
 		      markdown-mode+
 
 		      popwin
+		      rich-minority
 
 		      ample-theme
 		      monokai-theme
