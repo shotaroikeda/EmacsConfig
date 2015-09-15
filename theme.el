@@ -1,4 +1,4 @@
-(load-theme 'zenburn t)
+(load-theme 'monokai t)
 
 (setq curr-bg-color (face-attribute 'default :background))
 
@@ -16,17 +16,6 @@
  '(linum ((t nil))))
 
 (set-face-attribute 'fringe nil :background curr-bg-color :foreground curr-bg-color)
-;; (set-face-attribute 'vertical-border-face curr-bg-color)
-;; Reverse colors for the border to have nicer line  
-;; (set-face-inverse-video-p 'vertical-border nil)
-;; (set-face-background 'vertical-border (face-background 'default))
-
-;; ;; Set symbol for the border
-;; (set-display-table-slot standard-display-table
-;;                         'vertical-border 
-;;                         (make-glyph-code ?┃))
-
-;; (set-face-attribute 'vertical-border curr-bg-color)
 
 ;; Margin windows
 (defadvice linum-update-window (around linum-dynamic activate)
@@ -39,10 +28,16 @@
 (setq-default right-margin-width 0)
 (setq linum-format 'dynamic)
 
-;; (require 'cl)
-;; (powerline-default-theme)
-;; (set-face-attribute 'mode-line nil
-;;                     :foreground "Black"
-;;                     :background "DarkOrange"
-;;                     :box nil)
+;; Powerline custom configuration
+(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
+(require 'powerline)
+(setq powerline-arrow-shape 'space14)
 
+(custom-set-faces
+ '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil))))
+ '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil)))))
+(set-face-attribute 'mode-line nil
+                    :background "#bdbdbd")
+
+;; Set correct colorspaces
+(setq ns-use-srgb-colorspace nil)
