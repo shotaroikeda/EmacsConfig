@@ -5,6 +5,9 @@
 ;; force spaces instead of tabs
 (setq-default indent-tabs-mode nil)
 
+;; Force y/n questions instead of yes/no
+(fset 'yes-or-no-p 'y-or-n-p)
+
 (require 'evil)
 (require 'ido)
 (require 'bash-completion)
