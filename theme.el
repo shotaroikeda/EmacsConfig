@@ -25,7 +25,7 @@
 ;; Powerline custom configuration
 (add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
 (require 'powerline)
-(setq powerline-arrow-shape 'space14)
+(setq powerline-arrow-shape 'arrow14)
 
 (custom-set-faces
  '(mode-line ((t (:foreground "#030303" :background "#FD971F" :box nil))))
