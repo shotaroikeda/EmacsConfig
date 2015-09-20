@@ -12,3 +12,4 @@ irony/
 url/
 
 .mc-lists.el
+projectile*
