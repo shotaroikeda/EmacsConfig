@@ -18,7 +18,6 @@
 ;; Improve startip buffer
 (setq evil-move-cursor-back nil)
 (setq inhibit-startup-message t)
-;; (setq initial-buffer-choice "~/Development")
 (setq initial-scratch-message nil)
 
 ;; Change autosave location
@@ -88,3 +87,7 @@
 
 ;; clojure
 (push "*cider-error*" popwin:special-display-config)
+
+;; Projectile mode
+(projectile-global-mode 1)
+(setq projectile-enable-caching t)
