@@ -1,0 +1,9 @@
+-.mc-lists.el
+-/elpa
+-/vendor
+-/places
+-projectile*
+-smex-items
+-/irony*
+-/auto-save
+-/backups
