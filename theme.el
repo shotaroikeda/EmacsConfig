@@ -1,4 +1,5 @@
 (setq ns-use-native-fullscreen t)
+
 (load-theme 'monokai t)
 
 (setq curr-bg-color (face-attribute 'default :background))
@@ -15,8 +16,6 @@
          (linum-format (concat " %" (number-to-string w) "d")))
     ad-do-it))
 
-(setq-default left-margin-width 0)         
-(setq-default right-margin-width 0)
 (setq linum-format 'dynamic)
 
 ;; TODO: Find a way to get srgb colors without making powerline look terrible
