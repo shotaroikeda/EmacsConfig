@@ -1,5 +1,3 @@
-(setq ns-use-native-fullscreen t)
-
 (load-theme 'monokai t)
 
 (setq curr-bg-color (face-attribute 'default :background))
@@ -32,3 +30,7 @@
 
 (set-face-attribute 'mode-line nil
                     :background "#FD971F")
+
+;; Highlight Current Line configuration
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#552661")
