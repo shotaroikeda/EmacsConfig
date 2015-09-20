@@ -13,12 +13,12 @@
   (when (equal system-type 'darwin)
     (load "~/.emacs.d/macosx.el"))
   (load "~/.emacs.d/vendor/cobalt-theme.el")
+  (load "~/.emacs.d/theme.el")
   (load "~/.emacs.d/packages.el")
   (load "~/.emacs.d/general.el")
   (load "~/.emacs.d/custom-funcs.el")
   (load "~/.emacs.d/keybinds.el")
   (load-directory "~/.emacs.d/languages")
-  (load "~/.emacs.d/theme.el")
 
   ;; Loads other keybinds for mac os dependent of packages
   (when (equal system-type 'darwin)
