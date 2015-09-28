@@ -34,3 +34,5 @@
 ;; Highlight Current Line configuration
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#552661")
+
+;; (setq ns-use-srgb-colorspace t)
