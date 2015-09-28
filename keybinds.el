@@ -128,6 +128,7 @@
 ;; Commenting keybinds
 (evil-leader/set-key "ctr" 'comment-region)
 (evil-leader/set-key "ctb" 'comment-box)
+(evil-leader/set-key "uctr" 'uncomment-region)
 
 (require 'multiple-cursors)
 (global-set-key (kbd "C-c C-m C-c C-e") 'mc/edit-lines)
