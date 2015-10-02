@@ -42,10 +42,10 @@
 		      company-irony
 		      flycheck-irony
 
-		      elpy
 		      pyenv-mode
 		      anaconda-mode
 		      company-anaconda
+		      company-jedi
 
 		      web-mode
 		      markdown-mode
