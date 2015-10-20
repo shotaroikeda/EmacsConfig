@@ -18,16 +18,10 @@
 
 ;; TLDR; you need to install:
 ;; jedi
-;; flake8
+;; ipython
 ;; ghostscript
 
 ;; You will also have to add the installation directory to $PATH
-;; on OSX 10.10 it's in /etc/path
-;; To finish setting up, you need to install a couple of things
-;; flake8/pyflake and jedi
-;; install it from pip (pip install jedi)
-
-;; to view pdfs you need a pdf renderer. ghostscript works fine
 
 ;;OS Specific binds
 (setq mac-option-modifier 'meta)
@@ -39,9 +33,8 @@
 (exec-path-from-shell-copy-env "PYTHONPATH")
 (exec-path-from-shell-copy-env "PATH")
 
-;; (setq interprogram-cut-function 'paste-to-osx)
-;; (setq interprogram-paste-function 'copy-from-osx)
-
 ;; prevent insertion of phi and other osx special characters
 (set-keyboard-coding-system nil)
 
+;; Set system font for railwaycat version
+;; (set-face-attribute 'default nil :height 110)

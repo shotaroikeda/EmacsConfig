@@ -45,7 +45,6 @@
 		      pyenv-mode
 		      anaconda-mode
 		      company-anaconda
-		      company-jedi
 
 		      web-mode
 		      markdown-mode
