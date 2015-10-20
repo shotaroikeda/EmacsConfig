@@ -14,6 +14,7 @@
   (python-shell-send-buffer)
   (python-shell-switch-to-shell))
 
+(add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook 'eldoc-mode)
 
 (define-key python-mode-map (kbd "C-c C-z") 'my/python-shell)
@@ -34,10 +35,10 @@
 
 (add-hook 'python-mode-hook 'my/python-mode-hook)
 
-
 (define-key python-mode-map (kbd "A-r") 'py-load-switch)
-
-
 
 ;; Some smarparens things
 (sp-local-pair 'python-mode "\\\'" "\\\'")
+
+(require 'popwin)
+(push '("*Anaconda*" :height 20) popwin:special-display-config)
