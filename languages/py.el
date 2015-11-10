@@ -1,4 +1,5 @@
 (require 'python)
+(pyenv-mode)
 
 (defun my/run-python ()
   (interactive)
