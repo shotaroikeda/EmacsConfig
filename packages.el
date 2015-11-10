@@ -71,7 +71,8 @@
     (package-install p)))
 ;; TLDR; you need to install:
 ;; jedi
-;; flake8
+;; pyenv-virtualenv
+;; pyenv-virtualenvwrapper
 ;; ghostscript
 
 ;; You will also have to add the installation directory to $PATH
@@ -81,4 +82,3 @@
 ;; install it from pip (pip install jedi)
 
 ;; to view pdfs you need a pdf renderer. ghostscript works fine
-
