@@ -1,0 +1,42 @@
+
+# admin.inc
+OnRebuildAdminCache
+
+# banning.inc
+OnBanClient
+OnBanIdentity
+OnRemoveBan
+
+# clients.inc
+OnClientConnect
+OnClientCommand
+OnClientPreAdminCheck
+
+# console.inc
+OnClientSayCommand
+
+# cstrike.inc
+CS_OnBuyCommand
+CS_OnCSWeaponDrop
+CS_OnGetWeaponPrice
+CS_OnTerminateRound
+
+# float.inc
+operator%
+
+# logging.inc
+OnLogAction
+
+# sdktools_hooks.inc
+OnPlayerRunCmd
+
+# sourcemod.inc
+AskPluginLoad
+AskPluginLoad2
+OnClientFloodCheck
+
+# tf2.inc
+TF2_CalcIsAttackCritical
+TF2_OnGetHoliday
+TF2_OnIsHolidayActive
+TF2_OnPlayerTeleport
