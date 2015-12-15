@@ -2,68 +2,68 @@
 
 (when (not (equal system-type 'darwin))
 
-      (add-to-list 'package-archives
-		   '("melpa" . "http://melpa.milkbox.net/packages/") t))
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.milkbox.net/packages/") t))
 
 (package-initialize)
 
 (defvar my-packages '(evil
-		      evil-god-state
-		      evil-leader
+                      evil-god-state
+                      evil-leader
 
-		      god-mode
-		      diminish
+                      god-mode
+                      diminish
 
-		      bash-completion
-		      better-defaults
-		      company
-		      rainbow-delimiters
-		      multiple-cursors
+                      bash-completion
+                      better-defaults
+                      company
+                      rainbow-delimiters
+                      multiple-cursors
 
-		      projectile
-		      magit
-		      yasnippet
+                      projectile
+                      magit
+                      yasnippet
 
-		      auctex
+                      auctex
 
-		      rudel
+                      rudel
 
-		      smex
-		      ido-ubiquitous
+                      smex
+                      ido-ubiquitous
 
-		      paredit
-		      smartparens
+                      paredit
+                      smartparens
 
-		      clojure-mode
-		      cider
+                      clojure-mode
+                      cider
 
-		      irony
-		      company-irony
-		      flycheck-irony
+                      irony
+                      company-irony
+                      flycheck-irony
 
-		      pyenv-mode
-		      anaconda-mode
-		      company-anaconda
-		      company-jedi
+                      pyenv-mode
+                      anaconda-mode
+                      company-anaconda
+                      company-jedi
 
-		      web-mode
-		      markdown-mode
-		      markdown-mode+
+                      web-mode
+                      markdown-mode
+                      markdown-mode+
 
-		      popwin
-		      rich-minority
+                      popwin
+                      rich-minority
 
-		      ample-theme
-		      monokai-theme
-		      zenburn-theme
-		      ))
+                      ample-theme
+                      monokai-theme
+                      zenburn-theme
+                      ))
 
 (package-initialize)
 
-(when (not (equal system-type 'darwin)) 
-      (if fresh-install
-	  (package-refresh-contents)
-	nil))
+(when (not (equal system-type 'darwin))
+  (if fresh-install
+      (package-refresh-contents)
+    nil))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
