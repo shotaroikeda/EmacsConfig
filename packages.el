@@ -20,7 +20,6 @@
 		      rainbow-delimiters
 		      multiple-cursors
 
-		      find-file-in-project
 		      projectile
 		      magit
 		      yasnippet
