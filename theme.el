@@ -1,4 +1,4 @@
-(load-theme 'monokai t)
+(load-theme 'wombat t)
 
 (setq curr-bg-color (face-attribute 'default :background))
 
