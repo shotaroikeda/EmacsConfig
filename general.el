@@ -87,11 +87,3 @@
 ;; Projectile mode
 (projectile-global-mode 1)
 (setq projectile-enable-caching t)
-
-;; Hide ugly mode line text
-(diminish 'smartparens-mode)
-(diminish 'paredit-mode)
-(diminish 'undo-tree-mode)
-(diminish 'company-mode)
-(diminish 'anaconda-mode)
-;; (diminish 'major-mode)

@@ -36,3 +36,11 @@
 (set-face-background 'hl-line "#552661")
 
 ;; (setq ns-use-srgb-colorspace t)
+
+;; Hide ugly mode line text
+(eval-after-load "smartparens" '(diminish 'smartparens-mode))
+(eval-after-load "paredit" '(diminish 'paredit-mode))
+(eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
+(eval-after-load "company" '(diminish 'company-mode))
+(eval-after-load "anaconda" '(diminish 'anaconda-mode))
+;; (diminish 'major-mode)
