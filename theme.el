@@ -1,4 +1,4 @@
-(load-theme 'wombat t)
+(load-theme 'zenburn t)
 
 (setq curr-bg-color (face-attribute 'default :background))
 

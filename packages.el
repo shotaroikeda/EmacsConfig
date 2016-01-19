@@ -37,6 +37,12 @@
                       clojure-mode
                       cider
 
+		      haskell-mode
+		      ghc
+		      hindent
+
+		      lua-mode
+
                       irony
                       company-irony
                       flycheck-irony
