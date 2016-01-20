@@ -6,6 +6,7 @@
 ;; Enable haskell auto indentation
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook #'hindent-mode)
+(add-hook 'haskell-mode-hook 'my/haskell-mode-hook)
 
 ;; Add a import navigation section
 (eval-after-load 'haskell-mode
@@ -17,7 +18,7 @@
   (add-to-list 'exec-path my-cabal-path))
 (custom-set-variables '(haskell-tags-on-save t))
 ;; Enable Stylish buffer formatting
-(evil-leader/set-key-for-mode 'haskell-mode "i" 'haskell-mode-stylish-buffer)
+(evil-leader/set-key-for-mode 'haskell-mode "i" 'my/haskell-style)
 
 ;; Set Keybinds
 (custom-set-variables
@@ -47,12 +48,24 @@
 (custom-set-variables '(company-ghc-show-info t))
 
 ;; Custom keybinds
+
+(evil-leader/set-key-for-mode 'haskell-mode "cr" 'my/haskell-load)
+(evil-leader/set-key-for-mode 'haskell-mode "cz" 'haskell-interactive-switch)
+(evil-leader/set-key-for-mode 'haskell-mode "e" 'my/haskell-load)
+
+;; Custom functions
 (defun my/haskell-load ()
   (interactive)
   (save-buffer)
   (haskell-process-load-or-reload)
   (haskell-interactive-switch))
 
-(evil-leader/set-key-for-mode 'haskell-mode "cr" 'my/haskell-load)
-(evil-leader/set-key-for-mode 'haskell-mode "cz" 'haskell-interactive-switch)
-(define-key haskell-mode-map (kbd "A-r") 'my/haskell-load)
+(defun my/haskell-mode-hook ()
+  (haskell-indentation-mode -1)
+  (haskell-indent-mode 1)
+  (define-key haskell-mode-map (kbd "A-r") 'my/haskell-load))
+
+(defun my/haskell-style ()
+  (interactive)
+  (save-buffer)
+  (haskell-mode-stylish-buffer))

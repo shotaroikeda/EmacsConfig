@@ -1,4 +1,4 @@
-(load-theme 'zenburn t)
+(load-theme 'monokai t)
 
 (setq curr-bg-color (face-attribute 'default :background))
 

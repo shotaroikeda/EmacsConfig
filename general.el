@@ -86,6 +86,7 @@
 
 ;; haskell
 (push "*HS-Error*" popwin:special-display-config)
+(push "*GHC Error*" popwin:special-display-config)
 
 ;; Projectile mode
 (projectile-global-mode 1)
