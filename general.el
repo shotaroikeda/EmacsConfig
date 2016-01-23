@@ -88,6 +88,9 @@
 (push "*HS-Error*" popwin:special-display-config)
 (push "*GHC Error*" popwin:special-display-config)
 
+;; Dired
+(push '(dired-mode :position top) popwin:special-display-config)
+
 ;; Projectile mode
 (projectile-global-mode 1)
 (setq projectile-enable-caching t)

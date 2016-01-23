@@ -28,12 +28,16 @@
  '(mode-line ((t (:foreground "#030303" :background "#FD971F" :box nil))))
  '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil)))))
 
+;; (custom-set-faces
+;;  '(mode-line ((t (:foreground "#030303" :background (face-attribute 'font-lock-warning-face :foreground) :box nil))))
+;;  '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil)))))
+;; 
 (set-face-attribute 'mode-line nil
-                    :background "#FD971F")
+                    :background (face-attribute 'font-lock-warning-face :foreground))
 
 ;; Highlight Current Line configuration
 (global-hl-line-mode 1)
-(set-face-background 'hl-line "#552661")
+;; (set-face-background 'hl-line "#552661")
 
 ;; (setq ns-use-srgb-colorspace t)
 
