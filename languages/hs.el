@@ -67,5 +67,28 @@
 
 (defun my/haskell-style ()
   (interactive)
-  (save-buffer)
-  (haskell-mode-stylish-buffer))
+  (align 0 (1+ (buffer-size)))
+  (save-buffer))
+
+;; Define Haskell Alignment
+;; "Better" Haskell Alignment
+(eval-after-load "align"
+  '(add-to-list 'align-rules-list
+                '(haskell-types
+                  (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+                  (modes quote (haskell-mode literate-haskell-mode)))))
+(eval-after-load "align"
+  '(add-to-list 'align-rules-list
+                '(haskell-assignment
+                  (regexp . "\\(\\s-+\\)=\\s-+")
+                  (modes quote (haskell-mode literate-haskell-mode)))))
+(eval-after-load "align"
+  '(add-to-list 'align-rules-list
+                '(haskell-arrows
+                  (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+                  (modes quote (haskell-mode literate-haskell-mode)))))
+(eval-after-load "align"
+  '(add-to-list 'align-rules-list
+                '(haskell-left-arrows
+                  (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+                  (modes quote (haskell-mode literate-haskell-mode)))))
