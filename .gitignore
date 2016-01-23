@@ -13,6 +13,7 @@ anaconda-mode/
 url/
 .mc-lists.el
 projectile*
+tramp
 
 # OS X files
 .DS_Store
