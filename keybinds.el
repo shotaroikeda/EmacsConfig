@@ -130,44 +130,6 @@
 (evil-leader/set-key "ctb" 'comment-box)
 (evil-leader/set-key "uctr" 'uncomment-region)
 
-(require 'multiple-cursors)
-(global-set-key (kbd "C-c C-m C-c C-e") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-prev-like-this)
-
-(setq mc/cmds-to-run-for-all
-      '(c-electric-paren
-        evil-append
-        evil-append-line
-        evil-backward-char
-        evil-backward-paragraph
-        evil-backward-word-begin
-        evil-change
-        evil-delete
-        evil-delete-backward-char-and-join
-        evil-delete-char
-        evil-downcase
-        evil-end-of-line
-        evil-escape-insert-state
-        evil-first-non-blank
-        evil-force-normal-state
-        evil-forward-char
-        evil-forward-paragraph
-        evil-forward-word-begin
-        evil-forward-word-end
-        evil-goto-line
-        evil-insert
-        evil-jump-item
-        evil-next-line
-        evil-normal-state
-        evil-paste-after
-        evil-previous-line
-        evil-search-next
-        evil-snipe-f
-        evil-visual-char
-        evil-visual-line
-        evil-yank))
-
 (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode-map keymap.")
 (define-key my-keys-minor-mode-map (kbd "M-o") 'ido-find-file-other-window)
 (define-minor-mode my-keys-minor-mode
