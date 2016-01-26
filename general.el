@@ -31,6 +31,9 @@
 (global-evil-leader-mode)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
+;; Multiple cursors!
+(global-evil-mc-mode 1)
+
 ;; Some autocompletion
 (ido-mode t)
 (setq ido-everywhere t)

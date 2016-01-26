@@ -10,6 +10,7 @@
 (defvar my-packages '(evil
                       evil-god-state
                       evil-leader
+                      evil-mc
 
                       god-mode
                       diminish
@@ -55,6 +56,8 @@
                       web-mode
                       markdown-mode
                       markdown-mode+
+
+		      js2-mode
 
                       popwin
                       rich-minority

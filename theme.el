@@ -47,4 +47,6 @@
 (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
 (eval-after-load "company" '(diminish 'company-mode))
 (eval-after-load "anaconda" '(diminish 'anaconda-mode))
+(eval-after-load "evil-mc" '(diminish 'evil-mc-mode))
+(eval-after-load "auto-revert" '(diminish 'auto-revert-mode))
 ;; (diminish 'major-mode)
