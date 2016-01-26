@@ -19,7 +19,6 @@
                       better-defaults
                       company
                       rainbow-delimiters
-                      multiple-cursors
 
                       projectile
                       magit
