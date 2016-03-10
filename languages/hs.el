@@ -17,9 +17,9 @@
 
 ;; Look at the home directory for cabal packages
 ;; Uncomment this portion to use cabal
-(let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
-  (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
-  (add-to-list 'exec-path my-cabal-path))
+;; (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
+;;   (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
+;;   (add-to-list 'exec-path my-cabal-path))
 (custom-set-variables '(haskell-tags-on-save t))
 ;; Enable Stylish buffer formatting
 (evil-leader/set-key-for-mode 'haskell-mode "i" 'my/haskell-style)
@@ -44,7 +44,7 @@
                                    (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
 
 ;; Set to Cabal Repl instead of ghci
-(custom-set-variables '(haskell-process-type 'cabal-ghci))
+(custom-set-variables '(haskell-process-type 'stack-ghci))
 
 ;; Autocomplete configuration
 (require 'company)
