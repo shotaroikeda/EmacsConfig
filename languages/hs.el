@@ -1,3 +1,4 @@
+(require 'haskell)
 ;; Haskell Langauge Configuration
 ;; Pulled from https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md#ghc-mod
 
@@ -7,12 +8,15 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 (add-hook 'haskell-mode-hook #'hindent-mode)
 (add-hook 'haskell-mode-hook 'my/haskell-mode-hook)
+(add-hook 'haskell-mode-hook (lambda ()
+			       (local-unset-key (kbd "SPC"))))
 
 ;; Add a import navigation section
 (eval-after-load 'haskell-mode
   '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
 
 ;; Look at the home directory for cabal packages
+;; Uncomment this portion to use cabal
 (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
   (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
   (add-to-list 'exec-path my-cabal-path))
@@ -40,7 +44,7 @@
                                    (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
 
 ;; Set to Cabal Repl instead of ghci
-(custom-set-variables '(haskell-process-type 'cabal-repl))
+(custom-set-variables '(haskell-process-type 'cabal-ghci))
 
 ;; Autocomplete configuration
 (require 'company)

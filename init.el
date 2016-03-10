@@ -2,7 +2,7 @@
 (setq gc-cons-threshold 100000000)
 
 ;; Set fresh install to 1 for a fresh install
-(setq fresh-install nil)
+(setq fresh-install t)
 
 ;; Debugging mode
 (setq debug-on-error nil)
