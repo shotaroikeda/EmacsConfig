@@ -1,5 +1,5 @@
 ;; Set bigger memeory allocation before garbage collection
-(setq gc-cons-threshold 100000000)
+;; (setq gc-cons-threshold 100000000)
 
 ;; Set fresh install to 1 for a fresh install
 (setq fresh-install nil)

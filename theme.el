@@ -1,4 +1,4 @@
-(load-theme 'monokai t)
+(load-theme 'ample-zen t)
 
 (setq curr-bg-color (face-attribute 'default :background))
 

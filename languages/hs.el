@@ -9,7 +9,7 @@
 (add-hook 'haskell-mode-hook #'hindent-mode)
 (add-hook 'haskell-mode-hook 'my/haskell-mode-hook)
 (add-hook 'haskell-mode-hook (lambda ()
-			       (local-unset-key (kbd "SPC"))))
+                               (local-unset-key (kbd "SPC"))))
 
 ;; Add a import navigation section
 (eval-after-load 'haskell-mode
@@ -42,6 +42,15 @@
                                    (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
                                    (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
                                    (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
+(eval-after-load 'haskell-interactive-mode '(progn
+                                              (local-unset-key (kbd "<up>"))
+                                              (local-unset-key (kbd "<down>"))
+                                              (define-key haskell-interactive-mode-map (kbd "<up>") 'haskell-interactive-mode-history-previous)
+                                              (define-key haskell-interactive-mode-map (kbd "<down>") 'haskell-interactive-mode-history-next)
+                                              ;; (lambda ()
+                                              ;;   ;; Propertize the prompt properly
+					      ;; 	(propertize "λ>" 'bold-italic))
+					      ))
 
 ;; Set to Cabal Repl instead of ghci
 (custom-set-variables '(haskell-process-type 'stack-ghci))

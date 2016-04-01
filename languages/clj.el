@@ -1,5 +1,7 @@
 (require 'cider)
 (add-hook 'cider-mode-hook 'eldoc-mode)
+(add-hook 'cider-repl-mode-hook 'eldoc-mode)
+
 ;; Log Error messages from the REPL
 (setq nrepl-log-messages t)
 ;; Hide special buffers that appear

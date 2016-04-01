@@ -46,6 +46,7 @@
                       irony
                       company-irony
                       flycheck-irony
+		      c-eldoc
 
                       pyenv-mode
                       anaconda-mode

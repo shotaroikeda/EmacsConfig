@@ -86,6 +86,7 @@
 
 ;; clojure
 (push "*cider-error*" popwin:special-display-config)
+(push "*cider-doc*" popwin:special-display-config)
 
 ;; haskell
 (push "*HS-Error*" popwin:special-display-config)
