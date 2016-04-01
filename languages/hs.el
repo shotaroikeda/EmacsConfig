@@ -10,6 +10,7 @@
 (add-hook 'haskell-mode-hook 'my/haskell-mode-hook)
 (add-hook 'haskell-mode-hook (lambda ()
                                (local-unset-key (kbd "SPC"))))
+(add-hook 'haskell-mode-hook 'eldoc-mode)
 
 ;; Add a import navigation section
 (eval-after-load 'haskell-mode
@@ -60,6 +61,7 @@
 (add-to-list 'company-backends 'company-ghc)
 (custom-set-variables '(company-ghc-show-info t))
 
+
 ;; Custom keybinds
 
 (evil-leader/set-key-for-mode 'haskell-mode "cr" 'my/haskell-load)
@@ -105,3 +107,8 @@
                 '(haskell-left-arrows
                   (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
                   (modes quote (haskell-mode literate-haskell-mode)))))
+
+;; Popwin
+(require 'popwin)
+(push "*HS-Error*" popwin:special-display-config)
+(push "*GHC Error*" popwin:special-display-config)

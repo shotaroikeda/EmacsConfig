@@ -24,3 +24,7 @@
 
 (define-key clojure-mode-map (kbd "C-c C-z") 'cider-jack-in)
 (define-key clojure-mode-map (kbd "A-r") 'clj-send-to-repl)
+
+;; Popwin
+(require 'popwin)
+(push "*cider-error*" popwin:special-display-config)

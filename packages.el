@@ -18,6 +18,7 @@
                       bash-completion
                       better-defaults
                       company
+		      company-quickhelp
                       rainbow-delimiters
 
                       projectile
@@ -40,6 +41,7 @@
 		      haskell-mode
 		      ghc
 		      hindent
+		      company-ghc
 
 		      lua-mode
 
@@ -65,6 +67,7 @@
                       ample-theme
                       monokai-theme
                       zenburn-theme
+		      ample-zen-theme
                       ))
 
 (package-initialize)

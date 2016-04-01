@@ -43,6 +43,10 @@
 (add-hook 'prog-mode-hook 'linum-mode)
 (add-hook 'doc-view-mode (lambda () (setq linum-mode nil)))
 
+;; Quickhelp
+(require 'company-quickhelp)
+(company-quickhelp-mode 1)
+
 ;; Remove warning bell
 (setq ring-bell-function 'ignore)
 
@@ -84,13 +88,6 @@
 (require 'popwin)
 (popwin-mode 1)
 
-;; clojure
-(push "*cider-error*" popwin:special-display-config)
-(push "*cider-doc*" popwin:special-display-config)
-
-;; haskell
-(push "*HS-Error*" popwin:special-display-config)
-(push "*GHC Error*" popwin:special-display-config)
 
 ;; Dired
 (push '(dired-mode :position top) popwin:special-display-config)
