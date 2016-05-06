@@ -7,7 +7,6 @@
 ;; Debugging mode
 (setq debug-on-error nil)
 
-
 ;; Must load PATH variables in OSX before initializing packages
 (let ((file-name-handler-alist nil))
   (when (equal system-type 'darwin)

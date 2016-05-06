@@ -1,10 +1,20 @@
-(load-theme 'ample-zen t)
+;; (require 'color-theme-sanityinc-tomorrow)
+;; (color-theme-sanityinc-tomorrow-bright)
+;; make the modeline high contrast
+
+;; Solarized
+;; (setq solarized-high-contrast-mode-line t)
+;; (setq x-use-underline-position-properties nil)
+;; (setq underline-minimum-offset 4)
+
+(load-theme 'material t)
 
 (setq curr-bg-color (face-attribute 'default :background))
 
 (custom-set-variables)
 (custom-set-faces '(linum ((t nil))))
 
+;; disable fringes by blending background color
 (set-face-attribute 'fringe nil :background curr-bg-color :foreground curr-bg-color)
 
 ;; Margin windows
@@ -24,6 +34,17 @@
 (require 'powerline)
 (setq powerline-arrow-shape 'arrow)
 
+;; For solarized theme only
+;; (setq powerline-color1 "#657b83")
+;; (setq powerline-color2 "#839496")
+;; (set-face-attribute 'mode-line nil
+;;                     :foreground "#fdf6e3"
+;;                     :background "#859900"
+;;                     :box nil)
+;; (set-face-attribute 'mode-line-inactive nil
+;;                     :box nil)
+;; For solarized theme only
+
 (custom-set-faces
  '(mode-line ((t (:foreground "#030303" :background "#FD971F" :box nil))))
  '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil)))))
@@ -32,6 +53,7 @@
 ;;  '(mode-line ((t (:foreground "#030303" :background (face-attribute 'font-lock-warning-face :foreground) :box nil))))
 ;;  '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil)))))
 ;; 
+;; For most themes
 (set-face-attribute 'mode-line nil
                     :background (face-attribute 'font-lock-warning-face :foreground))
 
