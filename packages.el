@@ -68,6 +68,7 @@
                       monokai-theme
                       zenburn-theme
 		      ample-zen-theme
+                      material-theme
                       ))
 
 (package-initialize)
