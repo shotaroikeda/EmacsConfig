@@ -17,6 +17,10 @@
 ;; Move the custom variable (auto generated) to a different file
 (setq custom-file "~/.emacs.d/custom.el")
 
+;; Generate custom file
+(if (not (file-exists-p "~/.emacs.d/custom.el"))
+    (shell-command "touch ~/.emacs.d/custom.el"))
+
 ;; Must load PATH variables in OSX before initializing packages
 (let ((file-name-handler-alist nil))
   (when (equal system-type 'darwin)
