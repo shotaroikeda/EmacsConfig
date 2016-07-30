@@ -26,9 +26,6 @@
 
 (setq linum-format 'dynamic)
 
-;; TODO: Find a way to get srgb colors without making powerline look terrible
-(setq ns-use-srgb-colorspace nil)
-
 ;; Powerline custom configuration
 (add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
 (require 'powerline)

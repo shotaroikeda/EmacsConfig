@@ -17,3 +17,6 @@ tramp
 
 # OS X files
 .DS_Store
+
+# Generated files
+custom.el

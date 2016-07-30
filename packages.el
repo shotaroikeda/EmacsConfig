@@ -18,7 +18,7 @@
                       bash-completion
                       better-defaults
                       company
-		      company-quickhelp
+                      company-quickhelp
                       rainbow-delimiters
 
                       projectile
@@ -38,17 +38,17 @@
                       clojure-mode
                       cider
 
-		      haskell-mode
-		      ghc
-		      hindent
-		      company-ghc
+                      haskell-mode
+                      ghc
+                      hindent
+                      company-ghc
 
-		      lua-mode
+                      lua-mode
 
                       irony
                       company-irony
                       flycheck-irony
-		      c-eldoc
+                      c-eldoc
 
                       pyenv-mode
                       anaconda-mode
@@ -59,7 +59,7 @@
                       markdown-mode
                       markdown-mode+
 
-		      js2-mode
+                      js2-mode
 
                       popwin
                       rich-minority
@@ -67,7 +67,7 @@
                       ample-theme
                       monokai-theme
                       zenburn-theme
-		      ample-zen-theme
+                      ample-zen-theme
                       material-theme
                       ))
 
