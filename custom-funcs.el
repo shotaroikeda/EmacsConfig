@@ -10,15 +10,15 @@
 ;; (defun fullscreen ()
 ;;        (interactive)
 ;;        (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-;; 	    		 '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
+;;                       '(2 "_NET_WM_STATE_FULLSCREEN" 0)))
 
 (defun fullscreen (&optional f)
   (interactive)
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-			 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
+                         '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
-			 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0)
-			 ))
+                         '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0)
+                         ))
 
 (defun revert-all-buffers ()
   "Refreshes all open buffers from their respective files."
@@ -35,10 +35,10 @@
   (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
     (while (/= arg 0)
       (let ((this-win (window-buffer))
-	    (next-win (window-buffer (funcall selector))))
-	(set-window-buffer (selected-window) next-win)
-	(set-window-buffer (funcall selector) this-win)
-	(select-window (funcall selector)))
+            (next-win (window-buffer (funcall selector))))
+        (set-window-buffer (selected-window) next-win)
+        (set-window-buffer (funcall selector) this-win)
+        (select-window (funcall selector)))
       (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 
 (defun indent-buffer ()
@@ -64,7 +64,7 @@
   (interactive)
   (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
                                            nil
-					 'fullboth)))
+                                         'fullboth)))
 ;; Magit Functions
 (require 'magit)
 (defun stage-and-commit ()
@@ -76,3 +76,24 @@
 (defun cheat-sheet ()
   (interactive)
   (find-file-other-window "~/.emacs.d/keybinds.org"))
+
+(defun escape-region (string &optional from to) ()
+       (interactive
+        (if (use-region-p)
+            (list nil (region-beginning) (region-end))
+          (let ((bds (bounds-of-thing-at-point 'paragraph)))
+            (list nil (car bds) (cdr bds)))))
+
+       (let (workOnStringP inputStr outputStr)
+         (setq workOnStringP (if string t nil))
+         (setq inputStr (if workOnStringP string (buffer-substring-no-properties from to)))
+         (setq outputStr
+               (let ((case-fold-search t))
+                 (replace-regexp-in-string "a\\|e\\|i\\|o\\|u\\|" "" inputStr)))
+
+         (if workOnStringP
+             outputStr
+           (save-excursion
+             (delete-region from to)
+             (goto-char from)
+             (insert outputStr)))))
