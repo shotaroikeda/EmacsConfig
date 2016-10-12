@@ -123,3 +123,6 @@
 (setq display-buffer-function 'popwin:display-buffer)
 (push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
 (push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)
+
+(require 'helm-projectile)
+(helm-projectile-on)

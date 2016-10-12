@@ -3,7 +3,7 @@
 
 (defun my/run-python ()
   (interactive)
-  (run-python "ipython"))
+  (run-python "ipython --simple-prompt"))
 
 (defun my/python-shell ()
   (interactive)
