@@ -16,7 +16,6 @@
                       diminish
 
                       bash-completion
-                      better-defaults
                       company
                       company-quickhelp
                       rainbow-delimiters
@@ -29,8 +28,8 @@
 
                       rudel
 
-                      smex
-                      ido-ubiquitous
+                      helm
+                      better-defaults
 
                       paredit
                       smartparens

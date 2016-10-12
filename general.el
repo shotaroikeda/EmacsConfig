@@ -9,7 +9,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (require 'evil)
-(require 'ido)
+;; (require 'ido)
 (require 'bash-completion)
 (bash-completion-setup)
 
@@ -35,9 +35,9 @@
 (global-evil-mc-mode 1)
 
 ;; Some autocompletion
-(ido-mode t)
-(setq ido-everywhere t)
-(ido-ubiquitous-mode t)
+;; (ido-mode t)
+;; (setq ido-everywhere t)
+;; (ido-ubiquitous-mode t)
 (add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'prog-mode-hook 'linum-mode)
@@ -95,3 +95,31 @@
 ;; Projectile mode
 (projectile-global-mode 1)
 (setq projectile-enable-caching t)
+
+;; Helm
+(require 'helm)
+(helm-mode 1)
+
+;; Helm functions to make it seem more like ido
+(defun fu/helm-find-files-navigate-forward (orig-fun &rest args)
+  (if (file-directory-p (helm-get-selection))
+      (apply orig-fun args)
+    (helm-maybe-exit-minibuffer)))
+(advice-add 'helm-execute-persistent-action :around #'fu/helm-find-files-navigate-forward)
+
+(define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
+
+(defun fu/helm-find-files-navigate-back (orig-fun &rest args)
+  (if (= (length helm-pattern) (length (helm-find-files-initial-input)))
+      (helm-find-files-up-one-level 1)
+    (apply orig-fun args)))
+
+(advice-add 'helm-ff-delete-char-backward :around #'fu/helm-find-files-navigate-back)
+
+
+(setq helm-display-function #'pop-to-buffer)
+
+(require 'popwin)
+(setq display-buffer-function 'popwin:display-buffer)
+(push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
+(push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)

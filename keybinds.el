@@ -2,17 +2,16 @@
 ;; Global Navigation Commands
 ;;;;
 
+(require 'helm)
 
 (global-set-key (kbd "<f11>") 'toggle-fullscreen)
 (global-set-key (kbd "<A-return>") 'newline)
-(global-set-key (kbd "A-a") 'smex)
-(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "A-a") 'helm-M-x)
 (global-set-key (kbd "A-s") 'save-buffer)
+(global-set-key (kbd "A-b") 'helm-buffers-list)
 (global-set-key (kbd "A-n") 'previous-buffer)
 (global-set-key (kbd "A-m") 'next-buffer)
-(global-set-key (kbd "A-b") 'ido-switch-buffer)
-(global-set-key (kbd "A-B") 'ido-switch-buffer-other-window)
-(global-set-key (kbd "A-o") 'find-file)
+(global-set-key (kbd "A-o") 'helm-find-files)
 (global-set-key (kbd "A-K") 'kill-this-buffer)
 (global-set-key (kbd "A-O") 'other-window)
 (global-set-key (kbd "A-P") 'previous-multiframe-window)
@@ -100,7 +99,7 @@
 (global-set-key (kbd "M-v") 'split-window-horizontally)
 (global-set-key (kbd "M-h") 'split-window-vertically)
 
-(require 'ido)
+;; (require 'ido)
 
 (require 'magit)
 ;; Magit Binds
@@ -113,7 +112,7 @@
 
 (require 'evil)
 ;; customized evil functions
-(evil-ex-define-cmd "E[dit]" 'ido-find-file)
+;; (evil-ex-define-cmd "E[dit]" 'ido-find-file)
 (evil-ex-define-cmd "k[eybinds]" 'describe-bindings)
 ;; open the cheatsheet
 (evil-ex-define-cmd "cheat[sheet]" 'cheat-sheet)
@@ -131,7 +130,7 @@
 (evil-leader/set-key "uctr" 'uncomment-region)
 
 (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode-map keymap.")
-(define-key my-keys-minor-mode-map (kbd "M-o") 'ido-find-file-other-window)
+;; (define-key my-keys-minor-mode-map (kbd "M-o") 'ido-find-file-other-window)
 (define-minor-mode my-keys-minor-mode
   "A minor mode so that my keys override other major modes"
   t "" 'my-keys-minor-mode-map)
