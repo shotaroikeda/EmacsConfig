@@ -18,11 +18,14 @@
                       bash-completion
                       company
                       company-quickhelp
+
                       rainbow-delimiters
 
                       projectile
                       magit
                       yasnippet
+
+                      use-package
 
                       auctex
 

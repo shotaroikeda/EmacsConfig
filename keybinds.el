@@ -92,6 +92,19 @@
 (define-key doc-view-mode-map (kbd "l") 'image-forward-hscroll)
 (define-key doc-view-mode-map (kbd "g") 'doc-view-goto-page)
 
+(require 'pdf-tools)
+(define-key pdf-view-mode-map (kbd "/") 'doc-view-search-next-match)
+(define-key pdf-view-mode-map (kbd "?") 'doc-view-search-previous-match)
+(define-key pdf-view-mode-map (kbd "j") 'doc-view-next-line-or-next-page)
+(define-key pdf-view-mode-map (kbd "k") 'doc-view-previous-line-or-previous-page)
+(define-key pdf-view-mode-map (kbd "h") 'image-backward-hscroll)
+(define-key pdf-view-mode-map (kbd "l") 'image-forward-hscroll)
+(define-key pdf-view-mode-map (kbd "g") 'doc-view-goto-page)
+
+(add-hook 'pdf-view-mode-hook '(lambda ()
+                                 (turn-off-evil-mode)
+                                 (turn-off-evil-mc-mode)))
+
 ;;; Window Functions
 (global-set-key (kbd "C-q") 'delete-window)
 (evil-leader/set-key-for-mode 'emacs-lisp-mode "e" 'eval-buffer)
