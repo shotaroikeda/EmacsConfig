@@ -32,6 +32,7 @@
                       rudel
 
                       helm
+                      helm-projectile
                       better-defaults
 
                       paredit

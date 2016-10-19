@@ -1,13 +1,12 @@
 (require 'python)
 (pyenv-mode)
 
-(defun my/run-python ()
-  (interactive)
-  (run-python "ipython --simple-prompt"))
+(setq python-shell-interpreter "ipython"
+      python-shell-interpreter-args "--simple-prompt --pprint")
 
 (defun my/python-shell ()
   (interactive)
-  (my/run-python)
+  (run-python)
   (python-shell-switch-to-shell))
 
 (defun my/python-mode-hook ()
