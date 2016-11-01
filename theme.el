@@ -7,7 +7,7 @@
 ;; (setq x-use-underline-position-properties nil)
 ;; (setq underline-minimum-offset 4)
 
-(load-theme 'material t)
+(load-theme 'cobalt t)
 
 (setq curr-bg-color (face-attribute 'default :background))
 

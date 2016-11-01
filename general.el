@@ -141,3 +141,5 @@
                   '(pdf-tools-handle-upgrades nil)) ; Use brew upgrade pdf-tools instead.
                  (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
 (pdf-tools-install)
+
+(add-hook 'pdf-view-mode-hook 'auto-revert-mode)
