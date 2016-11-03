@@ -40,3 +40,5 @@
 ;; Set system font for railwaycat version
 ;; (set-face-attribute 'default nil :height 110)
 
+(set-face-attribute 'default nil
+                    :family "Inconsolata for Powerline" :height 130 :weight 'normal)

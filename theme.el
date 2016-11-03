@@ -1,12 +1,3 @@
-;; (require 'color-theme-sanityinc-tomorrow)
-;; (color-theme-sanityinc-tomorrow-bright)
-;; make the modeline high contrast
-
-;; Solarized
-;; (setq solarized-high-contrast-mode-line t)
-;; (setq x-use-underline-position-properties nil)
-;; (setq underline-minimum-offset 4)
-
 (load-theme 'cobalt t)
 
 (setq curr-bg-color (face-attribute 'default :background))
@@ -27,38 +18,30 @@
 (setq linum-format 'dynamic)
 
 ;; Powerline custom configuration
-(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
 (require 'powerline)
-(setq powerline-arrow-shape 'arrow)
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
+(spaceline-helm-mode)
+(setq-default powerline-default-separator 'wave)
+(setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
 
-;; For solarized theme only
-;; (setq powerline-color1 "#657b83")
-;; (setq powerline-color2 "#839496")
-;; (set-face-attribute 'mode-line nil
-;;                     :foreground "#fdf6e3"
-;;                     :background "#859900"
-;;                     :box nil)
-;; (set-face-attribute 'mode-line-inactive nil
-;;                     :box nil)
-;; For solarized theme only
-
-(custom-set-faces
- '(mode-line ((t (:foreground "#030303" :background "#FD971F" :box nil))))
- '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil)))))
-
-;; (custom-set-faces
-;;  '(mode-line ((t (:foreground "#030303" :background (face-attribute 'font-lock-warning-face :foreground) :box nil))))
-;;  '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil)))))
-;; 
-;; For most themes
+;; Set mode line colors
+(set-face-attribute 'powerline-active1 nil
+		    :background (face-attribute 'font-lock-keyword-face :foreground))
+(set-face-attribute 'powerline-active2 nil
+		    :background "#2C3E50")
 (set-face-attribute 'mode-line nil
-                    :background (face-attribute 'font-lock-warning-face :foreground))
+		    :background (face-attribute 'web-mode-json-context-face :foreground)
+		    :box nil)
+(set-face-attribute 'mode-line-inactive nil
+		    :foreground (face-attribute 'default :foreground)
+		    :background (face-attribute 'font-lock-regexp-grouping-construct :foreground)
+		    :box nil)
+
+;; disable the outline for mode line
 
 ;; Highlight Current Line configuration
 (global-hl-line-mode 1)
-;; (set-face-background 'hl-line "#552661")
-
-;; (setq ns-use-srgb-colorspace t)
 
 ;; Hide ugly mode line text
 (eval-after-load "smartparens" '(diminish 'smartparens-mode))
@@ -68,4 +51,6 @@
 (eval-after-load "anaconda" '(diminish 'anaconda-mode))
 (eval-after-load "evil-mc" '(diminish 'evil-mc-mode))
 (eval-after-load "auto-revert" '(diminish 'auto-revert-mode))
+(eval-after-load "helm" '(diminish 'helm-mode))
 ;; (diminish 'major-mode)
+(spaceline-compile)

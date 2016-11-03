@@ -14,6 +14,7 @@
 
                       god-mode
                       diminish
+		      spaceline
 
                       bash-completion
                       company
