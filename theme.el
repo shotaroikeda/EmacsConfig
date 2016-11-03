@@ -25,6 +25,7 @@
 (setq-default powerline-default-separator 'wave)
 (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
 
+(require 'web-mode)
 ;; Set mode line colors
 (set-face-attribute 'powerline-active1 nil
 		    :background (face-attribute 'font-lock-keyword-face :foreground))
