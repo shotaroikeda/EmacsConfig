@@ -1,0 +1,1052 @@
+* Initialization
+** Requirements
+*** EMACS requirements
+    #+BEGIN_SRC emacs-lisp
+     (require 'package)
+    #+END_SRC
+*** Other Requirements
+    - Python: Jedi, EPC, sexpdata
+    - C: libclang, CMake
+    - LaTeX: MacTeX, pdf-tools from brew
+** Run for all
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'package-archives
+                  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+   #+END_SRC
+** Run for MAC OS X Only
+   #+BEGIN_SRC emacs-lisp
+     (when (equal system-type 'darwin)
+       (org-babel-load-file (expand-file-name "macosx.org" user-emacs-directory)))
+   #+END_SRC
+** Refresh Packages if fresh-install is enabled
+   #+BEGIN_SRC emacs-lisp
+     (defvar my-packages '(evil
+                           evil-god-state
+                           evil-leader
+                           evil-mc
+
+                           god-mode
+                           diminish
+                           spaceline
+
+                           bash-completion
+                           company
+                           company-quickhelp
+
+                           rainbow-delimiters
+
+                           projectile
+                           magit
+                           yasnippet
+
+                           use-package
+
+                           auctex
+
+                           rudel
+
+                           helm
+                           helm-projectile
+                           better-defaults
+
+                           paredit
+                           smartparens
+
+                           clojure-mode
+                           cider
+
+                           haskell-mode
+                           ghc
+                           hindent
+                           company-ghc
+
+                           lua-mode
+
+                           irony
+                           company-irony
+                           flycheck-irony
+                           c-eldoc
+
+                           pyenv-mode
+                           anaconda-mode
+                           company-anaconda
+                           company-jedi
+
+                           web-mode
+                           markdown-mode
+                           markdown-mode+
+
+                           js2-mode
+
+                           popwin
+                           rich-minority
+
+                           ample-theme
+                           monokai-theme
+                           zenburn-theme
+                           ample-zen-theme
+                           material-theme
+                           ))
+     (if fresh-install
+         (progn (package-refresh-contents)
+                (dolist (p my-packages)
+                  (when (not (package-installed-p p))
+                    (package-install p)))))
+   #+END_SRC
+* Theme
+** Requirements
+   #+BEGIN_SRC emacs-lisp
+     (require 'powerline)
+     (require 'spaceline-config)
+     (require 'web-mode) ;; For that face
+   #+END_SRC
+** General theme material
+   #+BEGIN_SRC emacs-lisp
+     (load-file "~/.emacs.d/vendor/cobalt-theme.el") ;; Load cobalt
+     (load-theme 'cobalt t)
+
+     ;; Global line
+     (global-hl-line-mode t)
+   #+END_SRC
+** Make Lineum Look Better
+   #+BEGIN_SRC emacs-lisp
+     (setq curr-bg-color (face-attribute 'default :background))
+
+     (custom-set-variables)
+     (custom-set-faces '(linum ((t nil))))
+
+     ;; disable fringes by blending background color
+     (set-face-attribute 'fringe nil :background curr-bg-color :foreground curr-bg-color)
+
+     ;; Margin windows
+     (defadvice linum-update-window (around linum-dynamic activate)
+       (let* ((w (length (number-to-string
+                          (count-lines (point-min) (point-max)))))
+              (linum-format (concat " %" (number-to-string w) "d")))
+         ad-do-it))
+
+     (setq linum-format 'dynamic)
+   #+END_SRC
+** Modeline Configuration
+*** Powerline
+   #+BEGIN_SRC emacs-lisp
+     ;; Powerline custom configuration
+     (spaceline-spacemacs-theme)
+     (spaceline-helm-mode)
+     (setq-default powerline-default-separator 'wave)
+     (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+
+     (require 'web-mode)
+     ;; Set mode line colors
+     (set-face-attribute 'powerline-active1 nil
+                         :background (face-attribute 'font-lock-keyword-face :foreground))
+     (set-face-attribute 'powerline-active2 nil
+                         :background "#2C3E50")
+     (set-face-attribute 'mode-line nil
+                         :background (face-attribute 'web-mode-json-context-face :foreground)
+                         :box nil)
+     (set-face-attribute 'mode-line-inactive nil
+                         :foreground (face-attribute 'default :foreground)
+                         :background (face-attribute 'font-lock-regexp-grouping-construct :foreground)
+                         :box nil)
+     (spaceline-compile)
+   #+END_SRC
+*** Text
+   #+BEGIN_SRC emacs-lisp
+     ;; Hide ugly mode line text
+     (eval-after-load "smartparens" '(diminish 'smartparens-mode))
+     (eval-after-load "paredit" '(diminish 'paredit-mode))
+     (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
+     (eval-after-load "company" '(diminish 'company-mode))
+     (eval-after-load "anaconda" '(diminish 'anaconda-mode))
+     (eval-after-load "evil-mc" '(diminish 'evil-mc-mode))
+     (eval-after-load "auto-revert" '(diminish 'auto-revert-mode))
+     (eval-after-load "helm" '(diminish 'helm-mode))
+     ;; (diminish 'major-mode)
+   #+END_SRC
+* General Configuration
+** Requirements
+   #+BEGIN_SRC emacs-lisp
+     (require 'bash-completion)
+     (require 'comint)
+     (require 'company)
+     (require 'company-quickhelp)
+     (require 'diminish)
+     (require 'evil)
+     (require 'god-mode)
+     (require 'helm)
+     (require 'helm-projectile)
+     (require 'paredit)
+     (require 'popwin)
+     (require 'smartparens)
+     (require 'smartparens-config)
+     (require 'use-package)
+   #+END_SRC
+** Global Settings
+*** EMACS Specific
+    #+BEGIN_SRC emacs-lisp
+      ;; Improve startip buffer
+      (setq evil-move-cursor-back nil)
+      (setq inhibit-startup-message t)
+      (setq initial-scratch-message nil)
+
+      ;; Change autosave location
+      (defvar my-auto-save-folder "~/.emacs.d/auto-save/")
+      (setq auto-save-list-file-prefix "~/.emacs.d/auto-save/.saves-"); set prefix for auto-saves
+      (setq auto-save-file-name-transforms `((".*", my-auto-save-folder t))); location for all auto-save files
+      (setq tramp-auto-save-directory my-auto-save-folder);
+
+      ;; Set Scrollwheel speed
+      (setq scroll-step 1)
+      (setq scroll-conservatively 10000)
+      (setq mouse-wheel-progressive-speed nil)
+      (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+      (setq auto-window-vscroll nil)
+
+      ;; Remove warning bell
+      (setq ring-bell-function 'ignore)
+
+      ;; Force y/n questions instead of yes/no
+      (fset 'yes-or-no-p 'y-or-n-p)
+
+      ;; Makes *scratch* empty.
+      (setq initial-scratch-message "")
+
+    #+END_SRC
+*** Package Specific
+**** Bash Completion
+     #+BEGIN_SRC emacs-lisp
+      (bash-completion-setup)
+     #+END_SRC
+**** Company
+     #+BEGIN_SRC emacs-lisp
+       (company-quickhelp-mode 1)
+       ;; Add hook
+       (add-hook 'after-init-hook 'global-company-mode)
+     #+END_SRC
+**** DocView
+     #+BEGIN_SRC emacs-lisp
+       ;; DocView
+       (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+       (add-hook 'doc-view-mode (lambda () (setq linum-mode nil)))
+     #+END_SRC
+**** Evil
+     #+BEGIN_SRC emacs-lisp
+      (evil-mode 1)
+      (global-evil-leader-mode)
+
+      (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+      (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+      (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+      (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+      (setq-default evil-cross-lines t) ; Make horizontal movement cross lines
+
+      ;; Multiple cursors!
+      (global-evil-mc-mode 1)
+     #+END_SRC
+**** Helm
+     #+BEGIN_SRC emacs-lisp
+       ;; Helm
+       (helm-mode 1)
+
+       ;; Helm functions to make it seem more like ido
+       (defun fu/helm-find-files-navigate-forward (orig-fun &rest args)
+         (if (file-directory-p (helm-get-selection))
+             (apply orig-fun args)
+           (helm-maybe-exit-minibuffer)))
+       (advice-add 'helm-execute-persistent-action :around #'fu/helm-find-files-navigate-forward)
+
+       (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
+
+       (defun fu/helm-find-files-navigate-back (orig-fun &rest args)
+         (if (= (length helm-pattern) (length (helm-find-files-initial-input)))
+             (helm-find-files-up-one-level 1)
+           (apply orig-fun args)))
+
+       (advice-add 'helm-ff-delete-char-backward :around #'fu/helm-find-files-navigate-back)
+
+       (setq helm-display-function #'pop-to-buffer)
+
+       (helm-projectile-on)
+     #+END_SRC
+**** Linum
+     #+BEGIN_SRC emacs-lisp
+       (add-hook 'prog-mode-hook 'linum-mode)
+     #+END_SRC
+**** Paredit
+     #+BEGIN_SRC emacs-lisp
+       (enable-paredit-mode)
+       (paredit-mode t)
+     #+END_SRC
+**** SmartParens
+     #+BEGIN_SRC emacs-lisp
+       (smartparens-global-mode 1)
+       (show-smartparens-global-mode 1)
+     #+END_SRC
+**** Magit
+     #+BEGIN_SRC emacs-lisp
+       ;; Prevent Magit Warning From Appearing
+       (setq magit-last-seen-setup-instructions "1.4.0")
+     #+END_SRC
+**** PDF-Tools
+     #+BEGIN_SRC emacs-lisp
+       ;;; Install epdfinfo via 'brew install pdf-tools' and then install the
+       ;;; pdf-tools elisp via the use-package below. To upgrade the epdfinfo
+       ;;; server, just do 'brew upgrade pdf-tools' prior to upgrading to newest
+       ;;; pdf-tools package using Emacs package system. If things get messed
+       ;;; up, just do 'brew uninstall pdf-tools', wipe out the elpa
+       ;;; pdf-tools package and reinstall both as at the start.
+       (use-package pdf-tools
+         :ensure t
+         :config
+         (custom-set-variables
+          '(pdf-tools-handle-upgrades nil)) ; Use brew upgrade pdf-tools instead.
+         (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo"))
+       (pdf-tools-install)
+       (add-hook 'pdf-view-mode-hook 'auto-revert-mode)
+       ;; Turn off evil mode for pdf tools
+       (add-hook 'pdf-view-mode-hook '(lambda ()
+                                        (turn-off-evil-mode)
+                                        (turn-off-evil-mc-mode)))
+     #+END_SRC
+**** Popwin
+     #+BEGIN_SRC emacs-lisp
+       (popwin-mode 1)
+       ;; Push dired window
+       (push '(dired-mode :position top) popwin:special-display-config)
+
+       (setq display-buffer-function 'popwin:display-buffer)
+       (push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
+       (push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)
+     #+END_SRC
+**** Projectile
+     #+BEGIN_SRC emacs-lisp
+       ;; Projectile mode
+       (projectile-global-mode 1)
+       (setq projectile-enable-caching t)
+     #+END_SRC
+**** Rainbow Delimiters
+     #+BEGIN_SRC emacs-lisp
+       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+     #+END_SRC
+
+
+** Global Keybinds
+*** EMACS specific
+    #+BEGIN_SRC emacs-lisp
+      (global-set-key (kbd "C-c M-s") 'shell)
+      (global-set-key (kbd "M-u") 'universal-argument)
+
+      ;; Screen Manipulation
+      (defun toggle-fullscreen ()
+        (interactive)
+        (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
+                                                 nil
+                                               'fullboth)))
+
+      (global-set-key (kbd "<f11>") 'toggle-fullscreen)
+      (global-set-key (kbd "<A-return>") 'newline)
+      ;; Buffer related
+      (global-set-key (kbd "A-s") 'save-buffer)
+      (global-set-key (kbd "A-n") 'previous-buffer)
+      (global-set-key (kbd "A-m") 'next-buffer)
+      (global-set-key (kbd "A-K") 'kill-this-buffer)
+      (global-set-key (kbd "A-O") 'other-window)
+      (global-set-key (kbd "A-P") 'previous-multiframe-window)
+      ;; Window Related
+      (global-set-key (kbd "C-q") 'delete-window)
+
+      ;; Minibuffer
+      (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+      (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+    #+END_SRC
+*** Package Specific
+**** Comint
+     #+BEGIN_SRC emacs-lisp
+       ;; Comint
+       (define-key comint-mode-map (kbd "<up>") 'comint-previous-input)
+       (define-key comint-mode-map (kbd "<down>") 'comint-next-input)
+     #+END_SRC
+**** Company
+     #+BEGIN_SRC emacs-lisp
+       (global-set-key (kbd "M-j") 'nil)
+       (global-set-key (kbd "M-j") 'company-manual-begin)
+       (define-key company-active-map (kbd "A-j") 'company-select-next)
+       (define-key company-active-map (kbd "A-k") 'company-select-previous)
+       (define-key company-search-map (kbd "A-j") 'company-search-repeat-forward)
+       (define-key company-search-map (kbd "A-k") 'company-search-repeat-backward)
+       (define-key company-active-map (kbd "/") 'company-search-candidates)
+       (define-key company-search-map [escape] 'company-search-abort)
+       (define-key company-active-map [escape] 'company-abort)
+
+       (defun minibuffer-keyboard-quit ()
+         (interactive)
+         (if (and delete-selection-mode transient-mark-mode mark-active)
+             (setq deactivate-mark  t)
+           (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+           (abort-recursive-edit)))
+     #+END_SRC
+**** DocView
+     #+BEGIN_SRC emacs-lisp
+       (setf doc-view-continuous t)
+       (setf doc-view-resolution 144)
+
+       (define-key doc-view-mode-map (kbd "/") 'doc-view-search-next-match)
+       (define-key doc-view-mode-map (kbd "?") 'doc-view-search-previous-match)
+       (define-key doc-view-mode-map (kbd "j") 'doc-view-next-line-or-next-page)
+       (define-key doc-view-mode-map (kbd "k") 'doc-view-previous-line-or-previous-page)
+       (define-key doc-view-mode-map (kbd "h") 'image-backward-hscroll)
+       (define-key doc-view-mode-map (kbd "l") 'image-forward-hscroll)
+       (define-key doc-view-mode-map (kbd "g") 'doc-view-goto-page)
+     #+END_SRC
+**** Evil
+     #+BEGIN_SRC emacs-lisp
+       ;; Evil
+       (define-key evil-normal-state-map (kbd "A-<down>") 'evil-window-down)
+       (define-key evil-normal-state-map (kbd "A-<up>") 'evil-window-up)
+       (define-key evil-normal-state-map (kbd "A-<left>") 'evil-window-left)
+       (define-key evil-normal-state-map (kbd "A-<right>") 'evil-window-right)
+       (define-key evil-normal-state-map (kbd "A-<right>") 'evil-window-right)
+
+       (global-set-key (kbd "C-u") 'evil-scroll-up)
+
+       (defun transpose-windows (arg)
+         "Transpose the buffers shown in two windows."
+         (interactive "p")
+         (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
+           (while (/= arg 0)
+             (let ((this-win (window-buffer))
+                   (next-win (window-buffer (funcall selector))))
+               (set-window-buffer (selected-window) next-win)
+               (set-window-buffer (funcall selector) this-win)
+               (select-window (funcall selector)))
+             (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
+
+       (evil-leader/set-key "t" 'transpose-windows)
+
+       (define-key evil-normal-state-map [escape] 'keyboard-quit)
+       (define-key evil-visual-state-map [escape] 'keyboard-quit)
+       (global-set-key [escape] 'evil-exit-emacs-state)
+
+       (define-key evil-motion-state-map (kbd "RET") nil)
+       (define-key evil-motion-state-map (kbd " ") nil)
+
+       ;; Commenting keybinds
+       (evil-leader/set-key "ctr" 'comment-region)
+       (evil-leader/set-key "ctb" 'comment-box)
+       (evil-leader/set-key "uctr" 'uncomment-region)
+
+       (evil-leader/set-leader ";")
+
+
+       (defun clear-shell ()
+         (interactive)
+         (let ((comint-buffer-maximum-size 0))
+           (comint-truncate-buffer)))
+
+       (evil-leader/set-key "sc" 'clear-shell)
+
+       (defun indent-buffer ()
+         (interactive)
+         (save-excursion
+           (indent-region (point-min) (point-max) nil)
+           (untabify (point-min) (point-max))
+           (delete-trailing-whitespace)))
+       (evil-leader/set-key "i" 'indent-buffer)
+       (evil-leader/set-key-for-mode 'latex-mode "ck" 'revert-all-buffers)
+
+       ;; Evil God State
+       (evil-define-key 'normal global-map "," 'evil-execute-in-god-state)
+       (add-hook 'evil-god-state-entry-hook (lambda () (diminish 'god-local-mode)))
+       (add-hook 'evil-god-state-exit-hook (lambda () (diminish-undo 'god-local-mode)))
+       (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
+
+     #+END_SRC
+**** Helm
+     #+BEGIN_SRC emacs-lisp
+       ;; Helm
+       (global-set-key (kbd "A-a") 'helm-M-x)
+       (global-set-key (kbd "A-b") 'helm-buffers-list)
+       (global-set-key (kbd "A-o") 'helm-find-files)
+
+       (global-set-key (kbd "A-9") 'scroll-down)
+       (global-set-key (kbd "A-0") 'scroll-up)
+
+(defun configure ()
+  (interactive)
+  (find-file "~/.emacs.d/init.el"))
+
+       (global-set-key (kbd "M-c") 'configure)
+
+       (global-set-key (kbd "A-E") 'paredit-forward-barf-sexp)
+       (global-set-key (kbd "C-k") 'paredit-kill)
+
+       (global-set-key (kbd "A-RET") 'newline-and-indent)
+     #+END_SRC
+**** Magit
+     #+BEGIN_SRC emacs-lisp
+       (defun stage-and-commit ()
+         "Requires Magit. Stages all current files in the project then commits them"
+         (interactive)
+         (magit-stage-modified)
+         (magit-commit))
+
+       (global-set-key (kbd "M-G") 'stage-and-commit)
+       (global-set-key (kbd "M-P") 'magit-push)
+       (global-set-key (kbd "M-W") 'magit-status)
+     #+END_SRC
+
+** General Formatting Functions
+*** Force Space Instead of Tabs
+    #+BEGIN_SRC emacs-lisp
+      ;; force spaces instead of tabs
+      (setq-default indent-tabs-mode nil)
+    #+END_SRC
+*** Every Brace should be matched with current formatting scheme
+    #+BEGIN_SRC emacs-lisp
+      (defun my-create-newline-and-enter-sexp (&rest _ignored)
+        "Open a new brace or bracket expression, with relevant newlines and indent. "
+        (newline)
+        (indent-according-to-mode)
+        (forward-line -1)
+        (indent-according-to-mode))
+    #+END_SRC
+*** WorkFlow
+    #+BEGIN_SRC emacs-lisp
+      (defun revert-all-buffers ()
+        "Refreshes all open buffers from their respective files."
+        (interactive)
+        (dolist (buf (buffer-list))
+          (with-current-buffer buf
+            (when (and (buffer-file-name) (file-exists-p (buffer-file-name)) (not (buffer-modified-p)))
+              (revert-buffer t t t) )))
+        (message "Refreshed open files.") )
+
+
+
+      (defun load-directory (dir)
+        "`load' all elisp libraries in directory DIR which are not already loaded."
+        (interactive "D")
+        (let ((libraries-loaded (mapcar #'file-name-sans-extension
+                                        (delq nil (mapcar #'car load-history)))))
+          (dolist (file (directory-files dir t ".+\\.elc?$"))
+            (let ((library (file-name-sans-extension file)))
+              (unless (member library libraries-loaded)
+                (load library nil t)
+                (push library libraries-loaded))))))
+
+
+      (defun escape-region (string &optional from to) ()
+             (interactive
+              (if (use-region-p)
+                  (list nil (region-beginning) (region-end))
+                (let ((bds (bounds-of-thing-at-point 'paragraph)))
+                  (list nil (car bds) (cdr bds)))))
+
+             (let (workOnStringP inputStr outputStr)
+               (setq workOnStringP (if string t nil))
+               (setq inputStr (if workOnStringP string (buffer-substring-no-properties from to)))
+               (setq outputStr
+                     (let ((case-fold-search t))
+                       (replace-regexp-in-string "a\\|e\\|i\\|o\\|u\\|" "" inputStr)))
+
+               (if workOnStringP
+                   outputStr
+                 (save-excursion
+                   (delete-region from to)
+                   (goto-char from)
+                   (insert outputStr)))))
+    #+END_SRC
+* Languages
+** C/C++
+*** About
+   Please run irony-install-server before working with C languages. Requires CMake and libclang.
+*** Package Requirements
+   #+BEGIN_SRC emacs-lisp
+     ;; C/C++ tweaks
+     (require 'cc-mode)
+     (require 'cl)
+   #+END_SRC
+*** Formatting
+   #+BEGIN_SRC emacs-lisp
+     ;; Default Settings
+     (setq-default c-basic-offset 8
+                   c-default-style "linux"
+                   tab-width 8
+                   indent-tabs-mode t)
+
+
+     ;; Make sure that brackets get inserted with proper indentation
+     (sp-local-pair 'c++-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+     (sp-local-pair 'c-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+   #+END_SRC
+*** Hooks
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'c-mode-hook 'irony-mode)
+     (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
+     (add-hook 'c++-mode-hook 'irony-mode)
+     (add-hook 'c++-mode-hook 'c-turn-on-eldoc-mode)
+     (add-hook 'objc-mode-hook 'irony-mode)
+   #+END_SRC
+*** KeyMaps
+*** Interface with Global Packages
+*** Irony
+   #+BEGIN_SRC emacs-lisp
+     ;; replace the `completion-at-point' and `complete-symbol' bindings in
+     ;; irony-mode's buffers by irony-mode's function
+     (defun my-irony-mode-hook ()
+       (define-key irony-mode-map [remap completion-at-point]
+         'irony-completion-at-point-async)
+       (define-key irony-mode-map [remap complete-symbol]
+         'irony-completion-at-point-async))
+     (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+     ;; (optional) adds CC special commands to `company-begin-commands' in order to
+     ;; trigger completion at interesting places, such as after scope operator
+     ;;     std::|
+     (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+
+     (eval-after-load 'flycheck
+       '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+     (eval-after-load 'company
+       '(add-to-list 'company-backends 'company-irony))
+   #+END_SRC
+** Clojure
+*** About
+   Requires Leinigen and nrepl to be configured beforehand.
+*** Package Requirements
+   #+BEGIN_SRC emacs-lisp
+     (require 'cider)
+   #+END_SRC
+*** Formatting
+   #+BEGIN_SRC emacs-lisp
+     ;; Log Error messages from the REPL
+     (setq nrepl-log-messages t)
+     ;; Hide special buffers that appear
+     (setq nrepl-hide-special-buffers t)
+     ;; Show message even on test success for test cases
+     (setq cider-test-show-report-on-success t)
+   #+END_SRC
+*** Hooks
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'cider-mode-hook 'eldoc-mode)
+     (add-hook 'cider-repl-mode-hook 'eldoc-mode)
+     ;; The next two are defined in the Lisp Hook.
+     ;; Adds some additional paredit configurations
+     (add-hook 'clojure-mode-hook 'lisp-hook)
+     (add-hook 'cider-repl-mode-hook 'lisp-hook)
+   #+END_SRC
+*** KeyMaps
+   #+BEGIN_SRC emacs-lisp
+     (defun clj-send-to-repl ()
+       "Send the current buffer to the repl then switch to the repl buffer"
+       (interactive)
+       (cider-eval-buffer)
+       (other-window 1)
+       (cider-switch-to-current-repl-buffer))
+
+     ;; Some console like binds for the Clojure REPL
+     (define-key cider-repl-mode-map (kbd "<up>") 'cider-repl-previous-input)
+     (define-key cider-repl-mode-map (kbd "<down>") 'cider-repl-next-input)
+
+     (evil-leader/set-key-for-mode 'clojure-mode "ce" 'cider-eval-last-sexp)
+
+     (define-key clojure-mode-map (kbd "C-c C-z") 'cider-jack-in)
+     (define-key clojure-mode-map (kbd "A-r") 'clj-send-to-repl)
+
+     (evil-leader/set-key-for-mode 'clojure-mode "cr" 'cider-jack-in)
+     (evil-leader/set-key-for-mode 'clojure-mode "cj" 'cider-jump)
+     (evil-leader/set-key-for-mode 'clojure-mode "cg" 'cider-grimoire)
+     (evil-leader/set-key-for-mode 'clojure-mode "ck" 'cider-eval-buffer)
+     (evil-leader/set-key-for-mode 'clojure-mode "cve" 'cider-visit-error-buffer)
+
+     (evil-leader/set-key-for-mode 'cider-repl-mode "cj" 'cider-jump)
+     (evil-leader/set-key-for-mode 'cider-repl-mode "cg" 'cider-grimoire)
+     (evil-leader/set-key-for-mode 'cider-repl-mode "ck" 'cider-eval-buffer)
+     (evil-leader/set-key-for-mode 'cider-repl-mode "cve" 'cider-visit-error-buffer)
+   #+END_SRC
+*** Interface with Global Packages
+**** Popwin
+    #+BEGIN_SRC emacs-lisp
+      (push "**cider-error*" popwin:special-display-config)
+    #+END_SRC
+** Haskell
+*** About
+   Haskell Langauge Configuration
+   Pulled from https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md#ghc-mod
+
+   ghs, cabal, happy, ghs-mod, hindent, hasktags, stylish-haskell are REQUIRED to use haskell mode
+   TODO: That is actually outdated, update later
+*** Package Requirements
+   #+BEGIN_SRC emacs-lisp
+     (require 'haskell)
+   #+END_SRC
+*** Mode Variables
+   #+BEGIN_SRC emacs-lisp
+     ;; Look at the home directory for cabal packages
+     ;; Uncomment this portion to use cabal
+     ;; (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
+     ;;   (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
+     ;;   (add-to-list 'exec-path my-cabal-path))
+     (custom-set-variables '(haskell-tags-on-save t))
+
+     ;; Set Keybinds
+     (custom-set-variables
+      '(haskell-process-suggest-remove-import-lines t)
+      '(haskell-process-auto-import-loaded-modules t)
+      '(haskell-process-log t))
+
+     ;; Set to Stack Repl instead of ghci
+     (custom-set-variables '(haskell-process-type 'stack-ghci))
+   #+END_SRC
+*** Formatting
+   Note, indentation taken care of in the Hooks section
+   #+BEGIN_SRC emacs-lisp
+     ;; Define Haskell Alignment
+     ;; "Better" Haskell Alignment
+     (eval-after-load "align"
+       '(add-to-list 'align-rules-list
+                     '(haskell-types
+                       (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+                       (modes quote (haskell-mode literate-haskell-mode)))))
+     (eval-after-load "align"
+       '(add-to-list 'align-rules-list
+                     '(haskell-assignment
+                       (regexp . "\\(\\s-+\\)=\\s-+")
+                       (modes quote (haskell-mode literate-haskell-mode)))))
+     (eval-after-load "align"
+       '(add-to-list 'align-rules-list
+                     '(haskell-arrows
+                       (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+                       (modes quote (haskell-mode literate-haskell-mode)))))
+     (eval-after-load "align"
+       '(add-to-list 'align-rules-list
+                     '(haskell-left-arrows
+                       (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+                       (modes quote (haskell-mode literate-haskell-mode)))))
+   #+END_SRC
+*** Hooks
+    #+BEGIN_SRC emacs-lisp
+     ;; Enable haskell auto indentation
+     (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+     (add-hook 'haskell-mode-hook #'hindent-mode)
+     (add-hook 'haskell-mode-hook 'my/haskell-mode-hook)
+     ;; Need to unmap space, because the mode uses it by default
+     (add-hook 'haskell-mode-hook (lambda ()
+                                    (local-unset-key (kbd "SPC"))))
+     (add-hook 'haskell-mode-hook 'eldoc-mode)
+    #+END_SRC
+*** KeyMaps
+   #+BEGIN_SRC emacs-lisp
+     (eval-after-load 'haskell-mode
+       '(progn
+          (define-key haskell-mode-map [f8]
+            'haskell-navigate-imports) ;; Add a import navigation section
+          (define-key haskell-mode-map (kbd "C-c C-l")
+            'haskell-process-load-or-reload)
+          (define-key haskell-mode-map (kbd "C-c C-z")
+            'haskell-interactive-switch)
+          (define-key haskell-mode-map (kbd "C-c C-n C-t")
+            'haskell-process-do-type)
+          (define-key haskell-mode-map (kbd "C-c C-n C-i")
+            'haskell-process-do-info)
+          (define-key haskell-mode-map (kbd "C-c C-n C-c")
+            'haskell-process-cabal-build)
+          (define-key haskell-mode-map (kbd "C-c C-n c")
+            'haskell-process-cabal)
+          (define-key haskell-mode-map (kbd "SPC")
+            'haskell-mode-contextual-space)))
+
+     ;; Make the REPL interface ubiquitous
+     (defun my/haskell-load ()
+       (interactive)
+       (save-buffer)
+       (haskell-process-load-or-reload)
+       (haskell-interactive-switch))
+
+     (defun my/haskell-mode-hook ()
+       (haskell-indentation-mode -1)
+       (haskell-indent-mode 1)
+       (define-key haskell-mode-map (kbd "A-r") 'my/haskell-load))
+
+     (defun my/haskell-style ()
+       (interactive)
+       (align 0 (1+ (buffer-size)))
+       (save-buffer))
+
+     (eval-after-load 'haskell-cabal
+       '(progn
+          (define-key haskell-cabal-mode-map (kbd "C-c C-z")
+            'haskell-interactive-switch)
+          (define-key haskell-cabal-mode-map (kbd "C-c C-k")
+            'haskell-interactive-mode-clear)
+          (define-key haskell-cabal-mode-map (kbd "C-c C-c")
+            'haskell-process-cabal-build)
+          (define-key haskell-cabal-mode-map (kbd "C-c c")
+            'haskell-process-cabal)))
+     (evil-leader/set-key-for-mode 'haskell-mode "cr" 'my/haskell-load)
+     (evil-leader/set-key-for-mode 'haskell-mode "cz" 'haskell-interactive-switch)
+     (evil-leader/set-key-for-mode 'haskell-mode "e" 'my/haskell-load)
+
+     ;; Have up/down be similar to shell
+     (eval-after-load 'haskell-interactive-mode
+       '(progn
+          (local-unset-key (kbd "<up>"))
+          (local-unset-key (kbd "<down>"))
+          (define-key haskell-interactive-mode-map (kbd "<up>")
+            'haskell-interactive-mode-history-previous)
+          (define-key haskell-interactive-mode-map (kbd "<down>")
+            'haskell-interactive-mode-history-next)
+          ;; (lambda ()
+          ;;   ;; Propertize the prompt properly
+          ;;   (propertize "λ>" 'bold-italic))
+          ))
+
+
+     ;; Enable Stylish buffer formatting
+     (evil-leader/set-key-for-mode 'haskell-mode "i" 'my/haskell-style)
+   #+END_SRC
+*** Interface with Global Packages
+**** Popwin
+    #+BEGIN_SRC emacs-lisp
+     ;; Push all errors to separate window
+     (push "**HS-Error*" popwin:special-display-config)
+     (push "**GHC Error*" popwin:special-display-config)
+    #+END_SRC
+**** Company
+    #+BEGIN_SRC emacs-lisp
+     (add-to-list 'company-backends 'company-ghc)
+     (custom-set-variables '(company-ghc-show-info t))
+    #+END_SRC
+** Javascript
+*** About
+   js2-mode might not be used, as web-mode takes care of a good amount of it
+*** Package Requirements
+   #+BEGIN_SRC emacs-lisp
+     (require 'js2-mode)
+   #+END_SRC
+*** Mode Variables
+   #+BEGIN_SRC emacs-lisp
+     ;; Use node to interpert
+     (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+   #+END_SRC
+*** File types
+   #+BEGIN_SRC emacs-lisp
+     ;; Use js2 for all js files
+     (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+     (add-to-list 'auto-mode-alist '("\\.json\\'" . js2-mode))
+   #+END_SRC
+*** Formatting
+   #+BEGIN_SRC emacs-lisp
+     (setq-default js2-basic-offset 4)
+     ;; Make sure that brackets get inserted with proper indentation
+     ;; my-create-newline-and-enter-sexp definited in "c.el"
+     (sp-local-pair 'js2-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+   #+END_SRC
+** Lisp
+*** KeyMaps
+    #+BEGIN_SRC emacs-lisp
+      ;;; Window Functions
+      (evil-leader/set-key-for-mode 'emacs-lisp-mode "e" 'eval-buffer)
+    #+END_SRC
+*** Hooks
+    #+BEGIN_SRC emacs-lisp
+      (defun lisp-hook ()
+        (enable-paredit-mode)
+        (lambda ()  (rainbow-delimiters-mode t))
+        (global-set-key (kbd "A-h") 'paredit-backward)
+        (global-set-key (kbd "A-l") 'paredit-forward)
+        (global-set-key (kbd "A-u") 'paredit-backward-down)
+        (global-set-key (kbd "A-k") 'paredit-forward-down)
+        (global-set-key (kbd "A-j") 'paredit-backward-up)
+        (global-set-key (kbd "A-i") 'paredit-forward-up)
+        (global-set-key (kbd "A-1") 'paredit-splice-sexp-killing-backward)
+        (global-set-key (kbd "A-2") 'paredit-splice-sexp)
+        (global-set-key (kbd "A-3") 'paredit-splice-sexp-killing-forward)
+        (global-set-key (kbd "A-9") 'paredit-kill)
+        (global-set-key (kbd "A-!") 'paredit-backward-kill-word)
+        (global-set-key (kbd "A-q") 'paredit-backward-barf-sexp)
+        (global-set-key (kbd "A-r") 'paredit-forward-barf-sexp)
+        (global-set-key (kbd "A-e") 'paredit-forward-slurp-sexp)
+        (global-set-key (kbd "A-w") 'paredit-backward-slurp-sexp)
+        (global-set-key (kbd "A-(") 'paredit-wrap-sexp)
+        (global-set-key (kbd "A-{") 'paredit-wrap-curly)
+        (global-set-key (kbd "M-i") 'term-previous-input)
+        (global-set-key (kbd "M-o") 'term-next-input)
+        (global-set-key (kbd "A-[") 'paredit-wrap-square)
+        (global-set-key (kbd "A-t") 'transpose-windows)
+        (global-set-key (kbd "RET") 'newline-and-indent))
+
+
+      (add-hook 'emacs-lisp-mode-hook 'lisp-hook)
+    #+END_SRC
+** Lua
+*** Package Requirements
+   #+BEGIN_SRC emacs-lisp
+     (require 'lua-mode)
+   #+END_SRC
+** Markdown
+*** About
+   Documentaion available here:
+   http://jblevins.org/projects/markdown-mode/
+*** Package Requirements
+   #+BEGIN_SRC emacs-lisp
+     (require 'markdown-mode)
+     (require 'markdown-mode+)
+     (autoload 'markdown-mode "markdown-mode"
+       "Major mode for editing Markdown files" t)
+   #+END_SRC
+*** File Types
+   #+BEGIN_SRC emacs-lisp
+     ;; Recommended defaults:
+     (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+     (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+     (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+     ;; Recommended mode for git markdown files
+     (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+     (add-to-list 'auto-mode-alist '("CHANGELOG\\.md\\'" . gfm-mode))
+   #+END_SRC
+** MIPS
+*** Mode definition
+   #+BEGIN_SRC emacs-lisp
+     (define-derived-mode mips-mode asm-mode "MIPS"
+       "Major mode for editing MIPS assembler code."
+       ;; Unset ; key.
+       (local-unset-key (vector asm-comment-char))
+       (set (make-local-variable 'asm-comment-char) ?#)
+       (setq-local indent-tabs-mode t)
+       (setq tab-width 8)
+       (local-set-key (vector asm-comment-char) 'asm-comment)
+       ;; Update syntax for new comment char.
+       (set-syntax-table (make-syntax-table asm-mode-syntax-table))
+       (modify-syntax-entry asm-comment-char "< b")
+       ;; Fix one level comments.
+       (set (make-local-variable 'comment-start) (string asm-comment-char)))
+
+     (defun asm-align (&optional column)
+       "Align asm instructions.
+
+     Move text after every instruction to COLUMN or 12 if nil
+     and fix inline comments by indenting to `comment-column'."
+       (interactive "P")
+       (setq column (if column
+                        (prefix-numeric-value column)
+                      12))
+       (save-excursion
+         ;; Align instructions.
+         (goto-char (point-min))
+         (while (search-forward-regexp "^[ \t]+[[:alnum:]]+" nil t)
+           (delete-horizontal-space)
+           (indent-to-column column)
+           ;; Delete white space after instructions without arguments.
+           (when (eolp)
+             (delete-horizontal-space))
+           ;; Fix inline comments.
+           (when (search-forward (format "%c" asm-comment-char)
+                                 (line-end-position)
+                                 t)
+             (indent-for-comment)))))
+
+     (defun asm-convert-comment-chars-to-single ()
+       "Convert multiple comment chars to only single one."
+       (interactive)
+       (save-excursion
+         (goto-char (point-min))
+         (while (search-forward-regexp (format "%c\\{2,3\\}" asm-comment-char)
+                                       nil
+                                       t)
+           (replace-match (char-to-string asm-comment-char)))))
+
+     (provide 'setup-asm-mode)
+   #+END_SRC
+*** File Types
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'auto-mode-alist '("\\.s\\'" . mips-mode))
+    #+END_SRC
+** Python
+*** About
+   Seems like there is a bug for Python 2.7.10 and below. Use 2.7.12 or above.
+*** Package Requirements
+   #+BEGIN_SRC emacs-lisp
+     (require 'python)
+     (pyenv-mode)
+   #+END_SRC
+*** Mode Variables
+   #+BEGIN_SRC emacs-lisp
+     (setq python-shell-interpreter "ipython"
+           python-shell-interpreter-args "--simple-prompt --pprint") ;; Need this past iPython 5.1.0
+   #+END_SRC
+*** KeyMaps
+   #+BEGIN_SRC emacs-lisp
+     (defun py-load-switch ()
+       (interactive)
+       (python-shell-send-buffer)
+       (python-shell-switch-to-shell))
+
+     (define-key python-mode-map (kbd "C-c C-z") 'run-python)
+     (define-key python-mode-map (kbd "A-r") 'py-load-switch)
+   #+END_SRC
+*** Hooks
+   #+BEGIN_SRC emacs-lisp
+     (defun my/python-mode-hook ()
+         (add-to-list 'company-backends 'company-jedi)
+         (setq tab-width 4)
+         (setq python-indent 4))
+
+
+     (add-hook 'python-mode-hook 'anaconda-mode)
+     (add-hook 'python-mode-hook 'my/python-mode-hook)
+     (add-hook 'python-mode-hook 'jedi:setup)
+     (add-hook 'python-mode-hook 'eldoc-mode)
+   #+END_SRC
+*** Interface with Global Packages
+**** Paredit
+    #+BEGIN_SRC emacs-lisp
+     ;; Proper escaped quotes
+     (sp-local-pair 'python-mode "\\\'" "\\\'")
+    #+END_SRC
+**** Popwin
+    #+BEGIN_SRC emacs-lisp
+     (push '("**Anaconda*" :height 20) popwin:special-display-config)
+    #+END_SRC
+** Web (HTML, CSS)
+*** Package Requirements
+   #+BEGIN_SRC emacs-lisp
+     (require 'web-mode)
+   #+END_SRC
+*** Formatting
+   #+BEGIN_SRC emacs-lisp
+     ;; Turn off smart parens for only html files
+     (defun web-mode-html-conf ()
+       (if (equal (file-name-extension buffer-file-name) "html")
+           (smartparens-mode 0)))
+
+     (add-hook 'web-mode-hook 'web-mode-html-conf)
+
+     (defun web-mode-quick-fix ()
+       (setq web-mode-markup-indent-offset 2)
+       (setq web-mode-css-indent-offset 2))
+
+     (add-hook 'web-mode-hook 'web-mode-quick-fix)
+   #+END_SRC
+*** File Types
+   #+BEGIN_SRC emacs-lisp
+     (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+     (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+   #+END_SRC
+*** Hooks
+    #+BEGIN_SRC emacs-lisp
+     ;; Some of the hooks are located in formatting
+    #+END_SRC

@@ -21,19 +21,11 @@
 (if (not (file-exists-p "~/.emacs.d/custom.el"))
     (shell-command "touch ~/.emacs.d/custom.el"))
 
+(require 'org)
+(org-babel-load-file
+ (expand-file-name "config.org" user-emacs-directory))
+
 ;; Must load PATH variables in OSX before initializing packages
 (let ((file-name-handler-alist nil))
-  (when (equal system-type 'darwin)
-    (load "~/.emacs.d/macosx.el"))
-  (load "~/.emacs.d/packages.el")
-  (load "~/.emacs.d/vendor/cobalt-theme.el")
-  (load "~/.emacs.d/theme.el")
-  (load "~/.emacs.d/general.el")
-  (load "~/.emacs.d/custom-funcs.el")
-  (load "~/.emacs.d/keybinds.el")
-  (load-directory "~/.emacs.d/languages")
   ;; Load custom file after generation
-  (load custom-file)
-  ;; Loads other keybinds for mac os dependent of packages
-  (when (equal system-type 'darwin)
-    (load "~/.emacs.d/macosx_binds.el")))
+  (load custom-file))
