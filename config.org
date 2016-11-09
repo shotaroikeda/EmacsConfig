@@ -361,6 +361,10 @@
       (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
       (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
       (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
+      ;; Escaping Regions
+      (global-set-key (kbd "C-c C-r e") 'escape-region)
+      (global-set-key (kbd "C-c C-r u e") 'unescape-region)
     #+END_SRC
 *** Package Specific
 **** Comint
@@ -437,6 +441,10 @@
        (evil-leader/set-key "ctr" 'comment-region)
        (evil-leader/set-key "ctb" 'comment-box)
        (evil-leader/set-key "uctr" 'uncomment-region)
+
+       ;; Region Escaping
+       (evil-leader/set-key "\\e" 'escape-region)
+       (evil-leader/set-key "\\ue" 'unescape-region)
 
        (evil-leader/set-leader ";")
 
@@ -569,14 +577,36 @@
            (list nil nil)))
         (goto-char beg) ;; Go to beginning for proper search
         (if (re-search-forward "\t\\|\n\\|\'\\|\"\\|\\\\" end t)
-            (cond ((string-equal (print (match-string 0)) "\n")
+            (cond ((string-equal (match-string 0) "\n")
                    (progn (replace-match "\\\\n")
                           (escape-region (point) (+ end 1))))
-                  ((string-equal (print (match-string 0)) "\t")
+                  ((string-equal (match-string 0) "\t")
                    (progn (replace-match "\\\\t")
                           (escape-region (point) (+ end 1))))
                   (:otherwise (progn (replace-match "\\\\\\&")
                                      (escape-region (point) (+ end 2)))))
+          (goto-char end)))
+
+
+      (defun unescape-region (beg end)
+        "Reverses the escaping done by escape region"
+        (interactive
+         (if (use-region-p)
+             (list (region-beginning) (region-end))
+           (list nil nil)))
+        (goto-char beg) ;; Go to beginning for proper search
+        (if (re-search-forward "\\\\t\\|\\\\n\\|\\\\\'\\|\\\\\"\\|\\\\\\\\" end t)
+            (cond ((string-equal (match-string 0) "\\n")
+                   (progn (replace-match "\n")
+                          (unescape-region (point) (- end 1))))
+                  ((string-equal (match-string 0) "\\t")
+                   (progn (replace-match "\t")
+                          (unescape-region (point) (- end 1))))
+                  ((string-equal (match-string 0) "\\\\")
+                   (progn (replace-match "\\\\")
+                          (unescape-region (point) (- end 1))))
+                  (:otherwise (progn (replace-match (substring (match-string 0) 1 2))
+                                     (unescape-region (point) (- end 1)))))
           (goto-char end)))
     #+END_SRC
 * Languages
