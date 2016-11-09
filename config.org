@@ -330,7 +330,6 @@
        (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
      #+END_SRC
 
-
 ** Global Keybinds
 *** EMACS specific
     #+BEGIN_SRC emacs-lisp
@@ -539,7 +538,7 @@
                 (push library libraries-loaded))))))
 
 
-      (defun escape-region (string &optional from to) ()
+      (defun stringify-region (string &optional from to) ()
              (interactive
               (if (use-region-p)
                   (list nil (region-beginning) (region-end))
@@ -551,7 +550,7 @@
                (setq inputStr (if workOnStringP string (buffer-substring-no-properties from to)))
                (setq outputStr
                      (let ((case-fold-search t))
-                       (replace-regexp-in-string "a\\|e\\|i\\|o\\|u\\|" "" inputStr)))
+                       (perform-replace inputStr "\\\&" nil t)))
 
                (if workOnStringP
                    outputStr
@@ -559,6 +558,26 @@
                    (delete-region from to)
                    (goto-char from)
                    (insert outputStr)))))
+
+      (defun escape-region (beg end)
+        "Escape the current region in a generic string form.
+      More specificially escapes the following characters:
+      \", \', \\n, \\t, \\"
+        (interactive
+         (if (use-region-p)
+             (list (region-beginning) (region-end))
+           (list nil nil)))
+        (goto-char beg) ;; Go to beginning for proper search
+        (if (re-search-forward "\t\\|\n\\|\'\\|\"\\|\\\\" end t)
+            (cond ((string-equal (print (match-string 0)) "\n")
+                   (progn (replace-match "\\\\n")
+                          (escape-region (point) (+ end 1))))
+                  ((string-equal (print (match-string 0)) "\t")
+                   (progn (replace-match "\\\\t")
+                          (escape-region (point) (+ end 1))))
+                  (:otherwise (progn (replace-match "\\\\\\&")
+                                     (escape-region (point) (+ end 2)))))
+          (goto-char end)))
     #+END_SRC
 * Languages
 ** C/C++
