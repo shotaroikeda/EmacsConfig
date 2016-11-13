@@ -172,6 +172,7 @@
      (require 'company-quickhelp)
      (require 'diminish)
      (require 'doc-view)
+     (require 'erc)
      (require 'evil)
      (require 'god-mode)
      (require 'helm)
@@ -243,6 +244,10 @@
 
       ;; Multiple cursors!
       (global-evil-mc-mode 1)
+     #+END_SRC
+**** ERC
+     #+BEGIN_SRC emacs-lisp
+       (setq erc-echo-notices-in-minibuffer-flag t)
      #+END_SRC
 **** Helm
      #+BEGIN_SRC emacs-lisp
@@ -608,6 +613,22 @@
                   (:otherwise (progn (replace-match (substring (match-string 0) 1 2))
                                      (unescape-region (point) (- end 1)))))
           (goto-char end)))
+
+      (defun memeify-region (beg end)
+        "For A E S T H E T I C S"
+        (interactive (if (use-region-p)
+                         (list (region-beginning) (region-end))
+                       (list nil nil)))
+        (let (>meme (memeify (upcase (buffer-substring beg end))))
+          (delete-region beg end)
+          (insert >meme)))
+
+      (defun memeify (ss &optional n)
+        (if n
+            (progn (setq cntr "")
+                   (dotimes (i n) (setq cntr (concat " " cntr)))
+                   (apply 'concat (mapcar #'(lambda (x) (concat (string x) cntr)) ss)))
+          (memeify ss 1)))
     #+END_SRC
 * Languages
 ** C/C++
