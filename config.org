@@ -619,9 +619,9 @@
         (interactive (if (use-region-p)
                          (list (region-beginning) (region-end))
                        (list nil nil)))
-        (let (>meme (memeify (upcase (buffer-substring beg end))))
+        (let ((meme (memeify (upcase (buffer-substring beg end)))))
           (delete-region beg end)
-          (insert >meme)))
+          (insert meme)))
 
       (defun memeify (ss &optional n)
         (if n
