@@ -273,6 +273,25 @@
        (setq helm-display-function #'pop-to-buffer)
 
        (helm-projectile-on)
+
+       ;; Hide "boring" buffers
+       (setq helm-boring-buffer-regexp-list (list "\\*epc*"
+                                                  "\\*magit-.*"
+                                                  "\\*helm.*"
+                                                  "Minibuf-.*"
+                                                  "Echo Area .*"
+                                                  "bash-completion"
+                                                  "\\*company-documentation\\*"
+                                                  "\\*server\\*"
+                                                  "\\*code-conversion-work\\*"
+                                                  "\\*tip\\*"
+                                                  "\\*Shell Command Output\\*"))
+       (setq helm-ff-skip-boring-files t)
+       (setq helm-boring-file-regexp-list (list "\\.DS_Store"
+                                                "\\.#.*"
+                                                "\\.git"
+                                                "\\.projectile"
+                                                "*.pyc"))
      #+END_SRC
 **** Linum
      #+BEGIN_SRC emacs-lisp
