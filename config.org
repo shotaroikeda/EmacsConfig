@@ -8,6 +8,7 @@
     - Python: Jedi, EPC, sexpdata
     - C: libclang, CMake
     - LaTeX: MacTeX, pdf-tools from brew
+    - R: R from brew
 ** Run for all
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'package-archives
@@ -67,6 +68,8 @@
                            flycheck-irony
                            c-eldoc
 
+                           ess
+
                            pyenv-mode
                            anaconda-mode
                            company-anaconda
@@ -86,6 +89,8 @@
                            zenburn-theme
                            ample-zen-theme
                            material-theme
+
+                           polymode
                            ))
      (if fresh-install
          (progn (package-refresh-contents)
@@ -102,8 +107,8 @@
    #+END_SRC
 ** General theme material
    #+BEGIN_SRC emacs-lisp
-     (load-file "~/.emacs.d/vendor/cobalt-theme.el") ;; Load cobalt
-     (load-theme 'cobalt t)
+     ;; (load-file "~/.emacs.d/vendor/cobalt-theme.el") ;; Load cobalt
+     (load-theme 'monokai t)
 
      ;; Global line
      (global-hl-line-mode t)
@@ -290,7 +295,7 @@
        (setq helm-boring-file-regexp-list (list "\\.DS_Store"
                                                 "\\.#.*"
                                                 "\\.git"
-                                                "\\.projectile"
+                                                ;; "\\.projectile"
                                                 "*.pyc"))
      #+END_SRC
 **** Linum
@@ -654,11 +659,11 @@
 *** About
    Please run irony-install-server before working with C languages. Requires CMake and libclang.
 *** Package Requirements
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
      ;; C/C++ tweaks
      (require 'cc-mode)
      (require 'cl)
-   #+END_SRC
+    #+END_SRC
 *** Formatting
    #+BEGIN_SRC emacs-lisp
      ;; Default Settings
@@ -731,7 +736,7 @@
      (add-hook 'cider-repl-mode-hook 'lisp-hook)
    #+END_SRC
 *** KeyMaps
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
      (defun clj-send-to-repl ()
        "Send the current buffer to the repl then switch to the repl buffer"
        (interactive)
@@ -758,7 +763,7 @@
      (evil-leader/set-key-for-mode 'cider-repl-mode "cg" 'cider-grimoire)
      (evil-leader/set-key-for-mode 'cider-repl-mode "ck" 'cider-eval-buffer)
      (evil-leader/set-key-for-mode 'cider-repl-mode "cve" 'cider-visit-error-buffer)
-   #+END_SRC
+    #+END_SRC
 *** Interface with Global Packages
 **** Popwin
     #+BEGIN_SRC emacs-lisp
@@ -1058,21 +1063,60 @@
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'auto-mode-alist '("\\.s\\'" . mips-mode))
     #+END_SRC
+** Octave
+*** Requirements
+    #+BEGIN_SRC emacs-lisp
+      (require 'octave)
+    #+END_SRC
+*** General Configuration
+    #+BEGIN_SRC emacs-lisp
+      ;; Change load path to cli version
+      (setq inferior-octave-program "/usr/local/bin/octave-cli")
+      ;; Fix Freeze Error
+      (setq inferior-octave-prompt ">> ")
+      ;; (add-to-list 'load-path "/usr/local/bin/gnuplot")
+      (setq auto-mode-alist
+            (cons '("\\.m$" . octave-mode) auto-mode-alist))
+
+      (add-hook 'octave-mode-hook
+                (lambda ()
+                  (abbrev-mode 1)
+                  (auto-fill-mode 1)
+                  (if (eq window-system 'x)
+                      (font-lock-mode 1))))
+    #+END_SRC
+*** Keybinds
+    #+BEGIN_SRC emacs-lisp
+      (defun octave-send-to-repl ()
+        "Send current buffer to the octave repl then switch to repl buffer"
+        (interactive)
+        (octave-send-buffer)
+        (other-window 1)
+        (octave-show-process-buffer))
+
+      ;; Keybind run octave
+      (define-key octave-mode-map (kbd "C-c C-z") 'run-octave)
+      (define-key octave-mode-map (kbd "A-r") 'octave-send-to-repl)
+
+      ;; Evil binds
+      (evil-leader/set-key-for-mode 'octave-mode "cz" 'run-octave)
+      (evil-leader/set-key-for-mode 'octave-mode "cr" 'octave-send-buffer)
+    #+END_SRC
 ** Python
 *** About
-   Seems like there is a bug for Python 2.7.10 and below. Use 2.7.12 or above.
+    Seems like there is a bug for Python 2.7.10 and below. Use 2.7.12 or above.
 *** Package Requirements
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
      (require 'python)
      (pyenv-mode)
-   #+END_SRC
+    #+END_SRC
 *** Mode Variables
    #+BEGIN_SRC emacs-lisp
      (setq python-shell-interpreter "ipython"
            python-shell-interpreter-args "--simple-prompt --pprint") ;; Need this past iPython 5.1.0
    #+END_SRC
 *** KeyMaps
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
      (defun py-load-switch ()
        (interactive)
        (python-shell-send-buffer)
@@ -1080,7 +1124,7 @@
 
      (define-key python-mode-map (kbd "C-c C-z") 'run-python)
      (define-key python-mode-map (kbd "A-r") 'py-load-switch)
-   #+END_SRC
+    #+END_SRC
 *** Hooks
    #+BEGIN_SRC emacs-lisp
      (defun my/python-mode-hook ()
@@ -1104,6 +1148,20 @@
     #+BEGIN_SRC emacs-lisp
      (push '("**Anaconda*" :height 20) popwin:special-display-config)
     #+END_SRC
+** R
+*** Package Requirements
+    #+BEGIN_SRC emacs-lisp
+      (require 'ess)
+    #+END_SRC
+*** Formatting
+    #+BEGIN_SRC emacs-lisp
+      (setq ess-indent-level 4)
+      (setq ess-arg-function-offset 4)
+      (setq ess-else-offset 4)
+    #+END_SRC
+
+*** Interface with Global Packages
+
 ** Web (HTML, CSS)
 *** Package Requirements
    #+BEGIN_SRC emacs-lisp
