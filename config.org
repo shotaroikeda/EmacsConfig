@@ -290,7 +290,13 @@
                                                   "\\*server\\*"
                                                   "\\*code-conversion-work\\*"
                                                   "\\*tip\\*"
-                                                  "\\*Shell Command Output\\*"))
+                                                  "\\*Shell Command Output\\*"
+                                                  "\\*Input History\\*"
+                                                  "\\*ess.dbg.R"
+                                                  "\\*R:accum\\*"
+                                                  "\\*ess-command-output\\*"
+                                                  "\\*ess-get-words\\*"
+                                                  "\\*auto-load\\*"))
        (setq helm-ff-skip-boring-files t)
        (setq helm-boring-file-regexp-list (list "\\.DS_Store"
                                                 "\\.#.*"
@@ -1126,7 +1132,7 @@
      (define-key python-mode-map (kbd "A-r") 'py-load-switch)
     #+END_SRC
 *** Hooks
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
      (defun my/python-mode-hook ()
          (add-to-list 'company-backends 'company-jedi)
          (setq tab-width 4)
@@ -1137,7 +1143,7 @@
      (add-hook 'python-mode-hook 'my/python-mode-hook)
      (add-hook 'python-mode-hook 'jedi:setup)
      (add-hook 'python-mode-hook 'eldoc-mode)
-   #+END_SRC
+    #+END_SRC
 *** Interface with Global Packages
 **** Paredit
     #+BEGIN_SRC emacs-lisp
@@ -1152,6 +1158,7 @@
 *** Package Requirements
     #+BEGIN_SRC emacs-lisp
       (require 'ess)
+      (require 'ess-site)
     #+END_SRC
 *** Formatting
     #+BEGIN_SRC emacs-lisp
@@ -1160,6 +1167,11 @@
       (setq ess-else-offset 4)
     #+END_SRC
 
+*** KeyMaps
+    #+BEGIN_SRC emacs-lisp
+      (evil-leader/set-key-for-mode 'ess-mode "cz" 'ess-switch-to-inferior-or-script-buffer)
+      (evil-leader/set-key-for-mode 'ess-mode "cr" 'ess-eval-buffer-and-go)
+    #+END_SRC
 *** Interface with Global Packages
 
 ** Web (HTML, CSS)
@@ -1183,7 +1195,7 @@
      (add-hook 'web-mode-hook 'web-mode-quick-fix)
    #+END_SRC
 *** File Types
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
      (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
      (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
      (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
@@ -1192,7 +1204,7 @@
      (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
      (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
      (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-   #+END_SRC
+    #+END_SRC
 *** Hooks
     #+BEGIN_SRC emacs-lisp
      ;; Some of the hooks are located in formatting
