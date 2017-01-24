@@ -7,7 +7,7 @@
 *** Other Requirements
     - Python: Jedi, EPC, sexpdata
     - C: libclang, CMake
-    - LaTeX: MacTeX, pdf-tools from brew
+    - LaTeX: MacTeX, pdf-tools, aspell from brew
     - R: R from brew
 ** Run for all
    #+BEGIN_SRC emacs-lisp
@@ -300,7 +300,7 @@
        (setq helm-ff-skip-boring-files t)
        (setq helm-boring-file-regexp-list (list "\\.DS_Store"
                                                 "\\.#.*"
-                                                "\\.git"
+                                                "\\.git$"
                                                 ;; "\\.projectile"
                                                 "*.pyc"))
      #+END_SRC
