@@ -91,6 +91,7 @@
                            zenburn-theme
                            ample-zen-theme
                            material-theme
+                           gruvbox-theme
 
                            polymode
 
@@ -112,7 +113,7 @@
 ** General theme material
    #+BEGIN_SRC emacs-lisp
      ;; (load-file "~/.emacs.d/vendor/cobalt-theme.el") ;; Load cobalt
-     (load-theme 'monokai t)
+     (load-theme 'gruvbox t)
 
      ;; Global line
      (global-hl-line-mode t)
@@ -166,10 +167,11 @@
      (eval-after-load "paredit" '(diminish 'paredit-mode))
      (eval-after-load "undo-tree" '(diminish 'undo-tree-mode))
      (eval-after-load "company" '(diminish 'company-mode))
-     (eval-after-load "anaconda" '(diminish 'anaconda-mode))
+     (eval-after-load "anaconda-mode" '(diminish 'anaconda-mode))
+     (eval-after-load "eldoc" '(diminish 'eldoc-mode))
      (eval-after-load "evil-mc" '(diminish 'evil-mc-mode))
      (eval-after-load "auto-revert" '(diminish 'auto-revert-mode))
-     (eval-after-load "helm" '(diminish 'helm-mode))
+     (eval-after-load "helm-mode" '(diminish 'helm-mode))
      ;; (diminish 'major-mode)
    #+END_SRC
 * General Configuration
@@ -312,7 +314,9 @@
                                                   "tq-temp-epdfinfo"
                                                   "pdf-info-query--+"
                                                   "\\*.* output\\*"
-                                                  "\\*ESS\\*"))
+                                                  "\\*ESS\\*"
+                                                  "\\*Python-font-lock\\*"
+                                                  "\\*Help\\*"))
        (setq helm-ff-skip-boring-files t)
        (setq helm-boring-file-regexp-list (list "\\.DS_Store"
                                                 "\\.#.*"
@@ -1250,16 +1254,18 @@
     #+END_SRC
 *** Hooks
     #+BEGIN_SRC emacs-lisp
-     (defun my/python-mode-hook ()
-         (add-to-list 'company-backends 'company-jedi)
-         (setq tab-width 4)
-         (setq python-indent 4))
+      (defun my/python-mode-hook ()
+        (add-to-list 'company-backends 'company-jedi)
+        (setq tab-width 4)
+        (setq python-indent 4))
 
 
-     (add-hook 'python-mode-hook 'anaconda-mode)
-     (add-hook 'python-mode-hook 'my/python-mode-hook)
-     (add-hook 'python-mode-hook 'jedi:setup)
-     (add-hook 'python-mode-hook 'eldoc-mode)
+      (add-hook 'python-mode-hook 'anaconda-mode)
+      (add-hook 'python-mode-hook 'my/python-mode-hook)
+      (add-hook 'python-mode-hook 'jedi:setup)
+      (add-hook 'python-mode-hook 'eldoc-mode)
+      (add-hook 'python-mode-hook 'flyspell-prog-mode)
+      (add-hook 'python-mode-hook 'flyspell-mode)
     #+END_SRC
 *** Interface with Global Packages
 **** Paredit
