@@ -147,15 +147,15 @@
 
      ;; Set mode line colors
      (set-face-attribute 'powerline-active1 nil
-                         :background (face-attribute 'font-lock-keyword-face :foreground))
+                         :background "#5D3F6A")
      (set-face-attribute 'powerline-active2 nil
                          :background "#2C3E50")
      (set-face-attribute 'mode-line nil
-                         :background (face-attribute 'web-mode-json-context-face :foreground)
+                         :background "#2C3E50"
                          :box nil)
      (set-face-attribute 'mode-line-inactive nil
-                         :foreground (face-attribute 'default :foreground)
-                         :background (face-attribute 'font-lock-regexp-grouping-construct :foreground)
+                         :foreground "#95A5A6"
+                         :background "#2C3E50"
                          :box nil)
      (spaceline-compile)
    #+END_SRC
@@ -307,7 +307,12 @@
                                                   "\\*R:accum\\*"
                                                   "\\*ess-command-output\\*"
                                                   "\\*ess-get-words\\*"
-                                                  "\\*auto-load\\*"))
+                                                  "\\*auto-load\\*"
+                                                  "\\*Python completions redirect\\*"
+                                                  "tq-temp-epdfinfo"
+                                                  "pdf-info-query--+"
+                                                  "\\*.* output\\*"
+                                                  "\\*ESS\\*"))
        (setq helm-ff-skip-boring-files t)
        (setq helm-boring-file-regexp-list (list "\\.DS_Store"
                                                 "\\.#.*"
@@ -525,12 +530,14 @@
        (global-set-key (kbd "A-b") 'helm-buffers-list)
        (global-set-key (kbd "A-o") 'helm-find-files)
 
-       (global-set-key (kbd "A-9") 'scroll-down)
-       (global-set-key (kbd "A-0") 'scroll-up)
+       (define-key helm-map (kbd "A-j") 'helm-next-line)
+       (define-key helm-map (kbd "A-k") 'helm-previous-line)
+       (define-key helm-map (kbd "C-j") 'helm-next-page)
+       (define-key helm-map (kbd "C-k") 'helm-previous-page)
 
-(defun configure ()
-  (interactive)
-  (find-file "~/.emacs.d/init.el"))
+       (defun configure ()
+         (interactive)
+         (find-file "~/.emacs.d/init.el"))
 
        (global-set-key (kbd "M-c") 'configure)
 
