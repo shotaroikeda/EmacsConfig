@@ -316,7 +316,8 @@
                                                   "\\*.* output\\*"
                                                   "\\*ESS\\*"
                                                   "\\*Python-font-lock\\*"
-                                                  "\\*Help\\*"))
+                                                  "\\*Help\\*"
+                                                  "\\*code-converting-work\\*"))
        (setq helm-ff-skip-boring-files t)
        (setq helm-boring-file-regexp-list (list "\\.DS_Store"
                                                 "\\.#.*"
