@@ -72,10 +72,9 @@
 
                            ess
 
-                           pyenv-mode
                            anaconda-mode
                            company-anaconda
-                           company-jedi
+                           ein
 
                            web-mode
                            markdown-mode
@@ -92,6 +91,7 @@
                            ample-zen-theme
                            material-theme
                            gruvbox-theme
+                           twilight-bright-theme
 
                            polymode
 
@@ -1235,13 +1235,17 @@
     Seems like there is a bug for Python 2.7.10 and below. Use 2.7.12 or above.
 *** Package Requirements
     #+BEGIN_SRC emacs-lisp
-     (require 'python)
-     (pyenv-mode)
+      (require 'anaconda-mode)
+      (require 'ein)
+      (require 'ein-loaddefs)
+      (require 'ein-notebook)
+      (require 'ein-subpackages)
+      (require 'python)
     #+END_SRC
 *** Mode Variables
    #+BEGIN_SRC emacs-lisp
-     (setq python-shell-interpreter "ipython"
-           python-shell-interpreter-args "--simple-prompt --pprint") ;; Need this past iPython 5.1.0
+     (setq python-shell-interpreter "jupyter console"
+           python-shell-interpreter-args "--simple-prompt") ;; Need this past iPython 5.1.0
    #+END_SRC
 *** KeyMaps
     #+BEGIN_SRC emacs-lisp
@@ -1256,15 +1260,13 @@
 *** Hooks
     #+BEGIN_SRC emacs-lisp
       (defun my/python-mode-hook ()
-        (add-to-list 'company-backends 'company-jedi)
+        (add-to-list 'company-backends 'company-anaconda)
         (setq tab-width 4)
         (setq python-indent 4))
 
-
       (add-hook 'python-mode-hook 'anaconda-mode)
-      (add-hook 'python-mode-hook 'my/python-mode-hook)
-      (add-hook 'python-mode-hook 'jedi:setup)
       (add-hook 'python-mode-hook 'eldoc-mode)
+      (add-hook 'python-mode-hook 'my/python-mode-hook)
       (add-hook 'python-mode-hook 'flyspell-prog-mode)
       (add-hook 'python-mode-hook 'flyspell-mode)
     #+END_SRC
@@ -1278,6 +1280,43 @@
     #+BEGIN_SRC emacs-lisp
      (push '("**Anaconda*" :height 20) popwin:special-display-config)
     #+END_SRC
+*** Org mode
+    #+BEGIN_SRC emacs-lisp
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((ipython . t)
+         ;; other languages..
+         ))
+    #+END_SRC
+*** EIN
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'ein:notebook-mode-hook #'anaconda-mode)
+
+  (defun user-ein-reply-callback (args content -metadata-not-used-)
+    (let ((callback (plist-get args :callback))
+          (candidates (plist-get content :matches)))
+      (funcall callback candidates)))
+
+  (defun user-company-ein-callback (callback)
+    (ein:kernel-complete
+     (ein:get-kernel)
+     (thing-at-point 'line)
+     (current-column)
+     (list :complete_reply
+           (cons #'user-ein-reply-callback (list :callback callback))))
+    )
+
+  (defun user-company-ein-backend (command &optional arg &rest ignored)
+    (interactive (list 'interactive))
+    (case command
+      (interactive (company-begin-backend 'user-company-ein-backend))
+      (prefix (company-anaconda-prefix))
+      (candidates (cons :async #'user-company-ein-callback))
+      (location nil)
+      (sorted t)
+      )
+
+#+END_SRC
 ** R
 *** Package Requirements
     #+BEGIN_SRC emacs-lisp
@@ -1333,3 +1372,14 @@
     #+BEGIN_SRC emacs-lisp
      ;; Some of the hooks are located in formatting
     #+END_SRC
+* Org-mode
+  #+BEGIN_SRC emacs-lisp
+    (setq org-src-fontify-natively t)
+    (setq org-confirm-babel-evaluate nil)
+    (defun shk-fix-inline-images ()
+      (when org-inline-image-overlays
+        (org-redisplay-inline-images)))
+
+    (add-hook 'org-babel-after-execute-hook 'shk-fix-inline-images)
+    (add-hook 'org-mode-hook 'org-display-inline-images)
+  #+END_SRC
