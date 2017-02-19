@@ -1284,7 +1284,7 @@
     #+BEGIN_SRC emacs-lisp
       (org-babel-do-load-languages
        'org-babel-load-languages
-       '((ipython . t)
+       '((ein . t)
          ;; other languages..
          ))
     #+END_SRC
@@ -1303,8 +1303,7 @@
      (thing-at-point 'line)
      (current-column)
      (list :complete_reply
-           (cons #'user-ein-reply-callback (list :callback callback))))
-    )
+           (cons #'user-ein-reply-callback (list :callback callback)))))
 
   (defun user-company-ein-backend (command &optional arg &rest ignored)
     (interactive (list 'interactive))
@@ -1313,8 +1312,7 @@
       (prefix (company-anaconda-prefix))
       (candidates (cons :async #'user-company-ein-callback))
       (location nil)
-      (sorted t)
-      )
+      (sorted t)))
 
 #+END_SRC
 ** R
