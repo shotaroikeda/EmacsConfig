@@ -74,6 +74,7 @@
 
                            anaconda-mode
                            company-anaconda
+                           company-jedi
                            ein
 
                            web-mode
@@ -1236,6 +1237,7 @@
 *** Package Requirements
     #+BEGIN_SRC emacs-lisp
       (require 'anaconda-mode)
+      (require 'company-jedi)
       (require 'ein)
       (require 'ein-loaddefs)
       (require 'ein-notebook)
@@ -1244,8 +1246,12 @@
     #+END_SRC
 *** Mode Variables
    #+BEGIN_SRC emacs-lisp
-     (setq python-shell-interpreter "jupyter console"
-           python-shell-interpreter-args "--simple-prompt") ;; Need this past iPython 5.1.0
+     (setq python-shell-interpreter "jupyter"
+           python-shell-interpreter-args " console --simple-prompt") ;; Need this past iPython 5.1.0
+
+     (defun my/ein:jupyter-server-start ()
+       (interactive)
+       (ein:jupyter-server-start (car (split-string (shell-command-to-string "which jupyter"))) (getenv "HOME")))
    #+END_SRC
 *** KeyMaps
     #+BEGIN_SRC emacs-lisp
@@ -1260,7 +1266,7 @@
 *** Hooks
     #+BEGIN_SRC emacs-lisp
       (defun my/python-mode-hook ()
-        (add-to-list 'company-backends 'company-anaconda)
+        (add-to-list 'company-backends 'company-jedi)
         (setq tab-width 4)
         (setq python-indent 4))
 
