@@ -1246,12 +1246,17 @@
     #+END_SRC
 *** Mode Variables
    #+BEGIN_SRC emacs-lisp
-     (setq python-shell-interpreter "jupyter"
-           python-shell-interpreter-args " console --simple-prompt") ;; Need this past iPython 5.1.0
+     (setq python-shell-interpreter "ipython"
+           python-shell-interpreter-args "--simple-prompt --pprint") ;; Need this past iPython 5.1.0
+
+     ;; (setq python-shell-interpreter "jupyter"
+     ;;       python-shell-interpreter-args " console --simple-prompt") ;; Need this past iPython 5.1.0
 
      (defun my/ein:jupyter-server-start ()
        (interactive)
-       (ein:jupyter-server-start (car (split-string (shell-command-to-string "which jupyter"))) (getenv "HOME")))
+       (ein:jupyter-server-start
+        (car (split-string (shell-command-to-string "which jupyter")))
+        (concat (getenv "HOME") "/")))
    #+END_SRC
 *** KeyMaps
     #+BEGIN_SRC emacs-lisp
@@ -1272,6 +1277,7 @@
 
       (add-hook 'python-mode-hook 'anaconda-mode)
       (add-hook 'python-mode-hook 'eldoc-mode)
+      (add-hook 'python-mode-hook 'jedi:setup)
       (add-hook 'python-mode-hook 'my/python-mode-hook)
       (add-hook 'python-mode-hook 'flyspell-prog-mode)
       (add-hook 'python-mode-hook 'flyspell-mode)
