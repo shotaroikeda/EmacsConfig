@@ -1,0 +1,5 @@
+* Proper Binds
+  #+BEGIN_SRC emacs-lisp
+    (setq x-meta-keysym 'alt)
+    (setq x-super-keysym 'meta)
+  #+END_SRC
