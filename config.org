@@ -5,22 +5,20 @@
      (require 'package)
     #+END_SRC
 *** Other Requirements
-    - Python: Jedi, EPC, sexpdata
-    - C: libclang, CMake
-    - LaTeX: MacTeX, pdf-tools, aspell from brew
-    - R: R from brew
+**** Python
+     Install [[https://docs.continuum.io/anaconda/install][Anaconda]] before continuing. Save it in the home directory called `.anaconda`
+**** C
+     - libclang
+     - CMake
+**** LaTeX
+     - MacTeX, pdf-tools, aspell from brew
+     - pdf-tools you may have to make from [[https://github.com/politza/pdf-tools][source]]
+**** R
+     - R: R from brew
 ** Run for all
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'package-archives
                   '("melpa" . "http://melpa.milkbox.net/packages/") t)
-   #+END_SRC
-** Run Operating System Specific
-   #+BEGIN_SRC emacs-lisp
-     (when (equal system-type 'darwin)
-       (org-babel-load-file (expand-file-name "macosx.org" user-emacs-directory)))
-
-     (when (equal system-type 'gnu/linux)
-       (org-babel-load-file (expand-file-name "arch.org" user-emacs-directory)))
    #+END_SRC
 ** Refresh Packages if fresh-install is enabled
    #+BEGIN_SRC emacs-lisp
@@ -79,6 +77,7 @@
                            company-anaconda
                            company-jedi
                            ein
+                           pyvenv
 
                            web-mode
                            markdown-mode
@@ -106,6 +105,14 @@
                 (dolist (p my-packages)
                   (when (not (package-installed-p p))
                     (package-install p)))))
+   #+END_SRC
+** Run Operating System Specific
+   #+BEGIN_SRC emacs-lisp
+     (when (equal system-type 'darwin)
+       (org-babel-load-file (expand-file-name "macosx.org" user-emacs-directory)))
+
+     (when (equal system-type 'gnu/linux)
+       (org-babel-load-file (expand-file-name "arch.org" user-emacs-directory)))
    #+END_SRC
 * Theme
 ** Requirements
@@ -242,6 +249,7 @@
        (company-quickhelp-mode 1)
        ;; Add hook
        (add-hook 'after-init-hook 'global-company-mode)
+       (add-to-list 'company-backends 'company-anaconda)
      #+END_SRC
 **** DocView
      #+BEGIN_SRC emacs-lisp
@@ -1225,9 +1233,10 @@
       (require 'ein-notebook)
       (require 'ein-subpackages)
       (require 'python)
+      (require 'pyvenv)
     #+END_SRC
 *** Mode Variables
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
      (setq python-shell-interpreter "ipython"
            python-shell-interpreter-args "--simple-prompt --pprint") ;; Need this past iPython 5.1.0
 
@@ -1239,7 +1248,10 @@
        (ein:jupyter-server-start
         (car (split-string (shell-command-to-string "which jupyter")))
         (concat (getenv "HOME") "/")))
-   #+END_SRC
+
+     (setenv "WORKON_HOME" (concat (getenv "HOME") "/.anaconda/envs"))
+     (pyvenv-mode 1)
+    #+END_SRC
 *** KeyMaps
     #+BEGIN_SRC emacs-lisp
      (defun py-load-switch ()
@@ -1253,13 +1265,15 @@
 *** Hooks
     #+BEGIN_SRC emacs-lisp
       (defun my/python-mode-hook ()
-        (add-to-list 'company-backends 'company-jedi)
+        ;; already defined in comapny
+        ;; (add-to-list 'company-backends 'company-anaconda)
         (setq tab-width 4)
         (setq python-indent 4))
 
       (add-hook 'python-mode-hook 'anaconda-mode)
-      (add-hook 'python-mode-hook 'eldoc-mode)
-      (add-hook 'python-mode-hook 'jedi:setup)
+      (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+      ;; (add-hook 'python-mode-hook 'eldoc-mode)
+      ;; (add-hook 'python-mode-hook 'jedi:setup)
       (add-hook 'python-mode-hook 'my/python-mode-hook)
       (add-hook 'python-mode-hook 'flyspell-prog-mode)
       (add-hook 'python-mode-hook 'flyspell-mode)
@@ -1284,29 +1298,29 @@
     #+END_SRC
 *** EIN
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'ein:notebook-mode-hook #'anaconda-mode)
+  ;; (add-hook 'ein:notebook-mode-hook #'anaconda-mode)
 
-  (defun user-ein-reply-callback (args content -metadata-not-used-)
-    (let ((callback (plist-get args :callback))
-          (candidates (plist-get content :matches)))
-      (funcall callback candidates)))
+  ;; (defun user-ein-reply-callback (args content -metadata-not-used-)
+  ;;   (let ((callback (plist-get args :callback))
+  ;;         (candidates (plist-get content :matches)))
+  ;;     (funcall callback candidates)))
 
-  (defun user-company-ein-callback (callback)
-    (ein:kernel-complete
-     (ein:get-kernel)
-     (thing-at-point 'line)
-     (current-column)
-     (list :complete_reply
-           (cons #'user-ein-reply-callback (list :callback callback)))))
+  ;; (defun user-company-ein-callback (callback)
+  ;;   (ein:kernel-complete
+  ;;    (ein:get-kernel)
+  ;;    (thing-at-point 'line)
+  ;;    (current-column)
+  ;;    (list :complete_reply
+  ;;          (cons #'user-ein-reply-callback (list :callback callback)))))
 
-  (defun user-company-ein-backend (command &optional arg &rest ignored)
-    (interactive (list 'interactive))
-    (case command
-      (interactive (company-begin-backend 'user-company-ein-backend))
-      (prefix (company-anaconda-prefix))
-      (candidates (cons :async #'user-company-ein-callback))
-      (location nil)
-      (sorted t)))
+  ;; (defun user-company-ein-backend (command &optional arg &rest ignored)
+  ;;   (interactive (list 'interactive))
+  ;;   (case command
+  ;;     (interactive (company-begin-backend 'user-company-ein-backend))
+  ;;     (prefix (company-anaconda-prefix))
+  ;;     (candidates (cons :async #'user-company-ein-callback))
+  ;;     (location nil)
+  ;;     (sorted t)))
 
 #+END_SRC
 ** R
