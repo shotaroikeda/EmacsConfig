@@ -274,6 +274,7 @@
 **** ERC
      #+BEGIN_SRC emacs-lisp
        (setq erc-echo-notices-in-minibuffer-flag t)
+       (add-to-list 'erc-modules 'notifications)
      #+END_SRC
 **** Flyspell
      #+BEGIN_SRC emacs-lisp

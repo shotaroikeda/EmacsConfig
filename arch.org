@@ -3,3 +3,10 @@
     (setq x-meta-keysym 'alt)
     (setq x-super-keysym 'meta)
   #+END_SRC
+* PDF Tools
+  You will need to go [[https://github.com/politza/pdf-tools][PDF-Tools]] and install it before continuing
+  #+BEGIN_SRC emacs-lisp
+    (pdf-tools-install) ; nice PDF viewer (needs separate installation)
+    (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
+    (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+  #+END_SRC
