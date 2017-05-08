@@ -79,6 +79,7 @@
                            company-jedi
                            ein
                            python-cell
+                           py-autopep8
                            pyvenv
 
                            web-mode
