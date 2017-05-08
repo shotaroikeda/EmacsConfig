@@ -1,0 +1,15 @@
+
+* 2017
+** 2017-04 April
+*** 2017-04-10 Monday
+**** TODO Finish AML Writeup
+    <2017-04-10 Mon 13:00>
+    [[file:~/cs498aml/cs498hw6/pdf/main.tex::\item]]
+**** TODO Finish Ethics
+    <2017-04-10 Mon 22:00>
+    [[file:~/cs210/W9/submission.txt::#%20For%20W9,%20argue%20from%20a%20consequence-based%20perspective.%20You%20can%20delete%20this%20line.][file:~/cs210/W9/submission.txt::# For W9, argue from a consequence-based perspective. You can delete this line.]]
+*** 2017-04-11 Tuesday
+*** 2017-04-13 Thursday
+**** TODO Review Correctness of Notes
+    <2017-04-13 Thu 13:00>
+    [[file:~/cs210/notes/09_security_and_risk.org::*Hacktivism][Hacktivism]]
