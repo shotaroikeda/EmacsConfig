@@ -7,6 +7,7 @@
 *** Other Requirements
 **** Python
      Install [[https://docs.continuum.io/anaconda/install][Anaconda]] before continuing. Save it in the home directory called `.anaconda`
+     Install jedi, ipython, and autopep8
 **** C
      - libclang
      - CMake
@@ -77,6 +78,7 @@
                            company-anaconda
                            company-jedi
                            ein
+                           python-cell
                            pyvenv
 
                            web-mode
@@ -223,11 +225,11 @@
       (setq tramp-auto-save-directory my-auto-save-folder);
 
       ;; Set Scrollwheel speed
-      (setq scroll-step 1)
-      (setq scroll-conservatively 10000)
-      (setq mouse-wheel-progressive-speed nil)
-      (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-      (setq auto-window-vscroll nil)
+      ;; (setq scroll-step 1)
+      ;; (setq scroll-conservatively 10000)
+      ;; (setq mouse-wheel-progressive-speed nil)
+      ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+      ;; (setq auto-window-vscroll nil)
 
       ;; Remove warning bell
       (setq ring-bell-function 'ignore)
@@ -1233,7 +1235,9 @@
       (require 'ein-loaddefs)
       (require 'ein-notebook)
       (require 'ein-subpackages)
+      (require 'py-autopep8)
       (require 'python)
+      (require 'python-cell)
       (require 'pyvenv)
     #+END_SRC
 *** Mode Variables
@@ -1255,13 +1259,20 @@
     #+END_SRC
 *** KeyMaps
     #+BEGIN_SRC emacs-lisp
-     (defun py-load-switch ()
-       (interactive)
-       (python-shell-send-buffer)
-       (python-shell-switch-to-shell))
+      (defun py-load-switch ()
+        (interactive)
+        (python-shell-send-buffer)
+        (python-shell-switch-to-shell))
 
-     (define-key python-mode-map (kbd "C-c C-z") 'run-python)
-     (define-key python-mode-map (kbd "A-r") 'py-load-switch)
+      (define-key python-mode-map (kbd "C-c C-z") 'run-python)
+      (define-key python-mode-map (kbd "A-r") 'py-load-switch)
+
+      (defun my/py-send&next-cell ()
+        (interactive)
+        (python-shell-send-cell)
+        (python-forward-cell))
+
+      (define-key python-mode-map (kbd "M-RET") 'my/py-send&next-cell)
     #+END_SRC
 *** Hooks
     #+BEGIN_SRC emacs-lisp
@@ -1278,6 +1289,8 @@
       (add-hook 'python-mode-hook 'my/python-mode-hook)
       (add-hook 'python-mode-hook 'flyspell-prog-mode)
       (add-hook 'python-mode-hook 'flyspell-mode)
+      (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
+      (add-hook 'python-mode-hook #'python-cell-mode 1)
     #+END_SRC
 *** Interface with Global Packages
 **** Paredit
@@ -1324,6 +1337,10 @@
   ;;     (sorted t)))
 
 #+END_SRC
+*** AutoPep8
+    #+BEGIN_SRC emacs-lisp
+      (setq py-autopep8-options '("--ignore=E266,E265" "--max-line-length=99"))
+    #+END_SRC
 ** R
 *** Package Requirements
     #+BEGIN_SRC emacs-lisp
@@ -1380,6 +1397,7 @@
      ;; Some of the hooks are located in formatting
     #+END_SRC
 * Org-mode
+** Visuals
   #+BEGIN_SRC emacs-lisp
     (setq org-src-fontify-natively t)
     (setq org-confirm-babel-evaluate nil)
@@ -1390,3 +1408,17 @@
     (add-hook 'org-babel-after-execute-hook 'shk-fix-inline-images)
     (add-hook 'org-mode-hook 'org-display-inline-images)
   #+END_SRC
+** Org Notes File
+   #+BEGIN_SRC emacs-lisp
+     (setq org-default-notes-file "~/.emacs.d/notes.org")
+     (evil-leader/set-key "nn" 'org-capture)
+
+     ;; Templates
+     (setq org-capture-templates
+           '(("t" "Todo" entry (file+datetree+prompt org-default-notes-file)
+              "* TODO %?\n %T\n %a")
+             ("j" "Journal" entry (file+datetree org-default-notes-file)
+              "* %?\nEntered on %U\n  %i\n  %a")
+             ))
+
+   #+END_SRC

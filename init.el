@@ -1,6 +1,8 @@
 ;; Set bigger memeory allocation before garbage collection
-;; (setq gc-cons-threshold 100000000)
-
+(setq gc-cons-threshold (* 512 1024 1024))
+(setq gc-cons-percentage 0.5)
+(run-with-idle-timer 5 t #'garbage-collect)
+(setq garbage-collection-messages t)
 ;; Set fresh install to 1 for a fresh install
 
 ;; Added by Package.el.  This must come before configurations of
