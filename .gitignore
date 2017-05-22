@@ -21,3 +21,5 @@ tramp
 # Generated files
 custom.el
 config.el
+macosx.el
+arch.el
