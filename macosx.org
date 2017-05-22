@@ -55,3 +55,7 @@
                                      (turn-off-evil-mode)
                                      (turn-off-evil-mc-mode)))
      #+END_SRC
+* Magit
+  #+BEGIN_SRC emacs-lisp
+    (setq magit-git-executable "/usr/local/Cellar/git/2.13.0/bin/git")
+  #+END_SRC
