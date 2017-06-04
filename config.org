@@ -5,6 +5,8 @@
      (require 'package)
     #+END_SRC
 *** Other Requirements
+**** Ag
+     brew install the_silver_searcher
 **** Python
      Install [[https://docs.continuum.io/anaconda/install][Anaconda]] before continuing. Save it in the home directory called `.anaconda`
      Install jedi, ipython, and autopep8
@@ -51,6 +53,7 @@
                            helm
                            helm-projectile
                            helm-flyspell
+                           helm-ag
 
                            better-defaults
 
@@ -522,18 +525,22 @@
        (add-hook 'evil-god-state-exit-hook (lambda () (diminish-undo 'god-local-mode)))
        (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
 
+       (define-key evil-normal-state-map "/" 'helm-occur)
      #+END_SRC
-**** Helm
+*** Helm
      #+BEGIN_SRC emacs-lisp
        ;; Helm
        (global-set-key (kbd "A-a") 'helm-M-x)
        (global-set-key (kbd "A-b") 'helm-buffers-list)
        (global-set-key (kbd "A-o") 'helm-find-files)
+       (global-set-key (kbd "C-s") 'helm-do-ag-project-root)
+       (global-set-key (kbd "A-B") 'helm-do-ag-buffers)
 
        (define-key helm-map (kbd "A-j") 'helm-next-line)
        (define-key helm-map (kbd "A-k") 'helm-previous-line)
        (define-key helm-map (kbd "C-j") 'helm-next-page)
        (define-key helm-map (kbd "C-k") 'helm-previous-page)
+
 
        (defun configure ()
          (interactive)
@@ -624,6 +631,39 @@
                    (goto-char from)
                    (insert outputStr)))))
 
+      (defun match-any? (name regexp-list)
+        "Checks for any matches in a list of regexps"
+        (catch 'match
+          (dolist (elm regexp-list)
+            (when (string-match elm name)
+              (throw 'match t)))))
+
+      (defun my-change-buffer (change-buffer)
+        "Call CHANGE-BUFFER until current buffer is not in `my-skippable-buffers'."
+        (let ((initial (current-buffer)))
+          (funcall change-buffer)
+          (let ((first-change (current-buffer)))
+            (catch 'loop
+              (while (match-any? (buffer-name) helm-boring-buffer-regexp-list)
+                (funcall change-buffer)
+                (when (eq (current-buffer) first-change)
+                  (switch-to-buffer initial)
+                  (throw 'loop t)))))))
+
+      (defun my-next-buffer ()
+        "Variant of `next-buffer' that skips `my-skippable-buffers'."
+        (interactive)
+        (my-change-buffer 'next-buffer))
+
+      (defun my-previous-buffer ()
+        "Variant of `previous-buffer' that skips `my-skippable-buffers'."
+        (interactive)
+        (my-change-buffer 'previous-buffer))
+
+      (global-set-key [remap next-buffer] 'my-next-buffer)
+      (global-set-key [remap previous-buffer] 'my-previous-buffer)
+
+
       (defun escape-region (beg end)
         "Escape the current region in a generic string form.
       More specificially escapes the following characters:
@@ -641,8 +681,8 @@
                    (progn (replace-match "\\\\t")
                           (escape-region (point) (+ end 1))))
                   (:otherwise (progn (replace-match "\\\\\\&")
-                                     (escape-region (point) (+ end 2)))))
-          (goto-char end)))
+                                     (escape-region (point) (+ end 2))))))
+        (goto-char end))
 
 
       (defun unescape-region (beg end)
@@ -1243,20 +1283,20 @@
     #+END_SRC
 *** Mode Variables
     #+BEGIN_SRC emacs-lisp
-     (setq python-shell-interpreter "ipython"
-           python-shell-interpreter-args "--simple-prompt --pprint") ;; Need this past iPython 5.1.0
+      (setq python-shell-interpreter "ipython"
+            python-shell-interpreter-args "--simple-prompt --pprint") ;; Need this past iPython 5.1.0
 
-     ;; (setq python-shell-interpreter "jupyter"
-     ;;       python-shell-interpreter-args " console --simple-prompt") ;; Need this past iPython 5.1.0
+      ;; (setq python-shell-interpreter "jupyter"
+      ;;       python-shell-interpreter-args " console --simple-prompt") ;; Need this past iPython 5.1.0
 
-     (defun my/ein:jupyter-server-start ()
-       (interactive)
-       (ein:jupyter-server-start
-        (car (split-string (shell-command-to-string "which jupyter")))
-        (concat (getenv "HOME") "/")))
+      (defun my/ein:jupyter-server-start ()
+        (interactive)
+        (ein:jupyter-server-start
+         (car (split-string (shell-command-to-string "which jupyter")))
+         (concat (getenv "HOME") "/")))
 
-     (setenv "WORKON_HOME" (concat (getenv "HOME") "/.anaconda/envs"))
-     (pyvenv-mode 1)
+      (setenv "WORKON_HOME" (concat (getenv "HOME") "/.anaconda/envs"))
+      (pyvenv-mode 1)
     #+END_SRC
 *** KeyMaps
     #+BEGIN_SRC emacs-lisp
