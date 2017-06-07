@@ -21,7 +21,7 @@
 ** Run for all
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'package-archives
-                  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+                   '("melpa" . "https://melpa.org/packages/"))
    #+END_SRC
 ** Refresh Packages if fresh-install is enabled
    #+BEGIN_SRC emacs-lisp
@@ -130,7 +130,7 @@
 ** General theme material
    #+BEGIN_SRC emacs-lisp
      ;; (load-file "~/.emacs.d/vendor/cobalt-theme.el") ;; Load cobalt
-     (load-theme 'gruvbox t)
+     (load-theme 'plan9-theme t)
 
      ;; Global line
      (global-hl-line-mode t)
