@@ -11,7 +11,7 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(setq fresh-install nil)
+(setq fresh-install t)
 
 ;; Debugging mode
 (setq debug-on-error t)

@@ -33,6 +33,7 @@
                            god-mode
                            diminish
                            spaceline
+                           spaceline-all-the-icons
 
                            bash-completion
                            company
@@ -124,13 +125,15 @@
 ** Requirements
    #+BEGIN_SRC emacs-lisp
      (require 'powerline)
+     (require 'spaceline)
+     (require 'spaceline-all-the-icons)
      (require 'spaceline-config)
-     (require 'web-mode) ;; For that face
+     ;; (require 'web-mode) ;; For that face
    #+END_SRC
 ** General theme material
    #+BEGIN_SRC emacs-lisp
      ;; (load-file "~/.emacs.d/vendor/cobalt-theme.el") ;; Load cobalt
-     (load-theme 'plan9-theme t)
+     (load-theme 'zenburn t)
 
      ;; Global line
      (global-hl-line-mode t)
@@ -158,24 +161,33 @@
 *** Powerline
    #+BEGIN_SRC emacs-lisp
      ;; Powerline custom configuration
-     (spaceline-spacemacs-theme)
-     (spaceline-helm-mode)
-     (setq-default powerline-default-separator 'wave)
-     (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-
      ;; Set mode line colors
-     (set-face-attribute 'powerline-active1 nil
-                         :background "#5D3F6A")
-     (set-face-attribute 'powerline-active2 nil
-                         :background "#2C3E50")
-     (set-face-attribute 'mode-line nil
-                         :background "#2C3E50"
-                         :box nil)
-     (set-face-attribute 'mode-line-inactive nil
-                         :foreground "#95A5A6"
-                         :background "#2C3E50"
-                         :box nil)
+     ;; (set-face-attribute 'powerline-active1 nil
+     ;;                     :background "#5D3F6A")
+     ;; (set-face-attribute 'powerline-active2 nil
+     ;;                     :background "#2C3E50")
+     ;; (set-face-attribute 'mode-line nil
+     ;;                     :background "#2C3E50"
+     ;;                     :box nil)
+     ;; (set-face-attribute 'mode-line-inactive nil
+     ;;                     :foreground "#95A5A6"
+     ;;                     :background "#2C3E50"
+     ;;                     :box nil)
+     (spaceline-all-the-icons-theme 1)
+     (spaceline-helm-mode 1)
+     (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+     (spaceline-all-the-icons--setup-git-ahead)
+     (spaceline-all-the-icons--setup-package-updates)
+
+     (setq-default powerline-default-separator 'wave)
+     (setq spaceline-all-the-icons-separator-type 'wave)
+     ;; Spaceline icons
+     ;; (setq spaceline-all-the-icons-separator-type 'arrow)
+     ;; (setq powerline-text-scale-factor 0.8)
+
+
      (spaceline-compile)
+
    #+END_SRC
 *** Text
    #+BEGIN_SRC emacs-lisp
