@@ -22,10 +22,14 @@
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'package-archives
                   '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
    #+END_SRC
 ** Refresh Packages if fresh-install is enabled
    #+BEGIN_SRC emacs-lisp
-     (defvar my-packages '(evil
+     (defvar my-packages '(
+                           exec-path-from-shell
+
+                           evil
                            evil-god-state
                            evil-leader
                            evil-mc
@@ -102,8 +106,6 @@
                            gruvbox-theme
                            twilight-bright-theme
 
-                           polymode
-
                            flyspell-lazy
                            ))
      (if fresh-install
@@ -111,6 +113,10 @@
                 (dolist (p my-packages)
                   (when (not (package-installed-p p))
                     (package-install p)))))
+
+     ;; Copy envs before continuing
+     (exec-path-from-shell-copy-env "PYTHONPATH")
+     (exec-path-from-shell-copy-env "PATH")
    #+END_SRC
 ** Run Operating System Specific
    #+BEGIN_SRC emacs-lisp
@@ -134,6 +140,9 @@
 
      ;; Global line
      (global-hl-line-mode t)
+     (menu-bar-mode -1)
+     (toggle-scroll-bar -1)
+     (tool-bar-mode -1)
    #+END_SRC
 ** Make Lineum Look Better
    #+BEGIN_SRC emacs-lisp

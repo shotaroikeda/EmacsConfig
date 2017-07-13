@@ -5,8 +5,20 @@
   #+END_SRC
 * PDF Tools
   You will need to go [[https://github.com/politza/pdf-tools][PDF-Tools]] and install it before continuing
-  #+BEGIN_SRC emacs-lisp
+** PDF Tools Requirements
+   #+BEGIN_SRC emacs-lisp
+     (defvar linux-required '(tablist))
+     (package-initialize)
+
+     (if fresh-install
+         (progn (package-refresh-contents)
+                (dolist (p linux-required)
+                  (when (not (package-installed-p p))
+                    (package-install p)))))
+   #+END_SRC
+** Configure Installation
+   #+BEGIN_SRC emacs-lisp
     (pdf-tools-install) ; nice PDF viewer (needs separate installation)
     (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
     (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
-  #+END_SRC
+   #+END_SRC
