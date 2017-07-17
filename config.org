@@ -25,7 +25,9 @@
    #+END_SRC
 ** Refresh Packages if fresh-install is enabled
    #+BEGIN_SRC emacs-lisp
-     (defvar my-packages '(evil
+     (defvar my-packages '(all-the-icons
+
+                           evil
                            evil-god-state
                            evil-leader
                            evil-mc
@@ -137,6 +139,10 @@
 
      ;; Global line
      (global-hl-line-mode t)
+
+     (menu-bar-mode -1)
+     (toggle-scroll-bar -1)
+     (tool-bar-mode -1)
    #+END_SRC
 ** Make Lineum Look Better
    #+BEGIN_SRC emacs-lisp
@@ -256,6 +262,8 @@
       ;; Makes *scratch* empty.
       (setq initial-scratch-message "")
 
+      ;; Don't make backup files
+      (setq make-backup-files nil)
     #+END_SRC
 *** Package Specific
 **** Bash Completion
@@ -353,7 +361,6 @@
        (setq helm-boring-file-regexp-list (list "\\.DS_Store"
                                                 "\\.#.*"
                                                 "\\.git$"
-                                                ;; "\\.projectile"
                                                 "*.pyc"))
      #+END_SRC
 **** Linum
