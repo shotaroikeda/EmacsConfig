@@ -21,7 +21,7 @@
 ** Run for all
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'package-archives
-                  '("melpa" . "https://melpa.org/packages/") t)
+                  '("melpa" . "https://melpa.org/packages/"))
 
    #+END_SRC
 ** Refresh Packages if fresh-install is enabled
@@ -143,10 +143,7 @@
 
      ;; Global line
      (global-hl-line-mode t)
-<<<<<<< HEAD
-=======
 
->>>>>>> c895532483fbe721d447ff523fa1ee88b14c2a1c
      (menu-bar-mode -1)
      (toggle-scroll-bar -1)
      (tool-bar-mode -1)
