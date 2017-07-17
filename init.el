@@ -14,7 +14,7 @@
 (setq fresh-install t)
 
 ;; Debugging mode
-(setq debug-on-error nil)
+(setq debug-on-error t)
 
 ;; Move the custom variable (auto generated) to a different file
 (setq custom-file "~/.emacs.d/custom.el")
