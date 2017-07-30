@@ -361,7 +361,8 @@
        (setq helm-boring-file-regexp-list (list "\\.DS_Store"
                                                 "\\.#.*"
                                                 "\\.git$"
-                                                "*.pyc"))
+                                                ".*\\.pyc$"))
+
      #+END_SRC
 **** Linum
      #+BEGIN_SRC emacs-lisp
@@ -391,6 +392,8 @@
        (setq display-buffer-function 'popwin:display-buffer)
        (push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
        (push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)
+       (push '("\*Helm Swoop\*" :dedicated t) popwin:special-display-config)
+
      #+END_SRC
 **** Projectile
      #+BEGIN_SRC emacs-lisp
