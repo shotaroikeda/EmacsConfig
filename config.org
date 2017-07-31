@@ -53,10 +53,9 @@
 
                            rudel
 
-                           helm
-                           helm-projectile
-                           helm-flyspell
-                           helm-ag
+                           ivy
+                           all-the-icons-ivy
+                           counsel-projectile
 
                            better-defaults
 
@@ -180,7 +179,6 @@
      ;;                     :background "#2C3E50"
      ;;                     :box nil)
      (spaceline-all-the-icons-theme 1)
-     (spaceline-helm-mode 1)
      (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
      (spaceline-all-the-icons--setup-git-ahead)
      (spaceline-all-the-icons--setup-package-updates)
@@ -206,7 +204,6 @@
      (eval-after-load "eldoc" '(diminish 'eldoc-mode))
      (eval-after-load "evil-mc" '(diminish 'evil-mc-mode))
      (eval-after-load "auto-revert" '(diminish 'auto-revert-mode))
-     (eval-after-load "helm-mode" '(diminish 'helm-mode))
      ;; (diminish 'major-mode)
    #+END_SRC
 * General Configuration
@@ -223,9 +220,9 @@
      (require 'flyspell)
      (require 'flyspell-lazy)
      (require 'god-mode)
-     (require 'helm)
-     (require 'helm-flyspell)
-     (require 'helm-projectile)
+     (require 'ivy)
+     (require 'counsel)
+     (require 'swiper)
      (require 'paredit)
      (require 'popwin)
      (require 'smartparens)
@@ -306,64 +303,86 @@
      #+BEGIN_SRC emacs-lisp
        (flyspell-lazy-mode 1)
      #+END_SRC
-**** Helm
+**** Ivy
      #+BEGIN_SRC emacs-lisp
-       ;; Helm
-       (helm-mode 1)
+       (ivy-mode 1)
+       (setq ivy-use-virtual-buffers t)
+       (setq enable-recursive-minibuffers t)
+       (global-set-key (kbd "<f6>") 'ivy-resume)
+       (global-set-key (kbd "M-x") 'counsel-M-x)
+       (global-set-key (kbd "A-a") 'counsel-M-x)
+       (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+       (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+       (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+       (global-set-key (kbd "<f1> l") 'counsel-find-library)
+       (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+       (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+       (global-set-key (kbd "C-c g") 'counsel-git)
+       (global-set-key (kbd "C-c j") 'counsel-git-grep)
+       (global-set-key (kbd "C-c k") 'counsel-ag)
+       (global-set-key (kbd "C-x l") 'counsel-locate)
+       (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+       (define-key ivy-minibuffer-map (kbd "A-k") 'ivy-previous-line)
+       (define-key ivy-minibuffer-map (kbd "A-j") 'ivy-next-line)
+       (define-key ivy-minibuffer-map (kbd "C-u") 'ivy-scroll-up-command)
+       (define-key ivy-minibuffer-map (kbd "C-f") 'ivy-scroll-down-command)
 
-       ;; Helm functions to make it seem more like ido
-       (defun fu/helm-find-files-navigate-forward (orig-fun &rest args)
-         (if (file-directory-p (helm-get-selection))
-             (apply orig-fun args)
-           (helm-maybe-exit-minibuffer)))
-       (advice-add 'helm-execute-persistent-action :around #'fu/helm-find-files-navigate-forward)
+       (global-set-key (kbd "C-s") 'counsel-ag)
+       (global-set-key (kbd "A-b") 'ivy-switch-buffer)
+       (global-set-key (kbd "A-B") 'swiper-all)
+       (global-set-key (kbd "A-o") 'counsel-find-file)
 
-       (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
+       (define-key evil-normal-state-map "/" 'swiper)
 
-       (defun fu/helm-find-files-navigate-back (orig-fun &rest args)
-         (if (= (length helm-pattern) (length (helm-find-files-initial-input)))
-             (helm-find-files-up-one-level 1)
-           (apply orig-fun args)))
 
-       (advice-add 'helm-ff-delete-char-backward :around #'fu/helm-find-files-navigate-back)
+       ;; The order for these two matter
+       (counsel-projectile-on)
+       (all-the-icons-ivy-setup)
 
-       (setq helm-display-function #'pop-to-buffer)
+       (setq ivy-ignore-buffers (list "\\*epc*"
+                                      "\\*magit-.*"
+                                      "\\*helm.*"
+                                      "Minibuf-.*"
+                                      "Echo Area .*"
+                                      "bash-completion"
+                                      "\\*company-documentation\\*"
+                                      "\\*server\\*"
+                                      "\\*code-conversion-work\\*"
+                                      "\\*tip\\*"
+                                      "\\*Shell Command Output\\*"
+                                      "\\*Input History\\*"
+                                      "\\*ess.dbg.R"
+                                      "\\*R:accum\\*"
+                                      "\\*ess-command-output\\*"
+                                      "\\*ess-get-words\\*"
+                                      "\\*auto-load\\*"
+                                      "\\*Python completions redirect\\*"
+                                      "tq-temp-epdfinfo"
+                                      "pdf-info-query--+"
+                                      "\\*.* output\\*"
+                                      "\\*ESS\\*"
+                                      "\\*Python-font-lock\\*"
+                                      "\\*Help\\*"
+                                      "\\*code-converting-work\\*"
+                                      "\\*packages\\*"
+                                      ".*autoloads.el$"))
 
-       (helm-projectile-on)
+       (setq counsel-find-file-ignore-regexp (concat (regexp-opt (list ".DS_Store"
+                                                                       ".git"
+                                                                       ".pyc"
+                                                                       "../"
+                                                                       "./"))
+                                                     "\\|\\(?:\\.#.*\\)"
+                                                     "\\|\\(?:.*~$\\)"))
 
-       ;; Hide "boring" buffers
-       (setq helm-boring-buffer-regexp-list (list "\\*epc*"
-                                                  "\\*magit-.*"
-                                                  "\\*helm.*"
-                                                  "Minibuf-.*"
-                                                  "Echo Area .*"
-                                                  "bash-completion"
-                                                  "\\*company-documentation\\*"
-                                                  "\\*server\\*"
-                                                  "\\*code-conversion-work\\*"
-                                                  "\\*tip\\*"
-                                                  "\\*Shell Command Output\\*"
-                                                  "\\*Input History\\*"
-                                                  "\\*ess.dbg.R"
-                                                  "\\*R:accum\\*"
-                                                  "\\*ess-command-output\\*"
-                                                  "\\*ess-get-words\\*"
-                                                  "\\*auto-load\\*"
-                                                  "\\*Python completions redirect\\*"
-                                                  "tq-temp-epdfinfo"
-                                                  "pdf-info-query--+"
-                                                  "\\*.* output\\*"
-                                                  "\\*ESS\\*"
-                                                  "\\*Python-font-lock\\*"
-                                                  "\\*Help\\*"
-                                                  "\\*code-converting-work\\*"))
-       (setq helm-ff-skip-boring-files t)
-       (setq helm-boring-file-regexp-list (list "\\.DS_Store"
-                                                "\\.#.*"
-                                                "\\.git$"
-                                                ".*\\.pyc$"))
+       (with-eval-after-load 'counsel
+         (let ((done (where-is-internal #'ivy-done     ivy-minibuffer-map t))
+               (alt  (where-is-internal #'ivy-alt-done ivy-minibuffer-map t)))
+           (define-key counsel-find-file-map done #'ivy-alt-done)
+           (define-key counsel-find-file-map alt  #'ivy-done)))
 
      #+END_SRC
+     
 **** Linum
      #+BEGIN_SRC emacs-lisp
        (add-hook 'prog-mode-hook 'linum-mode)
@@ -392,7 +411,7 @@
        (setq display-buffer-function 'popwin:display-buffer)
        (push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
        (push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)
-       (push '("\*Helm Swoop\*" :dedicated t) popwin:special-display-config)
+       (push '("^SWIPER$" :regexp t) popwin:special-display-config)
 
      #+END_SRC
 **** Projectile
@@ -546,39 +565,7 @@
        (add-hook 'evil-god-state-entry-hook (lambda () (diminish 'god-local-mode)))
        (add-hook 'evil-god-state-exit-hook (lambda () (diminish-undo 'god-local-mode)))
        (evil-define-key 'god global-map [escape] 'evil-god-state-bail)
-
-       (define-key evil-normal-state-map "/" 'helm-occur)
      #+END_SRC
-*** Helm
-     #+BEGIN_SRC emacs-lisp
-       ;; Helm
-       (global-set-key (kbd "A-a") 'helm-M-x)
-       (global-set-key (kbd "A-b") 'helm-buffers-list)
-       (global-set-key (kbd "A-o") 'helm-find-files)
-       (global-set-key (kbd "C-s") 'helm-do-ag-project-root)
-       (global-set-key (kbd "A-B") 'helm-do-ag-buffers)
-
-       (define-key helm-map (kbd "A-j") 'helm-next-line)
-       (define-key helm-map (kbd "A-k") 'helm-previous-line)
-       (define-key helm-map (kbd "C-j") 'helm-next-page)
-       (define-key helm-map (kbd "C-k") 'helm-previous-page)
-
-
-       (defun configure ()
-         (interactive)
-         (find-file "~/.emacs.d/init.el"))
-
-       (global-set-key (kbd "M-c") 'configure)
-
-       (global-set-key (kbd "A-E") 'paredit-forward-barf-sexp)
-       (global-set-key (kbd "C-k") 'paredit-kill)
-
-       (global-set-key (kbd "A-RET") 'newline-and-indent)
-     #+END_SRC
-***** Helm-Flyspell
-      #+BEGIN_SRC emacs-lisp
-        (define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct)
-      #+END_SRC
 **** Magit
      #+BEGIN_SRC emacs-lisp
        (defun stage-and-commit ()
@@ -666,7 +653,7 @@
           (funcall change-buffer)
           (let ((first-change (current-buffer)))
             (catch 'loop
-              (while (match-any? (buffer-name) helm-boring-buffer-regexp-list)
+              (while (match-any? (buffer-name) ivy-ignore-buffers)
                 (funcall change-buffer)
                 (when (eq (current-buffer) first-change)
                   (switch-to-buffer initial)

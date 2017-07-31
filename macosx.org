@@ -33,6 +33,8 @@
   #+BEGIN_SRC emacs-lisp
     (set-face-attribute 'default nil
                         :family "Inconsolata for Powerline" :height 130 :weight 'normal)
+    (setq all-the-icons-default-adjust 0.0)
+    (setq all-the-icons-scale-factor 1.0)
   #+END_SRC
 * PDF-Tools
   #+BEGIN_SRC emacs-lisp
