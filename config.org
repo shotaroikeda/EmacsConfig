@@ -134,7 +134,7 @@
 ** General theme material
    #+BEGIN_SRC emacs-lisp
      ;; (load-file "~/.emacs.d/vendor/cobalt-theme.el") ;; Load cobalt
-     (load-theme 'zenburn t)
+     (load-theme 'rebecca t)
 
      ;; Global line
      (global-hl-line-mode t)
@@ -178,18 +178,18 @@
      ;;                     :foreground "#95A5A6"
      ;;                     :background "#2C3E50"
      ;;                     :box nil)
-     (spaceline-all-the-icons-theme 1)
+     ;; (setq powerline-default-separator 'utf-8)
+     ;; (spaceline-all-the-icons-theme 1)
+     (spaceline-spacemacs-theme)
      (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-     (spaceline-all-the-icons--setup-git-ahead)
-     (spaceline-all-the-icons--setup-package-updates)
+     ;; (spaceline-all-the-icons--setup-git-ahead)
+     ;; (spaceline-all-the-icons--setup-package-updates)
 
-     (setq-default powerline-default-separator 'wave)
-     (setq spaceline-all-the-icons-separator-type 'wave)
+     (setq powerline-default-separator 'wave)
+     ;; (setq spaceline-all-the-icons-separator-type 'wave)
      ;; Spaceline icons
      ;; (setq spaceline-all-the-icons-separator-type 'arrow)
      ;; (setq powerline-text-scale-factor 0.8)
-
-
      (spaceline-compile)
 
    #+END_SRC
