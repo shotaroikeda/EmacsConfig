@@ -18,6 +18,8 @@
      - pdf-tools you may have to make from [[https://github.com/politza/pdf-tools][source]]
 **** R
      - R: R from brew
+**** C#
+     - Omnisharp-roslyn. Run `omnisharp-install-server`
 ** Run for all
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'package-archives
@@ -56,6 +58,7 @@
                            ivy
                            all-the-icons-ivy
                            counsel-projectile
+                           dumb-jump
 
                            better-defaults
 
@@ -91,6 +94,8 @@
                            markdown-mode
                            markdown-mode+
 
+                           omnisharp
+
                            js2-mode
 
                            popwin
@@ -102,6 +107,7 @@
                            ample-zen-theme
                            material-theme
                            gruvbox-theme
+                           rebecca-theme
                            twilight-bright-theme
 
                            polymode
@@ -214,6 +220,7 @@
      (require 'company)
      (require 'company-quickhelp)
      (require 'diminish)
+     (require 'dumb-jump)
      (require 'doc-view)
      (require 'erc)
      (require 'evil)
@@ -279,6 +286,21 @@
        ;; DocView
        (add-hook 'doc-view-mode-hook 'auto-revert-mode)
        (add-hook 'doc-view-mode (lambda () (setq linum-mode nil)))
+     #+END_SRC
+**** Dumb Jump
+     #+BEGIN_SRC emacs-lisp
+       (dumb-jump-mode)
+
+       (setq dumb-jump-selector 'ivy)
+       (setq dumb-jump-prefer-searcher 'ag)
+       (setq dumb-jump-force-searcher 'ag)
+
+       ;; Keybinds
+       (global-set-key (kbd "M-g o") 'dumb-jump-go-other-window)
+       (global-set-key (kbd "M-g j") 'dumb-jump-go)
+       (global-set-key (kbd "M-g i") 'dumb-jump-go-prompt)
+       (global-set-key (kbd "M-g x") 'dumb-jump-go-prefer-external)
+       (global-set-key (kbd "M-g z") 'dumb-jump-go-prefer-external-other-window)
      #+END_SRC
 **** Evil
      #+BEGIN_SRC emacs-lisp
@@ -382,7 +404,7 @@
            (define-key counsel-find-file-map alt  #'ivy-done)))
 
      #+END_SRC
-     
+
 **** Linum
      #+BEGIN_SRC emacs-lisp
        (add-hook 'prog-mode-hook 'linum-mode)
@@ -593,6 +615,22 @@
         (indent-according-to-mode)
         (forward-line -1)
         (indent-according-to-mode))
+    #+END_SRC
+*** Highlight keywords: TODO, FIXME, etc
+    #+BEGIN_SRC emacs-lisp
+      (defun highlight-todos ()
+        (highlight-lines-matching-regexp "\\<\\(FIXME\\|WRITEME\\|WRITEME!\\|TODO\\|BUG\\):?" 
+             'warning))
+
+      (defun highlight-notes ()
+        (highlight-lines-matching-regexp "\\<\\(NOTE\\|HL\\):?"
+             'success))
+
+
+      ;; Highlight in these modes
+      (add-hook 'prog-mode-hook 'highlight-todos)
+      (add-hook 'prog-mode-hook 'highlight-notes)
+
     #+END_SRC
 *** WorkFlow
     #+BEGIN_SRC emacs-lisp
@@ -834,6 +872,7 @@
      ;; Make sure that brackets get inserted with proper indentation
      (sp-local-pair 'c++-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
      (sp-local-pair 'c-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+     (sp-local-pair 'csharp-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
    #+END_SRC
 *** Hooks
    #+BEGIN_SRC emacs-lisp
@@ -867,6 +906,27 @@
 
      (eval-after-load 'company
        '(add-to-list 'company-backends 'company-irony))
+   #+END_SRC
+*** CMake
+   #+BEGIN_SRC emacs-lisp
+     (setq auto-mode-alist
+           (append
+            '(("CMakeLists\\.txt\\'" . cmake-mode))
+            '(("\\.cmake\\'" . cmake-mode))
+            auto-mode-alist))
+   #+END_SRC
+
+** C#
+   #+BEGIN_SRC emacs-lisp
+     (require 'omnisharp)
+     ;; Add to loading
+     (add-hook 'csharp-mode-hook 'omnisharp-mode)
+
+     ;; Add hook for company
+     (eval-after-load
+      'company
+      '(add-to-list 'company-backends 'company-omnisharp))
+
    #+END_SRC
 ** Clojure
 *** About
