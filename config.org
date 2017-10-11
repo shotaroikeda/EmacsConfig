@@ -113,6 +113,7 @@
                            polymode
 
                            flyspell-lazy
+			   tablist
                            ))
      (if fresh-install
          (progn (package-refresh-contents)
