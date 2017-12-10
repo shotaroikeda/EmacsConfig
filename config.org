@@ -1174,6 +1174,10 @@
     #+BEGIN_SRC emacs-lisp
       (define-key LaTeX-mode-map (kbd "C-,") 'flyspell-goto-next-error)
     #+END_SRC
+*** File Types
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'auto-mode-alist '("\\.adr\\'" . LaTeX-mode))
+    #+END_SRC
 ** Lisp
 *** KeyMaps
     #+BEGIN_SRC emacs-lisp
