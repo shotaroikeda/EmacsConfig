@@ -114,7 +114,6 @@
 
                            flyspell-lazy
                            flyspell-correct-ivy
-			   tablist
                            ))
      (if fresh-install
          (progn (package-refresh-contents)
