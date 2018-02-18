@@ -113,6 +113,7 @@
                            polymode
 
                            flyspell-lazy
+                           flyspell-correct-ivy
                            ))
      (if fresh-install
          (progn (package-refresh-contents)
@@ -226,6 +227,7 @@
      (require 'evil)
      (require 'flyspell)
      (require 'flyspell-lazy)
+     (require 'flyspell-correct-ivy)
      (require 'god-mode)
      (require 'ivy)
      (require 'counsel)
@@ -324,6 +326,9 @@
 **** Flyspell
      #+BEGIN_SRC emacs-lisp
        (flyspell-lazy-mode 1)
+
+       (define-key flyspell-mode-map (kbd "C-,") 'flyspell-correct-next-word-generic)
+       (define-key flyspell-mode-map (kbd "C-;") 'flyspell-correct-previous-word-generic)
      #+END_SRC
 **** Ivy
      #+BEGIN_SRC emacs-lisp
@@ -447,6 +452,10 @@
        (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
      #+END_SRC
 
+**** Flycheck
+     #+BEGIN_SRC emacs-lisp
+       (add-hook 'after-init-hook #'global-flycheck-mode)
+     #+END_SRC
 ** Global Keybinds
 *** EMACS specific
     #+BEGIN_SRC emacs-lisp
@@ -512,7 +521,7 @@
 **** DocView
      #+BEGIN_SRC emacs-lisp
        (setf doc-view-continuous t)
-       (setf doc-view-resolution 144)
+       (setf doc-view-resolution 300)
 
        (define-key doc-view-mode-map (kbd "/") 'doc-view-search-next-match)
        (define-key doc-view-mode-map (kbd "?") 'doc-view-search-previous-match)
@@ -619,7 +628,7 @@
 *** Highlight keywords: TODO, FIXME, etc
     #+BEGIN_SRC emacs-lisp
       (defun highlight-todos ()
-        (highlight-lines-matching-regexp "\\<\\(FIXME\\|WRITEME\\|WRITEME!\\|TODO\\|BUG\\):?" 
+        (highlight-lines-matching-regexp "\\<\\(FIXME\\|WRITEME\\|WRITEME!\\|TODO\\|BUG\\):?"
              'warning))
 
       (defun highlight-notes ()
@@ -847,6 +856,9 @@
      ;;   (run-with-idle-timer 1 t '(lambda () (flyspell-buffer))))
 
      ;; (add-hook 'flyspell-mode-hook 'idle-timer-spellcheck)
+
+     ;; Make sure flyspell does not produce error messages for everything
+     (setq flyspell-issue-message-flag nil)
 
 
    #+END_SRC
