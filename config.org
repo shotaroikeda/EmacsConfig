@@ -23,11 +23,13 @@
 ** Run for all
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'package-archives
-                   '("melpa" . "https://melpa.org/packages/"))
+                  '("melpa" . "https://melpa.org/packages/"))
+
    #+END_SRC
 ** Refresh Packages if fresh-install is enabled
    #+BEGIN_SRC emacs-lisp
-     (defvar my-packages '(all-the-icons
+     (defvar my-packages '(exec-path-from-shell
+                           all-the-icons
 
                            evil
                            evil-god-state
@@ -110,8 +112,6 @@
                            rebecca-theme
                            twilight-bright-theme
 
-                           polymode
-
                            flyspell-lazy
                            flyspell-correct-ivy
 			   tablist
@@ -121,6 +121,10 @@
                 (dolist (p my-packages)
                   (when (not (package-installed-p p))
                     (package-install p)))))
+
+     ;; Copy envs before continuing
+     (exec-path-from-shell-copy-env "PYTHONPATH")
+     (exec-path-from-shell-copy-env "PATH")
    #+END_SRC
 ** Run Operating System Specific
    #+BEGIN_SRC emacs-lisp
