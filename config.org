@@ -11,8 +11,12 @@
      Install [[https://docs.continuum.io/anaconda/install][Anaconda]] before continuing. Save it in the home directory called `.anaconda`
      Install jedi, ipython, and autopep8
 **** C
-     - libclang
-     - CMake
+     - Requirements for having C++
+       - libclang
+       - CMake
+     - Install [[https://github.com/universal-ctags/ctags][Universal CTags]]
+     - Install [[https://github.com/Valloric/ycmd][YouCompleteMe]]
+
 **** LaTeX
      - MacTeX, pdf-tools, aspell from brew
      - pdf-tools you may have to make from [[https://github.com/politza/pdf-tools][source]]
@@ -31,41 +35,50 @@
      (defvar my-packages '(exec-path-from-shell
                            all-the-icons
 
+                           ;; Evil
                            evil
                            evil-god-state
                            evil-leader
                            evil-mc
 
+                           ;; Aesthetic Components
                            god-mode
                            diminish
                            spaceline
                            spaceline-all-the-icons
+                           popwin
+                           rich-minority
 
+                           ;; Completion
                            bash-completion
                            company
                            company-quickhelp
 
+                           ;; Delimiter Behavior
                            rainbow-delimiters
+                           paredit
+                           smartparens
 
+                           ;; Project Bsed
                            projectile
                            magit
                            yasnippet
 
                            use-package
 
+                           ;; LaTeX
                            auctex
 
                            rudel
 
+                           ;; Code/File Navigation
                            ivy
                            all-the-icons-ivy
                            counsel-projectile
+                           counsel-etags
                            dumb-jump
 
                            better-defaults
-
-                           paredit
-                           smartparens
 
                            clojure-mode
                            cider
@@ -75,15 +88,17 @@
                            hindent
                            company-ghc
 
+                           ;; LUA stuff
                            lua-mode
 
-                           irony
-                           company-irony
-                           flycheck-irony
-                           c-eldoc
+                           ;; C/C++ stuff
+                           clang-format
+                           modern-cpp-font-lock
 
+                           ;; R stuff
                            ess
 
+                           ;; Python Stuff
                            anaconda-mode
                            company-anaconda
                            company-jedi
@@ -92,17 +107,17 @@
                            py-autopep8
                            pyvenv
 
+                           ;; Web stuff
                            web-mode
                            markdown-mode
                            markdown-mode+
 
+                           ;; C# Stuff
                            omnisharp
 
                            js2-mode
 
-                           popwin
-                           rich-minority
-
+                           ;; Themes
                            ample-theme
                            monokai-theme
                            zenburn-theme
@@ -112,6 +127,7 @@
                            rebecca-theme
                            twilight-bright-theme
 
+                           ;; Spell Check
                            flyspell-lazy
                            flyspell-correct-ivy
                            ))
@@ -224,22 +240,25 @@
      (require 'comint)
      (require 'company)
      (require 'company-quickhelp)
+     (require 'counsel)
+     (require 'counsel-projectile)
+     (require 'counsel-etags)
      (require 'diminish)
-     (require 'dumb-jump)
      (require 'doc-view)
+     (require 'dumb-jump)
      (require 'erc)
      (require 'evil)
      (require 'flyspell)
-     (require 'flyspell-lazy)
      (require 'flyspell-correct-ivy)
+     (require 'flyspell-lazy)
      (require 'god-mode)
      (require 'ivy)
-     (require 'counsel)
-     (require 'swiper)
      (require 'paredit)
      (require 'popwin)
+     (require 'projectile)
      (require 'smartparens)
      (require 'smartparens-config)
+     (require 'swiper)
      (require 'use-package)
    #+END_SRC
 ** Global Settings
@@ -367,7 +386,7 @@
 
 
        ;; The order for these two matter
-       (counsel-projectile-on)
+       (counsel-projectile-mode)
        (all-the-icons-ivy-setup)
 
        (setq ivy-ignore-buffers (list "\\*epc*"
@@ -406,11 +425,31 @@
                                                      "\\|\\(?:\\.#.*\\)"
                                                      "\\|\\(?:.*~$\\)"))
 
+       ;; Some counsel stuff
        (with-eval-after-load 'counsel
          (let ((done (where-is-internal #'ivy-done     ivy-minibuffer-map t))
                (alt  (where-is-internal #'ivy-alt-done ivy-minibuffer-map t)))
            (define-key counsel-find-file-map done #'ivy-alt-done)
            (define-key counsel-find-file-map alt  #'ivy-done)))
+
+       (eval-after-load 'counsel-etags
+         '(progn
+            ;; counsel-etags-ignore-directories does NOT support wildcast
+            (add-to-list 'counsel-etags-ignore-directories "build_clang")
+            (add-to-list 'counsel-etags-ignore-directories "build_clang")
+            ;; counsel-etags-ignore-filenames supports wildcast
+            (add-to-list 'counsel-etags-ignore-filenames "TAGS")
+            (add-to-list 'counsel-etags-ignore-filenames "*.json")))
+
+       ;; Don't ask before rereading the TAGS files if they have changed
+       (setq tags-revert-without-query t)
+       ;; Don't warn when TAGS files are large
+       (setq large-file-warning-threshold nil)
+       ;; Setup auto update now
+       (add-hook 'prog-mode-hook
+         (lambda ()
+           (add-hook 'after-save-hook
+                     'counsel-etags-virtual-update-tags 'append 'local)))
 
      #+END_SRC
 
@@ -869,68 +908,45 @@
 * Languages
 ** C/C++
 *** About
-   Please run irony-install-server before working with C languages. Requires CMake and libclang.
+    Please run irony-install-server before working with C languages. Requires CMake and libclang.
 *** Package Requirements
     #+BEGIN_SRC emacs-lisp
-     ;; C/C++ tweaks
-     (require 'cc-mode)
-     (require 'cl)
+      ;; C/C++ tweaks
+      (require 'clang-format)
+      (require 'modern-cpp-font-lock)
     #+END_SRC
 *** Formatting
-   #+BEGIN_SRC emacs-lisp
-     ;; Default Settings
-     (setq-default c-basic-offset 8
-                   c-default-style "linux"
-                   tab-width 8
-                   indent-tabs-mode t)
+    #+BEGIN_SRC emacs-lisp
+      ;; Default Settings
+      (setq-default c-basic-offset 8
+                    c-default-style "linux"
+                    tab-width 8
+                    indent-tabs-mode t)
 
+      ;; Make sure that brackets get inserted with proper indentation
+      (sp-local-pair 'c++-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+      (sp-local-pair 'c-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+      (sp-local-pair 'csharp-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
 
-     ;; Make sure that brackets get inserted with proper indentation
-     (sp-local-pair 'c++-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
-     (sp-local-pair 'c-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
-     (sp-local-pair 'csharp-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
-   #+END_SRC
+      ;; Make sure indentation calls the right things
+      (evil-leader/set-key-for-mode 'c++-mode "i" 'clang-format-buffer)
+
+      ;; Use Modern C++
+      (modern-c++-font-lock-global-mode t)
+    #+END_SRC
 *** Hooks
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'c-mode-hook 'irony-mode)
-     (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
-     (add-hook 'c++-mode-hook 'irony-mode)
-     (add-hook 'c++-mode-hook 'c-turn-on-eldoc-mode)
-     (add-hook 'objc-mode-hook 'irony-mode)
-   #+END_SRC
+
 *** KeyMaps
 *** Interface with Global Packages
-*** Irony
-   #+BEGIN_SRC emacs-lisp
-     ;; replace the `completion-at-point' and `complete-symbol' bindings in
-     ;; irony-mode's buffers by irony-mode's function
-     (defun my-irony-mode-hook ()
-       (define-key irony-mode-map [remap completion-at-point]
-         'irony-completion-at-point-async)
-       (define-key irony-mode-map [remap complete-symbol]
-         'irony-completion-at-point-async))
-     (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-     ;; (optional) adds CC special commands to `company-begin-commands' in order to
-     ;; trigger completion at interesting places, such as after scope operator
-     ;;     std::|
-     (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-
-     (eval-after-load 'flycheck
-       '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-
-     (eval-after-load 'company
-       '(add-to-list 'company-backends 'company-irony))
-   #+END_SRC
 *** CMake
-   #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
      (setq auto-mode-alist
            (append
             '(("CMakeLists\\.txt\\'" . cmake-mode))
             '(("\\.cmake\\'" . cmake-mode))
             auto-mode-alist))
-   #+END_SRC
+    #+END_SRC
 
 ** C#
    #+BEGIN_SRC emacs-lisp
