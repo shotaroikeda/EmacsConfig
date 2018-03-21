@@ -17,8 +17,7 @@
      - Install [[https://github.com/universal-ctags/ctags][Universal CTags]]
      - Install [[https://github.com/Valloric/ycmd][YouCompleteMe]]
        - Make a file named `~/.ycm_extra_conf.py` using the gist below
-       - Will add to repo if it works fine
-***** C++ ycmd config file
+       - Will add to repo if it works fine ***** C++ ycmd config file
       #+BEGIN_SRC python
 	#!/bin/env python
 
