@@ -268,114 +268,115 @@
    #+END_SRC
 ** Refresh Packages if fresh-install is enabled
    #+BEGIN_SRC emacs-lisp
-     (defvar my-packages '(exec-path-from-shell
-               all-the-icons
+	 (defvar my-packages '(exec-path-from-shell
+			   all-the-icons
 
-               ;; Evil
-               evil
-               evil-god-state
-               evil-leader
-               evil-mc
+			   ;; Evil
+			   evil
+			   evil-god-state
+			   evil-leader
+			   evil-mc
 
-               ;; Aesthetic Components
-               god-mode
-               diminish
-               spaceline
-               spaceline-all-the-icons
-               popwin
-               rich-minority
+			   ;; Aesthetic Components
+			   god-mode
+			   diminish
+			   spaceline
+			   spaceline-all-the-icons
+			   popwin
+			   rich-minority
+			   linum-relative
 
-               ;; Completion
-               bash-completion
-               company
-               company-quickhelp
+			   ;; Completion
+			   bash-completion
+			   company
+			   company-quickhelp
 
-               ;; Delimiter Behavior
-               rainbow-delimiters
-               paredit
-               smartparens
+			   ;; Delimiter Behavior
+			   rainbow-delimiters
+			   paredit
+			   smartparens
 
-               ;; Project Bsed
-               projectile
-               magit
-               yasnippet
+			   ;; Project Bsed
+			   projectile
+			   magit
+			   yasnippet
 
-               use-package
+			   use-package
 
-               ;; LaTeX
-               auctex
+			   ;; LaTeX
+			   auctex
 
-               ;; Code/File Navigation
-               ivy
-               all-the-icons-ivy
-               counsel-projectile
-               counsel-etags
-               dumb-jump
+			   ;; Code/File Navigation
+			   ivy
+			   all-the-icons-ivy
+			   counsel-projectile
+			   counsel-etags
+			   dumb-jump
 
-               better-defaults
+			   better-defaults
 
-               clojure-mode
-               cider
+			   clojure-mode
+			   cider
 
-               haskell-mode
-               ghc
-               hindent
-               company-ghc
+			   haskell-mode
+			   ghc
+			   hindent
+			   company-ghc
 
-               ;; LUA stuff
-               lua-mode
+			   ;; LUA stuff
+			   lua-mode
 
-               ;; C/C++ stuff
-               clang-format
-               modern-cpp-font-lock
-               company-ycmd
-               flycheck-ycmd
+			   ;; C/C++ stuff
+			   clang-format
+			   modern-cpp-font-lock
+			   company-ycmd
+			   flycheck-ycmd
 
-               ;; R stuff
-               ess
+			   ;; R stuff
+			   ess
 
-               ;; Python Stuff
-               anaconda-mode
-               company-anaconda
-               company-jedi
-               ein
-               python-cell
-               py-autopep8
-               pyvenv
+			   ;; Python Stuff
+			   anaconda-mode
+			   company-anaconda
+			   company-jedi
+			   ein
+			   python-cell
+			   py-autopep8
+			   pyvenv
 
-               ;; Web stuff
-               web-mode
-               markdown-mode
-               markdown-mode+
+			   ;; Web stuff
+			   web-mode
+			   markdown-mode
+			   markdown-mode+
 
-               ;; C# Stuff
-               omnisharp
+			   ;; C# Stuff
+			   omnisharp
 
-               js2-mode
+			   js2-mode
 
-               ;; Themes
-               ample-theme
-               monokai-theme
-               zenburn-theme
-               ample-zen-theme
-               material-theme
-               gruvbox-theme
-               rebecca-theme
-               twilight-bright-theme
+			   ;; Themes
+			   ample-theme
+			   monokai-theme
+			   zenburn-theme
+			   ample-zen-theme
+			   material-theme
+			   gruvbox-theme
+			   rebecca-theme
+			   twilight-bright-theme
 
-               ;; Spell Check
-               flyspell-lazy
-               flyspell-correct-ivy
-               ))
-     (if fresh-install
-     (progn (package-refresh-contents)
-        (dolist (p my-packages)
-          (when (not (package-installed-p p))
-            (package-install p)))))
+			   ;; Spell Check
+			   flyspell-lazy
+			   flyspell-correct-ivy
+			   ))
+	 (if fresh-install
+	 (progn (package-refresh-contents)
+		(dolist (p my-packages)
+		  (when (not (package-installed-p p))
+			(package-install p)))))
 
-     ;; Copy envs before continuing
-     (exec-path-from-shell-copy-env "PYTHONPATH")
-     (exec-path-from-shell-copy-env "PATH")
+	 ;; Copy envs before continuing
+	 (exec-path-from-shell-copy-env "PYTHONPATH")
+	 (exec-path-from-shell-copy-env "PATH")
    #+END_SRC
 ** Run Operating System Specific
    #+BEGIN_SRC emacs-lisp
@@ -408,22 +409,22 @@
    #+END_SRC
 ** Make Lineum Look Better
    #+BEGIN_SRC emacs-lisp
-     (setq curr-bg-color (face-attribute 'default :background))
+	 ;; (setq curr-bg-color (face-attribute 'default :background))
 
-     (custom-set-variables)
-     (custom-set-faces '(linum ((t nil))))
+	 ;; (custom-set-variables)
+	 ;; (custom-set-faces '(linum ((t nil))))
 
-     ;; disable fringes by blending background color
-     (set-face-attribute 'fringe nil :background curr-bg-color :foreground curr-bg-color)
+	 ;; ;; disable fringes by blending background color
+	 ;; (set-face-attribute 'fringe nil :background curr-bg-color :foreground curr-bg-color)
 
-     ;; Margin windows
-     (defadvice linum-update-window (around linum-dynamic activate)
-       (let* ((w (length (number-to-string
-                          (count-lines (point-min) (point-max)))))
-              (linum-format (concat " %" (number-to-string w) "d")))
-         ad-do-it))
+	 ;; ;; Margin windows
+	 ;; (defadvice linum-update-window (around linum-dynamic activate)
+	 ;;   (let* ((w (length (number-to-string
+	 ;;                      (count-lines (point-min) (point-max)))))
+	 ;;          (linum-format (concat " %" (number-to-string w) "d")))
+	 ;;     ad-do-it))
 
-     (setq linum-format 'dynamic)
+	 ;; (setq linum-format 'dynamic)
    #+END_SRC
 ** Modeline Configuration
 *** Powerline
@@ -544,9 +545,10 @@
      #+END_SRC
 **** DocView
      #+BEGIN_SRC emacs-lisp
-       ;; DocView
-       (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-       (add-hook 'doc-view-mode (lambda () (setq linum-mode nil)))
+	   ;; DocView
+	   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+	   ;; (add-hook 'doc-view-mode (lambda () (setq linum-mode nil)))
+
      #+END_SRC
 **** Dumb Jump
      #+BEGIN_SRC emacs-lisp
@@ -691,7 +693,19 @@
 
 **** Linum
      #+BEGIN_SRC emacs-lisp
-       (add-hook 'prog-mode-hook 'linum-mode)
+	   (require 'linum-relative)
+
+	   (linum-on)
+
+	   (if (or (> emacs-major-version 26)
+			   (and (= emacs-major-version 26)
+					(>= emacs-minor-version 0)))
+		   (progn (setq linum-relative-backend 'display-line-numbers-mode)
+				  (setq display-line-numbers-width 1))
+		 (setq linum-relative-backend nil))
+
+	   (linum-relative-global-mode)
+
      #+END_SRC
 **** Paredit
      #+BEGIN_SRC emacs-lisp
@@ -1146,6 +1160,7 @@
 *** Package Requirements
     #+BEGIN_SRC emacs-lisp
       ;; C/C++ tweaks
+      (require 'cc-mode)
       (require 'clang-format)
       (require 'company-ycmd)
       (require 'ycmd-eldoc)
@@ -1154,45 +1169,53 @@
     #+END_SRC
 *** Formatting
     #+BEGIN_SRC emacs-lisp
-      ;; Default Settings
-      (setq-default c-basic-offset 4
-            c-default-style "linux"
-            tab-width 4
-            indent-tabs-mode t)
+	  ;; Default Settings
+	  (setq-default c-basic-offset 4
+					c-default-style "linux"
+					tab-width 4
+					indent-tabs-mode t)
 
-      ;; Make sure that brackets get inserted with proper indentation
-      (sp-local-pair 'c++-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
-      (sp-local-pair 'c-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
-      (sp-local-pair 'csharp-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+	  ;; Make sure that brackets get inserted with proper indentation
+	  (sp-local-pair 'c++-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+	  (sp-local-pair 'c-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+	  (sp-local-pair 'csharp-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
 
-      ;; Make sure indentation calls the right things
-      (evil-leader/set-key-for-mode 'c++-mode "i" 'clang-format-buffer)
+	  ;; Make sure indentation calls the right things
+	  (evil-leader/set-key-for-mode 'c++-mode "i" 'clang-format-buffer)
 
-      ;; Use Modern C++
-      (modern-c++-font-lock-global-mode t)
+	  (define-key c-mode-map (kbd  "C-i") 'clang-format)
+	  (define-key c++-mode-map (kbd  "C-i") 'clang-format)
+
+	  ;; Use Modern C++
+	  (modern-c++-font-lock-global-mode t)
     #+END_SRC
 *** Hooks
     #+BEGIN_SRC emacs-lisp
-      (add-hook 'c++-mode-hook 'ycmd-mode)
+	  (add-hook 'c++-mode-hook 'ycmd-mode)
 
-      ;; Configure ycmd
-      (set-variable 'ycmd-server-command '("python" "/Users/shotaroikeda/ycmd/ycmd"))
-      (set-variable 'ycmd-extra-conf-whitelist '("~/.ycm_extra_conf.py"))
-      (set-variable 'ycmd-global-config "~/.ycm_extra_conf.py")
+	  ;; Configure ycmd
+	  (set-variable 'ycmd-server-command '("python" "/Users/shotaroikeda/ycmd/ycmd"))
+	  (set-variable 'ycmd-extra-conf-whitelist '("~/.ycm_extra_conf.py"))
+	  (set-variable 'ycmd-global-config "~/.ycm_extra_conf.py")
 
-      (add-hook 'c++-mode 'flycheck-ycmd-setup)
-      (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup)
+	  ;; Configure flycheck variables
+	  (setq flycheck-gcc-language-standard "c++17")
+	  (setq flycheck-clang-language-standard "c++1z")
+	  (setq flycheck-clang-standard-library "libc++")
 
-      ;; Set up ycmd
-      (company-ycmd-setup)
+	  (add-hook 'c++-mode 'flycheck-ycmd-setup)
+	  (add-hook 'ycmd-mode-hook 'ycmd-eldoc-setup)
 
-      ;; Remove some backends that conflict the the above
-      (setq company-backends (delete 'company-semantic company-backends))
-      (setq company-backends (delete 'company-eclim company-backends))
-      (setq company-backends (delete 'company-xcode company-backends))
-      (setq company-backends (delete 'company-clang company-backends))
-      (setq company-backends (delete 'company-bbdb company-backends))
-      (setq company-backends (delete 'company-oddmuse company-backends))
+	  ;; Set up ycmd
+	  (company-ycmd-setup)
+
+	  ;; Remove some backends that conflict the the above
+	  (setq company-backends (delete 'company-semantic company-backends))
+	  (setq company-backends (delete 'company-eclim company-backends))
+	  (setq company-backends (delete 'company-xcode company-backends))
+	  (setq company-backends (delete 'company-clang company-backends))
+	  (setq company-backends (delete 'company-bbdb company-backends))
+	  (setq company-backends (delete 'company-oddmuse company-backends))
     #+END_SRC
 
 *** KeyMaps
