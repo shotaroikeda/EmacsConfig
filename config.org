@@ -282,7 +282,6 @@
 			   diminish
 			   spaceline
 			   spaceline-all-the-icons
-			   popwin
 			   rich-minority
 			   linum-relative
 
@@ -473,30 +472,29 @@
 * General Configuration
 ** Requirements
    #+BEGIN_SRC emacs-lisp
-     (require 'bash-completion)
-     (require 'comint)
-     (require 'company)
-     (require 'company-quickhelp)
-     (require 'counsel)
-     (require 'counsel-projectile)
-     (require 'counsel-etags)
-     (require 'diminish)
-     (require 'doc-view)
-     (require 'dumb-jump)
-     (require 'erc)
-     (require 'evil)
-     (require 'flyspell)
-     (require 'flyspell-correct-ivy)
-     (require 'flyspell-lazy)
-     (require 'god-mode)
-     (require 'ivy)
-     (require 'paredit)
-     (require 'popwin)
-     (require 'projectile)
-     (require 'smartparens)
-     (require 'smartparens-config)
-     (require 'swiper)
-     (require 'use-package)
+	 (require 'bash-completion)
+	 (require 'comint)
+	 (require 'company)
+	 (require 'company-quickhelp)
+	 (require 'counsel)
+	 (require 'counsel-projectile)
+	 (require 'counsel-etags)
+	 (require 'diminish)
+	 (require 'doc-view)
+	 (require 'dumb-jump)
+	 (require 'erc)
+	 (require 'evil)
+	 (require 'flyspell)
+	 (require 'flyspell-correct-ivy)
+	 (require 'flyspell-lazy)
+	 (require 'god-mode)
+	 (require 'ivy)
+	 (require 'paredit)
+	 (require 'projectile)
+	 (require 'smartparens)
+	 (require 'smartparens-config)
+	 (require 'swiper)
+	 (require 'use-package)
    #+END_SRC
 ** Global Settings
 *** EMACS Specific
@@ -593,101 +591,102 @@
      #+END_SRC
 **** Ivy
      #+BEGIN_SRC emacs-lisp
-       (ivy-mode 1)
-       (setq ivy-use-virtual-buffers t)
-       (setq enable-recursive-minibuffers t)
-       (global-set-key (kbd "<f6>") 'ivy-resume)
-       (global-set-key (kbd "M-x") 'counsel-M-x)
-       (global-set-key (kbd "A-a") 'counsel-M-x)
-       (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-       (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-       (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-       (global-set-key (kbd "<f1> l") 'counsel-find-library)
-       (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-       (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-       (global-set-key (kbd "C-c g") 'counsel-git)
-       (global-set-key (kbd "C-c j") 'counsel-git-grep)
-       (global-set-key (kbd "C-c k") 'counsel-ag)
-       (global-set-key (kbd "C-x l") 'counsel-locate)
-       (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-       (define-key ivy-minibuffer-map (kbd "A-k") 'ivy-previous-line)
-       (define-key ivy-minibuffer-map (kbd "A-j") 'ivy-next-line)
-       (define-key ivy-minibuffer-map (kbd "C-u") 'ivy-scroll-up-command)
-       (define-key ivy-minibuffer-map (kbd "C-f") 'ivy-scroll-down-command)
+	   (ivy-mode 1)
+	   (setq ivy-use-virtual-buffers t)
+	   (setq enable-recursive-minibuffers t)
+	   (global-set-key (kbd "<f6>") 'ivy-resume)
+	   (global-set-key (kbd "M-x") 'counsel-M-x)
+	   (global-set-key (kbd "A-a") 'counsel-M-x)
+	   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+	   (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+	   (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+	   (global-set-key (kbd "<f1> l") 'counsel-find-library)
+	   (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+	   (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+	   (global-set-key (kbd "C-c g") 'counsel-git)
+	   (global-set-key (kbd "C-c j") 'counsel-git-grep)
+	   (global-set-key (kbd "C-c k") 'counsel-ag)
+	   (global-set-key (kbd "C-x l") 'counsel-locate)
+	   (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+	   (define-key ivy-minibuffer-map (kbd "A-k") 'ivy-previous-line)
+	   (define-key ivy-minibuffer-map (kbd "A-j") 'ivy-next-line)
+	   (define-key ivy-minibuffer-map (kbd "C-u") 'ivy-scroll-up-command)
+	   (define-key ivy-minibuffer-map (kbd "C-f") 'ivy-scroll-down-command)
 
-       (global-set-key (kbd "C-s") 'counsel-ag)
-       (global-set-key (kbd "A-b") 'ivy-switch-buffer)
-       (global-set-key (kbd "A-B") 'swiper-all)
-       (global-set-key (kbd "A-o") 'counsel-find-file)
+	   (global-set-key (kbd "C-s") 'counsel-ag)
+	   (global-set-key (kbd "A-b") 'ivy-switch-buffer)
+	   (global-set-key (kbd "A-B") 'swiper-all)
+	   (global-set-key (kbd "A-o") 'counsel-find-file)
 
-       (define-key evil-normal-state-map "/" 'swiper)
+	   (define-key evil-normal-state-map "/" 'swiper)
 
 
-       ;; The order for these two matter
-       (counsel-projectile-mode)
-       (all-the-icons-ivy-setup)
+	   ;; The order for these two matter
+	   (counsel-projectile-mode)
+	   (all-the-icons-ivy-setup)
 
-       (setq ivy-ignore-buffers (list "\\*epc*"
-                                      "\\*magit-.*"
-                                      "\\*helm.*"
-                                      "Minibuf-.*"
-                                      "Echo Area .*"
-                                      "bash-completion"
-                                      "\\*company-documentation\\*"
-                                      "\\*server\\*"
-                                      "\\*code-conversion-work\\*"
-                                      "\\*tip\\*"
-                                      "\\*Shell Command Output\\*"
-                                      "\\*Input History\\*"
-                                      "\\*ess.dbg.R"
-                                      "\\*R:accum\\*"
-                                      "\\*ess-command-output\\*"
-                                      "\\*ess-get-words\\*"
-                                      "\\*auto-load\\*"
-                                      "\\*Python completions redirect\\*"
-                                      "tq-temp-epdfinfo"
-                                      "pdf-info-query--+"
-                                      "\\*.* output\\*"
-                                      "\\*ESS\\*"
-                                      "\\*Python-font-lock\\*"
-                                      "\\*Help\\*"
-                                      "\\*code-converting-work\\*"
-                                      "\\*packages\\*"
-                                      ".*autoloads.el$"))
+	   (setq ivy-ignore-buffers (list "\\*epc*"
+									  "\\*magit-.*"
+									  "\\*helm.*"
+									  "Minibuf-.*"
+									  "Echo Area .*"
+									  "bash-completion"
+									  "\\*company-documentation\\*"
+									  "\\*server\\*"
+									  "\\*code-conversion-work\\*"
+									  "\\*tip\\*"
+									  "\\*Shell Command Output\\*"
+									  "\\*Input History\\*"
+									  "\\*ess.dbg.R"
+									  "\\*R:accum\\*"
+									  "\\*ess-command-output\\*"
+									  "\\*ess-get-words\\*"
+									  "\\*auto-load\\*"
+									  "\\*Python completions redirect\\*"
+									  "tq-temp-epdfinfo"
+									  "pdf-info-query--+"
+									  "\\*.* output\\*"
+									  "\\*ESS\\*"
+									  "\\*Python-font-lock\\*"
+									  "\\*Help\\*"
+									  "\\*code-converting-work\\*"
+									  "\\*packages\\*"
+									  ".*autoloads.el$"))
 
-       (setq counsel-find-file-ignore-regexp (concat (regexp-opt (list ".DS_Store"
-                                                                       ".git"
-                                                                       ".pyc"
-                                                                       "../"
-                                                                       "./"))
-                                                     "\\|\\(?:\\.#.*\\)"
-                                                     "\\|\\(?:.*~$\\)"))
+	   (setq counsel-find-file-ignore-regexp (concat (regexp-opt (list ".DS_Store"
+																	   ".git"
+																	   ".pyc"
+																	   "../"
+																	   "./"))
+													 "\\|\\(?:\\.#.*\\)"
+													 "\\|\\(?:.*~$\\)"))
 
-       ;; Some counsel stuff
-       (with-eval-after-load 'counsel
-         (let ((done (where-is-internal #'ivy-done     ivy-minibuffer-map t))
-               (alt  (where-is-internal #'ivy-alt-done ivy-minibuffer-map t)))
-           (define-key counsel-find-file-map done #'ivy-alt-done)
-           (define-key counsel-find-file-map alt  #'ivy-done)))
+	   ;; Some counsel stuff
+	   ; use Enter similarly to other completion libraries
+	   (with-eval-after-load 'counsel
+		 (let ((done (where-is-internal #'ivy-done     ivy-minibuffer-map t))
+			   (alt  (where-is-internal #'ivy-alt-done ivy-minibuffer-map t)))
+		   (define-key counsel-find-file-map done #'ivy-alt-done)
+		   (define-key counsel-find-file-map alt  #'ivy-done)))
 
-       (eval-after-load 'counsel-etags
-         '(progn
-            ;; counsel-etags-ignore-directories does NOT support wildcast
-            (add-to-list 'counsel-etags-ignore-directories "build_clang")
-            (add-to-list 'counsel-etags-ignore-directories "build_clang")
-            ;; counsel-etags-ignore-filenames supports wildcast
-            (add-to-list 'counsel-etags-ignore-filenames "TAGS")
-            (add-to-list 'counsel-etags-ignore-filenames "*.json")))
+	   (eval-after-load 'counsel-etags
+		 '(progn
+			;; counsel-etags-ignore-directories does NOT support wildcast
+			(add-to-list 'counsel-etags-ignore-directories "build_clang")
+			(add-to-list 'counsel-etags-ignore-directories "build_clang")
+			;; counsel-etags-ignore-filenames supports wildcast
+			(add-to-list 'counsel-etags-ignore-filenames "TAGS")
+			(add-to-list 'counsel-etags-ignore-filenames "*.json")))
 
-       ;; Don't ask before rereading the TAGS files if they have changed
-       (setq tags-revert-without-query t)
-       ;; Don't warn when TAGS files are large
-       (setq large-file-warning-threshold nil)
-       ;; Setup auto update now
-       (add-hook 'prog-mode-hook
-         (lambda ()
-           (add-hook 'after-save-hook
-                     'counsel-etags-virtual-update-tags 'append 'local)))
+	   ;; Don't ask before rereading the TAGS files if they have changed
+	   (setq tags-revert-without-query t)
+	   ;; Don't warn when TAGS files are large
+	   (setq large-file-warning-threshold nil)
+	   ;; Setup auto update now
+	   (add-hook 'prog-mode-hook
+		 (lambda ()
+		   (add-hook 'after-save-hook
+					 'counsel-etags-virtual-update-tags 'append 'local)))
 
      #+END_SRC
 
@@ -721,18 +720,6 @@
      #+BEGIN_SRC emacs-lisp
        ;; Prevent Magit Warning From Appearing
        (setq magit-last-seen-setup-instructions "1.4.0")
-     #+END_SRC
-**** Popwin
-     #+BEGIN_SRC emacs-lisp
-       (popwin-mode 1)
-       ;; Push dired window
-       (push '(dired-mode :position top) popwin:special-display-config)
-
-       (setq display-buffer-function 'popwin:display-buffer)
-       (push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
-       (push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)
-       (push '("^SWIPER$" :regexp t) popwin:special-display-config)
-
      #+END_SRC
 **** Projectile
      #+BEGIN_SRC emacs-lisp
@@ -1297,10 +1284,6 @@
      (evil-leader/set-key-for-mode 'cider-repl-mode "cve" 'cider-visit-error-buffer)
     #+END_SRC
 *** Interface with Global Packages
-**** Popwin
-     #+BEGIN_SRC emacs-lisp
-      (push "**cider-error*" popwin:special-display-config)
-     #+END_SRC
 ** Haskell
 *** About
     Haskell Langauge Configuration
@@ -1438,12 +1421,6 @@
      (evil-leader/set-key-for-mode 'haskell-mode "i" 'my/haskell-style)
     #+END_SRC
 *** Interface with Global Packages
-**** Popwin
-     #+BEGIN_SRC emacs-lisp
-     ;; Push all errors to separate window
-     (push "**HS-Error*" popwin:special-display-config)
-     (push "**GHC Error*" popwin:special-display-config)
-     #+END_SRC
 **** Company
      #+BEGIN_SRC emacs-lisp
      (add-to-list 'company-backends 'company-ghc)
@@ -1725,10 +1702,6 @@
      #+BEGIN_SRC emacs-lisp
      ;; Proper escaped quotes
      (sp-local-pair 'python-mode "\\\'" "\\\'")
-     #+END_SRC
-**** Popwin
-     #+BEGIN_SRC emacs-lisp
-     (push '("**Anaconda*" :height 20) popwin:special-display-config)
      #+END_SRC
 *** Org mode
     #+BEGIN_SRC emacs-lisp
