@@ -1823,7 +1823,14 @@
              ))
 
    #+END_SRC
-
+* Automatic IRC Things
+  #+BEGIN_SRC emacs-lisp
+	(defun connect-rizon ()
+	  (interactive)
+	  (erc :server "irc.rizon.net"
+		   :port 6667
+		   :nick "yo_gorilla"))
+  #+END_SRC
 * Rip10 Things
   #+BEGIN_SRC emacs-lisp
     (defun generate-songs ()
