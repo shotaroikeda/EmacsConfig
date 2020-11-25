@@ -1158,7 +1158,7 @@
     #+BEGIN_SRC emacs-lisp
 	  ;; Default Settings
 	  (setq-default c-basic-offset 4
-					c-default-style "linux"
+					c-default-style '((c-mode . "linux"))
 					tab-width 4
 					indent-tabs-mode t)
 
@@ -1636,10 +1636,6 @@
     #+BEGIN_SRC emacs-lisp
       (require 'anaconda-mode)
       (require 'company-jedi)
-      (require 'ein)
-      (require 'ein-loaddefs)
-      (require 'ein-notebook)
-      (require 'ein-subpackages)
       (require 'py-autopep8)
       (require 'python)
       (require 'python-cell)
@@ -1689,13 +1685,10 @@
 
       (add-hook 'python-mode-hook 'anaconda-mode)
       (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-      ;; (add-hook 'python-mode-hook 'eldoc-mode)
-      ;; (add-hook 'python-mode-hook 'jedi:setup)
       (add-hook 'python-mode-hook 'my/python-mode-hook)
       (add-hook 'python-mode-hook 'flyspell-prog-mode)
       (add-hook 'python-mode-hook 'flyspell-mode)
       (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
-      (add-hook 'python-mode-hook #'python-cell-mode 1)
     #+END_SRC
 *** Interface with Global Packages
 **** Paredit
@@ -1710,33 +1703,6 @@
        '((ein . t)
          ;; other languages..
          ))
-    #+END_SRC
-*** EIN
-    #+BEGIN_SRC emacs-lisp
-  ;; (add-hook 'ein:notebook-mode-hook #'anaconda-mode)
-
-  ;; (defun user-ein-reply-callback (args content -metadata-not-used-)
-  ;;   (let ((callback (plist-get args :callback))
-  ;;         (candidates (plist-get content :matches)))
-  ;;     (funcall callback candidates)))
-
-  ;; (defun user-company-ein-callback (callback)
-  ;;   (ein:kernel-complete
-  ;;    (ein:get-kernel)
-  ;;    (thing-at-point 'line)
-  ;;    (current-column)
-  ;;    (list :complete_reply
-  ;;          (cons #'user-ein-reply-callback (list :callback callback)))))
-
-  ;; (defun user-company-ein-backend (command &optional arg &rest ignored)
-  ;;   (interactive (list 'interactive))
-  ;;   (case command
-  ;;     (interactive (company-begin-backend 'user-company-ein-backend))
-  ;;     (prefix (company-anaconda-prefix))
-  ;;     (candidates (cons :async #'user-company-ein-callback))
-  ;;     (location nil)
-  ;;     (sorted t)))
-
     #+END_SRC
 *** AutoPep8
     #+BEGIN_SRC emacs-lisp
@@ -1830,14 +1796,4 @@
 	  (erc :server "irc.rizon.net"
 		   :port 6667
 		   :nick "yo_gorilla"))
-  #+END_SRC
-* Rip10 Things
-  #+BEGIN_SRC emacs-lisp
-    (defun generate-songs ()
-      (interactive)
-      (let ((songs (shell-command-to-string "python ~/rip10/pick_songs.py")))
-        (erase-buffer)
-        (insert songs)))
-
-    (evil-leader/set-key "g" 'generate-songs)
   #+END_SRC
