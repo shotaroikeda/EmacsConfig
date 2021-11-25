@@ -317,11 +317,6 @@
 			   clojure-mode
 			   cider
 
-			   haskell-mode
-			   ghc
-			   hindent
-			   company-ghc
-
 			   ;; LUA stuff
 			   lua-mode
 
@@ -338,7 +333,6 @@
 			   anaconda-mode
 			   company-anaconda
 			   company-jedi
-			   ein
 			   python-cell
 			   py-autopep8
 			   pyvenv
@@ -346,7 +340,6 @@
 			   ;; Web stuff
 			   web-mode
 			   markdown-mode
-			   markdown-mode+
 
 			   ;; C# Stuff
 			   omnisharp
@@ -1283,149 +1276,6 @@
      (evil-leader/set-key-for-mode 'cider-repl-mode "ck" 'cider-eval-buffer)
      (evil-leader/set-key-for-mode 'cider-repl-mode "cve" 'cider-visit-error-buffer)
     #+END_SRC
-*** Interface with Global Packages
-** Haskell
-*** About
-    Haskell Langauge Configuration
-    Pulled from https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md#ghc-mod
-
-    ghs, cabal, happy, ghs-mod, hindent, hasktags, stylish-haskell are REQUIRED to use haskell mode
-    TODO: That is actually outdated, update later
-*** Package Requirements
-    #+BEGIN_SRC emacs-lisp
-     (require 'haskell)
-    #+END_SRC
-*** Mode Variables
-    #+BEGIN_SRC emacs-lisp
-     ;; Look at the home directory for cabal packages
-     ;; Uncomment this portion to use cabal
-     ;; (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
-     ;;   (setenv "PATH" (concat my-cabal-path path-separator (getenv "PATH")))
-     ;;   (add-to-list 'exec-path my-cabal-path))
-     (custom-set-variables '(haskell-tags-on-save t))
-
-     ;; Set Keybinds
-     (custom-set-variables
-      '(haskell-process-suggest-remove-import-lines t)
-      '(haskell-process-auto-import-loaded-modules t)
-      '(haskell-process-log t))
-
-     ;; Set to Stack Repl instead of ghci
-     (custom-set-variables '(haskell-process-type 'stack-ghci))
-    #+END_SRC
-*** Formatting
-    Note, indentation taken care of in the Hooks section
-    #+BEGIN_SRC emacs-lisp
-     ;; Define Haskell Alignment
-     ;; "Better" Haskell Alignment
-     (eval-after-load "align"
-       '(add-to-list 'align-rules-list
-                     '(haskell-types
-                       (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
-                       (modes quote (haskell-mode literate-haskell-mode)))))
-     (eval-after-load "align"
-       '(add-to-list 'align-rules-list
-                     '(haskell-assignment
-                       (regexp . "\\(\\s-+\\)=\\s-+")
-                       (modes quote (haskell-mode literate-haskell-mode)))))
-     (eval-after-load "align"
-       '(add-to-list 'align-rules-list
-                     '(haskell-arrows
-                       (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
-                       (modes quote (haskell-mode literate-haskell-mode)))))
-     (eval-after-load "align"
-       '(add-to-list 'align-rules-list
-                     '(haskell-left-arrows
-                       (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
-                       (modes quote (haskell-mode literate-haskell-mode)))))
-    #+END_SRC
-*** Hooks
-    #+BEGIN_SRC emacs-lisp
-     ;; Enable haskell auto indentation
-     (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-     (add-hook 'haskell-mode-hook #'hindent-mode)
-     (add-hook 'haskell-mode-hook 'my/haskell-mode-hook)
-     ;; Need to unmap space, because the mode uses it by default
-     (add-hook 'haskell-mode-hook (lambda ()
-                                    (local-unset-key (kbd "SPC"))))
-     (add-hook 'haskell-mode-hook 'eldoc-mode)
-    #+END_SRC
-*** KeyMaps
-    #+BEGIN_SRC emacs-lisp
-     (eval-after-load 'haskell-mode
-       '(progn
-          (define-key haskell-mode-map [f8]
-            'haskell-navigate-imports) ;; Add a import navigation section
-          (define-key haskell-mode-map (kbd "C-c C-l")
-            'haskell-process-load-or-reload)
-          (define-key haskell-mode-map (kbd "C-c C-z")
-            'haskell-interactive-switch)
-          (define-key haskell-mode-map (kbd "C-c C-n C-t")
-            'haskell-process-do-type)
-          (define-key haskell-mode-map (kbd "C-c C-n C-i")
-            'haskell-process-do-info)
-          (define-key haskell-mode-map (kbd "C-c C-n C-c")
-            'haskell-process-cabal-build)
-          (define-key haskell-mode-map (kbd "C-c C-n c")
-            'haskell-process-cabal)
-          (define-key haskell-mode-map (kbd "SPC")
-            'haskell-mode-contextual-space)))
-
-     ;; Make the REPL interface ubiquitous
-     (defun my/haskell-load ()
-       (interactive)
-       (save-buffer)
-       (haskell-process-load-or-reload)
-       (haskell-interactive-switch))
-
-     (defun my/haskell-mode-hook ()
-       (haskell-indentation-mode -1)
-       (haskell-indent-mode 1)
-       (define-key haskell-mode-map (kbd "A-r") 'my/haskell-load))
-
-     (defun my/haskell-style ()
-       (interactive)
-       (align 0 (1+ (buffer-size)))
-       (save-buffer))
-
-     (eval-after-load 'haskell-cabal
-       '(progn
-          (define-key haskell-cabal-mode-map (kbd "C-c C-z")
-            'haskell-interactive-switch)
-          (define-key haskell-cabal-mode-map (kbd "C-c C-k")
-            'haskell-interactive-mode-clear)
-          (define-key haskell-cabal-mode-map (kbd "C-c C-c")
-            'haskell-process-cabal-build)
-          (define-key haskell-cabal-mode-map (kbd "C-c c")
-            'haskell-process-cabal)))
-     (evil-leader/set-key-for-mode 'haskell-mode "cr" 'my/haskell-load)
-     (evil-leader/set-key-for-mode 'haskell-mode "cz" 'haskell-interactive-switch)
-     (evil-leader/set-key-for-mode 'haskell-mode "e" 'my/haskell-load)
-
-     ;; Have up/down be similar to shell
-     (eval-after-load 'haskell-interactive-mode
-       '(progn
-          (local-unset-key (kbd "<up>"))
-          (local-unset-key (kbd "<down>"))
-          (define-key haskell-interactive-mode-map (kbd "<up>")
-            'haskell-interactive-mode-history-previous)
-          (define-key haskell-interactive-mode-map (kbd "<down>")
-            'haskell-interactive-mode-history-next)
-          ;; (lambda ()
-          ;;   ;; Propertize the prompt properly
-          ;;   (propertize "λ>" 'bold-italic))
-          ))
-
-
-     ;; Enable Stylish buffer formatting
-     (evil-leader/set-key-for-mode 'haskell-mode "i" 'my/haskell-style)
-    #+END_SRC
-*** Interface with Global Packages
-**** Company
-     #+BEGIN_SRC emacs-lisp
-     (add-to-list 'company-backends 'company-ghc)
-     (custom-set-variables '(company-ghc-show-info t))
-     #+END_SRC
 ** Javascript
 *** About
     js2-mode might not be used, as web-mode takes care of a good amount of it
@@ -1518,7 +1368,6 @@
 *** Package Requirements
     #+BEGIN_SRC emacs-lisp
      (require 'markdown-mode)
-     (require 'markdown-mode+)
      (autoload 'markdown-mode "markdown-mode"
        "Major mode for editing Markdown files" t)
     #+END_SRC
@@ -1636,10 +1485,6 @@
     #+BEGIN_SRC emacs-lisp
       (require 'anaconda-mode)
       (require 'company-jedi)
-      (require 'ein)
-      (require 'ein-loaddefs)
-      (require 'ein-notebook)
-      (require 'ein-subpackages)
       (require 'py-autopep8)
       (require 'python)
       (require 'python-cell)
@@ -1652,12 +1497,6 @@
 
       ;; (setq python-shell-interpreter "jupyter"
       ;;       python-shell-interpreter-args " console --simple-prompt") ;; Need this past iPython 5.1.0
-
-      (defun my/ein:jupyter-server-start ()
-        (interactive)
-        (ein:jupyter-server-start
-         (car (split-string (shell-command-to-string "which jupyter")))
-         (concat (getenv "HOME") "/")))
 
       (setenv "WORKON_HOME" (concat (getenv "HOME") "/.anaconda/envs"))
       (pyvenv-mode 1)
@@ -1704,40 +1543,6 @@
      (sp-local-pair 'python-mode "\\\'" "\\\'")
      #+END_SRC
 *** Org mode
-    #+BEGIN_SRC emacs-lisp
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((ein . t)
-         ;; other languages..
-         ))
-    #+END_SRC
-*** EIN
-    #+BEGIN_SRC emacs-lisp
-  ;; (add-hook 'ein:notebook-mode-hook #'anaconda-mode)
-
-  ;; (defun user-ein-reply-callback (args content -metadata-not-used-)
-  ;;   (let ((callback (plist-get args :callback))
-  ;;         (candidates (plist-get content :matches)))
-  ;;     (funcall callback candidates)))
-
-  ;; (defun user-company-ein-callback (callback)
-  ;;   (ein:kernel-complete
-  ;;    (ein:get-kernel)
-  ;;    (thing-at-point 'line)
-  ;;    (current-column)
-  ;;    (list :complete_reply
-  ;;          (cons #'user-ein-reply-callback (list :callback callback)))))
-
-  ;; (defun user-company-ein-backend (command &optional arg &rest ignored)
-  ;;   (interactive (list 'interactive))
-  ;;   (case command
-  ;;     (interactive (company-begin-backend 'user-company-ein-backend))
-  ;;     (prefix (company-anaconda-prefix))
-  ;;     (candidates (cons :async #'user-company-ein-callback))
-  ;;     (location nil)
-  ;;     (sorted t)))
-
-    #+END_SRC
 *** AutoPep8
     #+BEGIN_SRC emacs-lisp
       (setq py-autopep8-options '("--ignore=E266,E265" "--max-line-length=99"))
