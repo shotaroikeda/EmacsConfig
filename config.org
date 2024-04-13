@@ -610,6 +610,7 @@
 	   (global-set-key (kbd "A-b") 'ivy-switch-buffer)
 	   (global-set-key (kbd "A-B") 'swiper-all)
 	   (global-set-key (kbd "A-o") 'counsel-find-file)
+	   (global-set-key (kbd "°") 'counsel-find-file)
 
 	   (define-key evil-normal-state-map "/" 'swiper)
 
@@ -732,38 +733,39 @@
 ** Global Keybinds
 *** EMACS specific
     #+BEGIN_SRC emacs-lisp
-      (global-set-key (kbd "C-c M-s") 'shell)
-      (global-set-key (kbd "M-u") 'universal-argument)
+	  (global-set-key (kbd "C-c M-s") 'shell)
+	  (global-set-key (kbd "M-u") 'universal-argument)
 
-      ;; Screen Manipulation
-      (defun toggle-fullscreen ()
-        (interactive)
-        (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
-                                                 nil
-                                               'fullboth)))
+	  ;; Screen Manipulation
+	  (defun toggle-fullscreen ()
+		(interactive)
+		(set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
+												 nil
+											   'fullboth)))
 
-      (global-set-key (kbd "<f11>") 'toggle-fullscreen)
-      (global-set-key (kbd "<A-return>") 'newline)
-      ;; Buffer related
-      (global-set-key (kbd "A-s") 'save-buffer)
-      (global-set-key (kbd "A-n") 'previous-buffer)
-      (global-set-key (kbd "A-m") 'next-buffer)
-      (global-set-key (kbd "A-K") 'kill-this-buffer)
-      (global-set-key (kbd "A-O") 'other-window)
-      (global-set-key (kbd "A-P") 'previous-multiframe-window)
-      ;; Window Related
-      (global-set-key (kbd "C-q") 'delete-window)
+	  (global-set-key (kbd "<f11>") 'toggle-fullscreen)
+	  (global-set-key (kbd "<A-return>") 'newline)
+	  ;; Buffer related
+	  (global-set-key (kbd "A-s") 'save-buffer)
+	  (global-set-key (kbd "A-n") 'previous-buffer)
+	  (global-set-key (kbd "A-m") 'next-buffer)
+	  (global-set-key (kbd "µ") 'next-buffer)
+	  (global-set-key (kbd "A-K") 'kill-this-buffer)
+	  (global-set-key (kbd "A-O") 'other-window)
+	  (global-set-key (kbd "A-P") 'previous-multiframe-window)
+	  ;; Window Related
+	  (global-set-key (kbd "C-q") 'delete-window)
 
-      ;; Minibuffer
-      (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-      (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-      (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-      (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-      (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+	  ;; Minibuffer
+	  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+	  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+	  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+	  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+	  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
-      ;; Escaping Regions
-      (global-set-key (kbd "C-c C-r e") 'escape-region)
-      (global-set-key (kbd "C-c C-r u e") 'unescape-region)
+	  ;; Escaping Regions
+	  (global-set-key (kbd "C-c C-r e") 'escape-region)
+	  (global-set-key (kbd "C-c C-r u e") 'unescape-region)
     #+END_SRC
 *** Package Specific
 **** Comint
@@ -1498,7 +1500,7 @@
       ;; (setq python-shell-interpreter "jupyter"
       ;;       python-shell-interpreter-args " console --simple-prompt") ;; Need this past iPython 5.1.0
 
-      (setenv "WORKON_HOME" (concat (getenv "HOME") "/.anaconda/envs"))
+      (setenv "WORKON_HOME" (concat (getenv "HOME") "/.conda/envs"))
       (pyvenv-mode 1)
     #+END_SRC
 *** KeyMaps
@@ -1523,8 +1525,8 @@
       (defun my/python-mode-hook ()
         ;; already defined in comapny
         ;; (add-to-list 'company-backends 'company-anaconda)
-        (setq tab-width 4)
-        (setq python-indent 4))
+        (setq tab-width 2)
+        (setq python-indent 2))
 
       (add-hook 'python-mode-hook 'anaconda-mode)
       (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
