@@ -610,10 +610,10 @@
 	   (global-set-key (kbd "A-b") 'ivy-switch-buffer)
 	   (global-set-key (kbd "A-B") 'swiper-all)
 	   (global-set-key (kbd "A-o") 'counsel-find-file)
+	   ;; Sometimes XFCE rebinds some weird keys
 	   (global-set-key (kbd "°") 'counsel-find-file)
 
 	   (define-key evil-normal-state-map "/" 'swiper)
-
 
 	   ;; The order for these two matter
 	   (counsel-projectile-mode)
@@ -753,6 +753,7 @@
 	  (global-set-key (kbd "A-K") 'kill-this-buffer)
 	  (global-set-key (kbd "A-O") 'other-window)
 	  (global-set-key (kbd "A-P") 'previous-multiframe-window)
+	  (global-set-key (kbd "¶") 'previous-multiframe-window)
 	  ;; Window Related
 	  (global-set-key (kbd "C-q") 'delete-window)
 
@@ -1544,7 +1545,7 @@
 *** Org mode
 *** AutoPep8
     #+BEGIN_SRC emacs-lisp
-      (setq py-autopep8-options '("--ignore=E266,E265" "--max-line-length=99"))
+	  (setq py-autopep8-options '("--aggressive"))
     #+END_SRC
 ** R
 *** Package Requirements
